@@ -48,6 +48,11 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 ## Decisions
 
+### 2026-07-03 (mobile plan revision)
+
+- Revised `MOBILE_PLAN.md` in response to a direct user request to make it "more robust, clear, complete, appropriately detailed." Added: a full section on deep linking via iOS Universal Links / Android App Links (the biggest gap — the growth-plan share links built 2026-07-03 do nothing useful on mobile without this), a concrete Capacitor plugin table, a data-continuity callout (web `localStorage` and native Capacitor Preferences stats do not share, no migration exists yet), execution-level local-notification scheduling detail including a documented timezone edge case (device-local scheduling is safe for the vast majority of the audience; noted the specific case where it isn't and why it's acceptable to defer), and concrete cost/tooling/timeline/OS-version specifics that were entirely absent before.
+- Also corrected the plan's prior description of native sharing as greenfield work — the web client already calls `navigator.share()` (shipped in growth-plan phase 1); the mobile-specific work is narrower than originally scoped: swap to the Capacitor Share plugin specifically for WebView reliability, not build sharing from scratch.
+
 ### 2026-07-03 (growth phase 1 build)
 
 - Built and verified the three cheapest, ungated items from `GROWTH_PLAN.md` §10 phase 1. See `proof-log.md` for the full change list and verification trail, including a real bug found and fixed: the arrival-tracking effect double-counted under `React.StrictMode`'s dev-mode double-invoke, fixed with a ref guard matching the existing `recordResult` pattern in `App.tsx`.
