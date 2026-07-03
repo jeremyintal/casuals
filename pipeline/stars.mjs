@@ -1,0 +1,55 @@
+// Heuristic fame list for candidate scoring only — NOT used for gameplay.
+// Endpoints scored higher when they land in this set; curators make the real call.
+export const STARS = new Set(
+  [
+    'LeBron James', 'Stephen Curry', 'Kevin Durant', 'Giannis Antetokounmpo', 'Nikola Jokic',
+    'Joel Embiid', 'Jayson Tatum', 'Jaylen Brown', 'Devin Booker', 'Damian Lillard',
+    'Russell Westbrook', 'Chris Paul', 'Kawhi Leonard', 'DeMar DeRozan', 'Jrue Holiday',
+    'Bradley Beal', 'Karl-Anthony Towns', 'Anthony Edwards', 'Ja Morant', 'Zion Williamson',
+    'Brandon Ingram', 'Lonzo Ball', 'Rajon Rondo', 'Dwight Howard', 'Anthony Davis',
+    'Luka Doncic', 'James Harden', 'Kyrie Irving', 'Paul George', 'Shai Gilgeous-Alexander',
+    'Donovan Mitchell', 'Kemba Walker', 'Al Horford', 'Derrick White', 'Ben Simmons',
+    'Kristaps Porzingis', 'Jimmy Butler', 'Klay Thompson', 'Draymond Green', 'Andrew Wiggins',
+    'Zach LaVine', 'DeMarcus Cousins', 'Tyrese Haliburton', 'Tyrese Maxey', "De'Aaron Fox",
+    'Marcus Smart', 'Jalen Brunson', 'Julius Randle', 'RJ Barrett', 'Nikola Vucevic',
+    'Aaron Gordon', 'Paolo Banchero', 'Franz Wagner', 'Victor Wembanyama', 'Chet Holmgren',
+    'Cade Cunningham', 'Scottie Barnes', 'Evan Mobley', 'Darius Garland', "D'Angelo Russell",
+    'Kyle Kuzma', 'Brook Lopez', 'Khris Middleton', 'Fred VanVleet', 'Pascal Siakam',
+    'OG Anunoby', 'Mikal Bridges', 'Deandre Ayton', 'Chris Bosh', 'Dwyane Wade',
+    'Kyle Lowry', 'Rudy Gobert', 'Mike Conley', 'Blake Griffin', 'Kevin Love',
+    'John Wall', 'Bogdan Bogdanovic', 'Jusuf Nurkic', 'Dejounte Murray', 'Domantas Sabonis',
+    'Victor Oladipo', 'Terry Rozier', 'Buddy Hield', 'LaMelo Ball', 'Gordon Hayward',
+    'Tim Duncan', 'Manu Ginobili', 'Tony Parker', 'LaMarcus Aldridge', 'Dirk Nowitzki',
+    'Steve Nash', 'Amar\'e Stoudemire', 'Carmelo Anthony', 'Chris Bosh', 'Vince Carter',
+    'Pau Gasol', 'Marc Gasol', 'Kevin Garnett', 'Ray Allen', 'Paul Pierce',
+    'Deron Williams', 'Joe Johnson', 'Amir Johnson', 'Andre Iguodala', 'Danilo Gallinari',
+    'Serge Ibaka', 'Nikola Mirotic', 'Marc-Andre Fournier', 'Trae Young', 'Dejounte Murray',
+    'Zach Randolph', 'Marc Gasol', 'Mike Bibby', 'Baron Davis', 'Gilbert Arenas',
+    'Elton Brand', 'Josh Smith', 'Al Jefferson', 'David Lee', 'Danny Granger',
+    'Monta Ellis', 'O.J. Mayo', 'Rudy Gay', 'Kevin Martin', 'Andre Drummond',
+    'Reggie Jackson', 'Enes Kanter', 'Steven Adams', 'Otto Porter', 'Bradley Beal',
+    'Marcin Gortat', 'Nerlens Noel', 'Michael Carter-Williams', 'Tobias Harris', 'Jerami Grant',
+    'Caris LeVert', 'Spencer Dinwiddie', 'D\'Angelo Russell', 'Mikal Bridges', 'Cam Johnson',
+    'Deandre Jordan', 'Wesley Matthews', 'George Hill', 'Goran Dragic', 'Hassan Whiteside',
+    'Josh Richardson', 'Jae Crowder', 'Isaiah Thomas', 'Evan Fournier', 'Nikola Vucevic',
+    'Markelle Fultz', 'Jonathan Isaac', 'Wendell Carter Jr.', 'Kelly Oubre Jr.', 'Eric Gordon',
+    'PJ Tucker', 'Clint Capela', 'Trevor Ariza', 'Danuel House Jr.', 'Christian Wood',
+    'Julius Randle', 'Nerlens Noel', 'Mitchell Robinson', 'Jalen Green', 'Alperen Sengun',
+    'Desmond Bane', 'Jaren Jackson Jr.', 'Bam Adebayo', 'Tyler Herro', 'Duncan Robinson',
+    'Michael Porter Jr.', 'Jamal Murray', 'Kentavious Caldwell-Pope', 'Malcolm Brogdon',
+    'Collin Sexton', 'Darius Garland', 'Miles Bridges', 'PJ Washington', 'LaMelo Ball',
+    'Devonte\' Graham', 'Terry Rozier', 'Norman Powell', 'Ivica Zubac', 'Paul George',
+    'Montrezl Harrell', 'Patrick Beverley', 'Eric Bledsoe', 'Ricky Rubio', 'Josh Giddey',
+    'Lu Dort', 'Jalen Williams', 'Jalen Suggs', 'Anfernee Simons', 'Jerami Grant',
+    'Deandre Ayton', 'Mikal Bridges', 'Bojan Bogdanovic', 'Malik Monk', 'Domantas Sabonis',
+    'Keegan Murray', 'Jrue Holiday', 'CJ McCollum', 'Zach Collins', 'Brandon Clarke',
+    'Dillon Brooks', 'Jaren Jackson Jr.', 'Karl-Anthony Towns', 'Rudy Gobert', 'Anthony Edwards',
+    'Kristaps Porzingis', 'Jayson Tatum', 'Marcus Smart', 'Al Horford', 'Robert Williams',
+    'Derrick White', 'Malcolm Brogdon', 'Jrue Holiday', 'Damian Lillard', 'Giannis Antetokounmpo',
+    'Khris Middleton', 'Brook Lopez', 'Bobby Portis', 'Grayson Allen',
+  ].map((n) => n.toLowerCase())
+)
+
+export function isStar(name) {
+  return STARS.has(name.toLowerCase())
+}

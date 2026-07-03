@@ -2,6 +2,33 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-03
+
+### Data pipeline: scrape → parse → graph → curation queue
+
+- Built `pipeline/` (see `pipeline/README.md`): `fetch.mjs`, `parse.mjs`, `graph.mjs`, `stars.mjs`, `curate.mjs`.
+- Files added: `pipeline/fetch.mjs`, `pipeline/parse.mjs`, `pipeline/graph.mjs`, `pipeline/stars.mjs`, `pipeline/curate.mjs`, `pipeline/README.md`, `pipeline/data/transactions.json`, `pipeline/data/candidates.json`, `pipeline/data/curation-queue.md`. Updated: `.gitignore` (added `pipeline/cache/`), `AGENTS.md`, `PLAN.md`, `project-tasks-queue.md`.
+- Commands run and results:
+  - `curl` probe of prosportstransactions.com search endpoint → `HTTP 403` (Cloudflare "Just a moment..." challenge). Confirmed not scrapeable without a headless browser / challenge solver, which is out of scope. Source switched to Basketball-Reference.
+  - `curl` probe of `basketball-reference.com/leagues/NBA_2024_transactions.html` → `HTTP 200`, well-formed HTML.
+  - `node pipeline/fetch.mjs 2010 2027` → fetched 17 season pages (`NBA_2010`–`NBA_2026`; `NBA_2027` correctly 404s, season hasn't happened), ~5.5 MB total, 3.5s between requests. Result: passed.
+  - `node pipeline/parse.mjs` → first run: 12,480 transactions parsed (912 trades, 3,949 waived, 7,589 signed, 27 released, 3 sold, **0 waiver-claim** — bug found), 4 unparseable trade clauses logged.
+  - **Bug found and fixed during manual spot-check**, not caught automatically: `parseAssets` was capturing player names inside parenthetical annotations (e.g. `"(Vernon Macklin was later selected)"`, `"(top-5 protected)"`) as if they were real assets received in the trade. Verified by inspecting the Denver/Detroit 2009 Afflalo trade record before and after the fix. Fixed by stripping `\([^()]*\)` (length-preserving, to keep downstream index math correct) before asset extraction in `parseAssets`.
+  - **Second bug found**: waiver-claim classifier regex required "off waivers" but BBRef's actual phrasing is "claimed X **on** waivers from the Y" — verified via raw HTML inspection of a known 2014 Carlos Boozer claim. Fixed regex to accept both "on" and "off".
+  - `node pipeline/parse.mjs` (re-run after fixes) → 12,570 transactions (912 trades, 90 waiver-claim, phantom players confirmed gone by re-inspecting the same Afflalo record). Result: passed.
+  - Spot-check: searched parsed data for the real February 2025 Dallas–LA Lakers–Utah three-team trade (Luka Dončić + Kleber + Morris to LAL; Christie + Davis + 2029 1st to DAL; Hood-Schifino + 2nd to UTA). Found and correctly attributed per-team in every leg, including the multi-team splits. This is the same real trade the hand-curated `lal-bradley-luka` puzzle ends on — independent confirmation the parser handles complex real trades correctly. Note: BBRef renders this instance as "Luka Doncic" without diacritics (inconsistent with other pages); matching is done by BBRef player ID (`doncilu01`), not display string, so this doesn't affect graph correctness — but display names copied into puzzle content must be manually corrected to include diacritics.
+  - `node pipeline/graph.mjs 2 4 150` → 1,601 raw candidate chains enumerated across all franchises, 1,569 after dedupe, top 150 written to `candidates.json`. Result: passed.
+  - Spot-check of top-scored candidates: the #1 result independently reconstructed a longer version of the shipped Dennis Smith Jr. → Porziņģis → Dinwiddie → Kyrie chain and extended it two more real hops to the Feb 2025 Dončić/Davis trade. A separate high scorer (Clippers, 2011–2023) traced Chris Paul → Lou Williams/Harrell → Rondo → Bledsoe → Covington/Powell → Harden — a real, previously unidentified candidate chain. Confidence: the pipeline concept works end to end on real data.
+  - `node pipeline/curate.mjs 150` → wrote `pipeline/data/curation-queue.md` (1,950 lines), one entry per candidate with dates, per-leg detail, source quote text, and a verification checklist.
+- Verification evidence:
+  - Line counts / sizes: `transactions.json` 5.5 MB, `candidates.json` 396 KB, `curation-queue.md` 1,950 lines.
+  - No automated test suite for the pipeline scripts — verification here was manual spot-checking against known real trades, documented above. This is appropriate for a content-generation tool whose output is human-curated before use, not for the game engine itself (which still needs the automated tests tracked in the queue).
+- Proof gaps:
+  - Only 3 real trades were manually spot-checked in depth (Afflalo/Macklin, Boozer waiver claim, Dončić/Davis 3-team trade). The remaining 909 parsed trades and 150 candidates are unverified — that verification is the next work item, tracked in the queue, and is explicitly a human/agent curation task, not something this session claims to have done.
+  - The 4 trade clauses `parse.mjs` logs as unparseable were not individually investigated — likely unusual phrasing (e.g. non-standard team references); low priority given 908/912 trades parsed cleanly, but not confirmed harmless.
+  - `stars.mjs` fame list is hand-typed from general knowledge, not sourced or reviewed — it only affects candidate ranking order, never correctness, but could mis-rank some genuinely great chains lower than they deserve.
+  - No draft-day selection data exists in this pipeline (BBRef transactions feed doesn't carry it) — all 150 candidates start at a trade/waiver-claim/sign, not a draft. This is documented as a known scope limit in `pipeline/README.md`, not a bug.
+
 ## 2026-07-02
 
 ### Step 1 P2 Fix Verification

@@ -9,9 +9,9 @@ You are working on **Casuals**, a daily web puzzle game: six degrees of separati
 3. **`project-tasks-queue.md`** — open tasks, priorities, and the decision log. Pick work from here
 4. **`proof-log.md`** — completed work with verification evidence. Append here after each session
 
-## Current state (as of 2026-07-02)
+## Current state (as of 2026-07-03)
 
-Playable client-only prototype, QA-verified, production build green. Vite + React + TypeScript SPA, no backend, no git history (not a repo — consider `git init` before large changes). 8 hand-curated puzzles. The next strategic milestone (pipeline vs. polish) is an **open decision** — see queue priority 4; recommendation on record is the data pipeline, but confirm with the user before starting either.
+Playable client-only prototype, QA-verified, production build green. Vite + React + TypeScript SPA, no backend. Git-initialized (`git init` done 2026-07-02) — commit as you go. 8 hand-curated puzzles shipped in-app. The data pipeline (`pipeline/`) is now built and has produced 150 scored, unverified candidate chains awaiting human curation — see `pipeline/data/curation-queue.md` and priority 1 below. This is the current milestone; it was chosen over prototype polish because the loop was already proven and the 8-puzzle corpus was the binding constraint.
 
 ## Commands
 
@@ -33,6 +33,7 @@ npm run build      # tsc + vite build — must pass before ending a session
 | `src/data/teams.ts` | Team abbreviations and colors |
 | `src/App.tsx` | All UI: menu, scoreboard, chain, answer box, end sheet, archive, stats |
 | `src/styles.css` | The accepted visual system (dark scoreboard aesthetic) — extend it, don't replace it |
+| `pipeline/` | Content pipeline: BBRef scraper → transaction parser → asset-lineage graph → candidate chains → curation queue. Not imported by `src/`. See `pipeline/README.md` before touching it |
 
 ## Design invariants — do NOT change without explicit user sign-off
 
@@ -70,6 +71,12 @@ These are the product's identity, chosen deliberately (reasoning in `PLAN.md` §
 ## Known launch blockers (fine for prototype, must fix before public)
 
 - Answers ship in the client bundle (view-source cheating) → needs server-side validation
-- Only 8 puzzles (~8 days of content) → needs pipeline + curation to ~60
+- Only 8 puzzles shipped in-app (~8 days of content) → 150 unverified candidates now exist in `pipeline/data/curation-queue.md`; the work remaining is human/agent fact-checking and conversion to `src/data/puzzles.ts`, not generation
 - No automated tests on the engine (state transitions, ET rollover, streaks)
 - NBA IP caution: team names/colors only — no logos or player photos
+
+## Data pipeline specifics (read `pipeline/README.md` for full detail)
+
+- Source is **Basketball-Reference**, not prosportstransactions.com — the latter 403s unauthenticated scraping (verified 2026-07-02). This is a ratified deviation from `PLAN.md` §5's original source list
+- BBRef's transaction feed has **no draft-day selection records**, so every auto-generated candidate starts at a trade/waiver-claim/sign, never a draft pick. Draft-anchored chains (like the shipped Bradley → Dončić puzzle) still require manual construction
+- Every candidate is **unverified** — the pipeline's job is to surface and rank plausible chains, not to certify them. Never promote a candidate straight from `curation-queue.md` into `src/data/puzzles.ts` without checking it against a primary source first

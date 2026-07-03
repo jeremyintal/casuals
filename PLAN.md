@@ -25,7 +25,16 @@
 - The third hint level (hangman-style blanked name after a second violation) is not implemented — the second violation currently repeats hint 2
 - Archive games are timed and scored like the daily; plan calls for untimed practice
 - Mute preference not persisted; no automated tests yet
-- Puzzle corpus is 8, not 60; the data pipeline (scraper → graph → curation queue) is unstarted — this is the next big milestone decision
+- Puzzle corpus shipped in-app is still 8. The data pipeline is now built (2026-07-03) and has produced 150 scored, unverified candidate chains — the remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
+
+### Update — data pipeline built, 2026-07-03
+
+The scraper → graph → candidate-generation pipeline described in §5 is built and working (`pipeline/`, documented in `pipeline/README.md`). One source change was required:
+
+- **Primary source switched from prosportstransactions.com to Basketball-Reference.** prosportstransactions.com blocks scripted requests with a Cloudflare challenge (confirmed via direct probe). Basketball-Reference's season transaction pages are reachable, cover 2010–present with consistent structure, and were already named in §5 as the cross-check source — so they're now primary. §5 below is updated accordingly.
+- BBRef's transaction feed does not include draft-day selections, so every auto-generated candidate chain starts at a trade, waiver claim, or signing rather than a draft pick. Draft-anchored chains (the flagship Bradley → Dončić puzzle style) still require a curator to manually prepend the draft step — this is a scope limit, not a defect, and is documented in `pipeline/README.md`.
+- The pipeline was validated against real trades during this session, including independently reconstructing (and extending, with a real 2025 trade) a longer version of an already-shipped puzzle chain — see `proof-log.md` 2026-07-03 for the spot-check evidence.
+- Output is unverified by design — the pipeline's job is to rank plausible candidates for a human, not to certify facts. The next step is curation (fact-checking + writing reveal/hint copy), tracked as queue priority 1.
 
 ---
 
@@ -132,9 +141,9 @@ The game is only as good as the transaction graph. This is 60% of the engineerin
 
 ### Sources
 
-- **prosportstransactions.com** — most complete transaction log (trades, waivers, signings, draft) back to the 1940s; scrapeable HTML tables
-- **Basketball-Reference** — per-transaction detail pages and canonical player IDs; use for verification and entity resolution
-- Cross-check the two; discrepancies go to a manual review queue
+- **Basketball-Reference** (primary, as of 2026-07-03) — season transaction pages (`/leagues/NBA_{season}_transactions.html`) back to 2010, consistent structure, canonical player IDs, reachable to scripted requests. See `pipeline/README.md` for the working scraper/parser.
+- ~~prosportstransactions.com~~ — originally planned as primary; **blocks scripted requests with a Cloudflare challenge** (confirmed 2026-07-03). Revisit only if BBRef coverage proves insufficient for a specific chain, using a headless browser or manual lookup, not plain HTTP requests.
+- Cross-check against a second source (e.g. team beat-writer reporting, official transaction announcements) for any chain before it ships, regardless of which scraper sourced it.
 
 ### Data model
 

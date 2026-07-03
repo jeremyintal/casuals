@@ -6,10 +6,10 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 ## Current Priorities
 
-1. Add focused automated tests for game engine state transitions and daily Eastern Time rollover.
-2. Persist mute preference and improve Replay/Menu end-sheet behavior.
-3. Add a small QA checklist and update `proof-log.md` after each implementation session.
-4. Decide whether the next milestone is prototype polish or the real transaction-data pipeline.
+1. **Curate the candidate queue.** `pipeline/data/curation-queue.md` has 150 scored, unverified candidate chains. Fact-check the highest-scoring ones against Basketball-Reference (or another primary source), pick ~50 to reach the plan's 60-puzzle runway target, write `reveal`/`hint1`/`hint2` copy in the game's voice, and add them to `src/data/puzzles.ts` + `src/data/players.ts` following the schema and checklist in `AGENTS.md`. Two strong starting candidates already spot-checked in `proof-log.md` 2026-07-03: a Dennis Smith Jr. → Porziņģis → Dinwiddie → Kyrie → (2025) Dončić/Davis extension, and a Clippers Chris Paul → Lou Williams → Rondo → Bledsoe → Covington/Powell → Harden chain.
+2. Add focused automated tests for game engine state transitions and daily Eastern Time rollover.
+3. Persist mute preference and improve Replay/Menu end-sheet behavior.
+4. Decide when to introduce server-side answer validation (required before public launch — see `AGENTS.md` launch blockers).
 
 ## Open Tasks
 
@@ -41,10 +41,17 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 - Current prototype exposes puzzle answers in client data; acceptable for local prototype, but not MVP anti-cheat.
 - Puzzle data is hand-entered and not source-verified in-app.
-- Transaction graph, source scraping, entity resolution, and admin curation work from `PLAN.md` remains unstarted.
+- Transaction graph, source scraping, and candidate chain generation are **done** (`pipeline/`, 2026-07-03) — 150 unverified candidates ready for curation. The admin curation *screen* from `PLAN.md` §5 is still unstarted; for now curation is a manual pass over `pipeline/data/curation-queue.md` (see priority 1). Revisit building a real curation UI once the manual pass shows it's the bottleneck.
 - Decide when to introduce server-side answer validation.
 
 ## Decisions
+
+### 2026-07-03
+
+- Executed the data pipeline milestone (user chose this over prototype polish when asked directly). Full detail and verification evidence in `proof-log.md` 2026-07-03.
+- **Switched primary data source from prosportstransactions.com to Basketball-Reference.** prosportstransactions.com returns Cloudflare 403s to scripted requests; BBRef's season transaction pages are reachable, structurally consistent back to at least 2010, and were already the plan's cross-check source. This is a ratified update to `PLAN.md` §5.
+- Chain generation is scoped to trade/waiver-claim/sign-anchored chains only, because BBRef's transaction feed has no draft-day selection records. Draft-anchored chains (the flagship Bradley → Dončić style) still require manual construction, same as today's shipped puzzle. Documented in `pipeline/README.md` and `AGENTS.md`, not treated as a bug to fix.
+- Pipeline output (`candidates.json`, `curation-queue.md`) is explicitly unverified and must not be promoted straight into `src/data/puzzles.ts` — curation is a required step, not a formality, per the plan's credibility risk (PLAN.md §8).
 
 ### 2026-07-02 (continuity handoff)
 
