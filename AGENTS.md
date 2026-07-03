@@ -6,8 +6,9 @@ You are working on **Casuals**, a daily web puzzle game: six degrees of separati
 
 1. **`AGENTS.md`** (this file) — parameters, conventions, and rules of engagement
 2. **`PLAN.md`** — full product strategy, game design reasoning, data strategy, roadmap, risks. Section 0 is the dated status snapshot
-3. **`project-tasks-queue.md`** — open tasks, priorities, and the decision log. Pick work from here
-4. **`proof-log.md`** — completed work with verification evidence. Append here after each session
+3. **`MOBILE_PLAN.md`** — iOS/Android strategy (Capacitor wrap, not a rewrite). Only relevant once mobile work starts; read before touching anything mobile-related
+4. **`project-tasks-queue.md`** — open tasks, priorities, and the decision log. Pick work from here
+5. **`proof-log.md`** — completed work with verification evidence. Append here after each session
 
 ## Current state (as of 2026-07-03)
 

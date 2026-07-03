@@ -46,6 +46,11 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 ## Decisions
 
+### 2026-07-03 (mobile strategy)
+
+- Added `MOBILE_PLAN.md`: recommends wrapping the existing web app with Capacitor (not a React Native rewrite — this app's shape doesn't need it) and using on-device local notifications for the daily reminder at MVP, avoiding a push-notification backend entirely for now. No mobile engineering work started yet; this is a planning artifact only, added to `AGENTS.md`'s required reading list.
+- Open sequencing question left for the user in `MOBILE_PLAN.md` §7: start the Capacitor scaffold now in parallel with puzzle curation, or hold mobile work until the corpus is further built out. Recommendation on record is to start now (parallel work, different skill set than curation, useful for early TestFlight access with launch partners).
+
 ### 2026-07-03
 
 - Executed the data pipeline milestone (user chose this over prototype polish when asked directly). Full detail and verification evidence in `proof-log.md` 2026-07-03.
