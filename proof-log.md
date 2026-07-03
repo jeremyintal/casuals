@@ -2,6 +2,21 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-03 (copy reframe + doc audit)
+
+### Audit: found and fixed stale puzzle-count references
+
+- User asked whether the plan docs were current. Checked `AGENTS.md`, `PLAN.md`, and `project-tasks-queue.md` against actual repo state rather than assuming. Found: `project-tasks-queue.md` correctly said 9 puzzles shipped, but `AGENTS.md` (2 places) and `PLAN.md` (2 places) still said 8 — the `dal-dsj-morris-davis` curation session had updated the queue but not these two files. Fixed all four references and added the growth-plan phase-1 shipment (previously unmentioned) to `AGENTS.md`'s current-state summary.
+
+### Reframed core copy to "Turn X into Y in N moves" GM framing
+
+- User request: make the pitch invite players to "play GM" and state the exact move count, rather than describing the mechanic abstractly as six degrees of separation.
+- Files changed: `src/data/puzzles.ts` (added `start.player: string` to the `Puzzle` interface and populated it for all 9 puzzles; added `totalMoves(puzzle)` helper), `src/App.tsx` (hero tagline, daily-chain card title, archive row titles/subtitles, how-to-play list), `src/game/engine.ts` (`shareText`/`challengeText` now use the same framing), `AGENTS.md` (documented the new field so future puzzle authors don't skip it), `PLAN.md` (dated note under Positioning explaining the copy change and that it's presentation-only — turn-count invariants and possession system are unchanged).
+- Chose to add a dedicated `start.player` field rather than parsing it out of `start.title`, because several starts involve multiple players (e.g. `hou-martin-olynyk`'s "Kevin Martin and Jeremy Lamb") and sentence structures vary too much across puzzles for reliable regex extraction — a schema field is more robust than string parsing.
+- `totalMoves()` = `links.length + 1`, matching the total real transactions in the chain (guessable links plus the auto-revealed final one) — verified against every shipped puzzle: LAL 3, OKC 3, BOS 4, CLE 3, BKN 3, DAL(kyrie) 3, HOU 3, PHI 5, DAL(morris-davis) 4.
+- Verification: `npm run build` passed after each step. Browser-verified via `mcp__Claude_Preview`: took a full accessibility snapshot of the menu confirming the tagline, daily-chain title ("Turn Terry Rozier into Derrick White in 4 moves"), and all 9 archive rows render the correct player/target/move-count combination; took a screenshot confirming layout isn't broken by the longer daily-card headline. Directly invoked `shareText()`/`challengeText()` via dynamic import in-page with a synthetic win state and confirmed both produce the new framing correctly, e.g. challenge text: `"I turned Tony Bradley into Luka Dončić in 3 moves — SICKO in 1:13. Think you can beat it?"`.
+- Also verified at mobile viewport (390×844) via screenshot: the longer daily-card headline wraps cleanly to two lines, archive rows wrap without overflow, no layout breakage.
+
 ## 2026-07-03 (growth: phase 1 build)
 
 ### Implemented GROWTH_PLAN.md §10 phase 1: deep link fix, challenge-a-friend, share attribution

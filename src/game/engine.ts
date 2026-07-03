@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import type { Puzzle } from '../data/puzzles'
+import { totalMoves, type Puzzle } from '../data/puzzles'
 import { normalizeName } from '../data/players'
 import { sounds } from './sounds'
 
@@ -254,7 +254,7 @@ export function shareText(
   return [
     `CASUALS #${dayNum} — ${tier}${bb}`,
     `${resultGrid(state)}  ⏱ ${elapsedClock(state)}  🏀 ${state.score} pts`,
-    `${puzzle.start.title} → ${puzzle.target.name}`,
+    `Turn ${puzzle.start.player} into ${puzzle.target.name} in ${totalMoves(puzzle)} moves`,
     shareUrl(puzzle, dayNum, isDaily, 'share'),
   ].join('\n')
 }
@@ -269,7 +269,7 @@ export function challengeText(
 ): string {
   const tier = resultTier(state)
   return [
-    `I got ${tier} in ${elapsedClock(state)} on today's Casuals. Think you can beat it?`,
+    `I turned ${puzzle.start.player} into ${puzzle.target.name} in ${totalMoves(puzzle)} moves — ${tier} in ${elapsedClock(state)}. Think you can beat it?`,
     `${resultGrid(state)}  🏀 ${state.score} pts`,
     shareUrl(puzzle, dayNum, isDaily, 'challenge'),
   ].join('\n')

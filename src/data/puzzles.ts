@@ -20,7 +20,10 @@ export interface Puzzle {
   franchise: string
   difficulty: 1 | 2 | 3 | 4 | 5
   difficultyLabel: string
-  start: { year: string; title: string; sub: string; team: string }
+  // `title` is the full sentence ("Lakers draft Tony Bradley") shown on the
+  // chain card; `player` is the bare display name ("Tony Bradley") used for
+  // the "Turn X into Y in N moves" GM-framed copy on the menu/share text.
+  start: { year: string; title: string; sub: string; team: string; player: string }
   links: ChainLink[]
   final: FinalLink
   target: { name: string; sub: string }
@@ -38,6 +41,7 @@ export const PUZZLES: Puzzle[] = [
       title: 'Lakers draft Tony Bradley',
       sub: '28th overall pick',
       team: 'LAL',
+      player: 'Tony Bradley',
     },
     links: [
       {
@@ -83,6 +87,7 @@ export const PUZZLES: Puzzle[] = [
       title: 'Thunder trade Serge Ibaka to Orlando',
       sub: 'Draft night shocker',
       team: 'OKC',
+      player: 'Serge Ibaka',
     },
     links: [
       {
@@ -128,6 +133,7 @@ export const PUZZLES: Puzzle[] = [
       title: 'Celtics draft Terry Rozier',
       sub: '16th overall pick',
       team: 'BOS',
+      player: 'Terry Rozier',
     },
     links: [
       {
@@ -183,6 +189,7 @@ export const PUZZLES: Puzzle[] = [
       title: 'Cavaliers draft Kyrie Irving',
       sub: 'No. 1 overall pick',
       team: 'CLE',
+      player: 'Kyrie Irving',
     },
     links: [
       {
@@ -227,6 +234,7 @@ export const PUZZLES: Puzzle[] = [
       title: 'Nets trade Thaddeus Young to Indiana',
       sub: 'Draft night deal',
       team: 'BKN',
+      player: 'Thaddeus Young',
     },
     links: [
       {
@@ -272,6 +280,7 @@ export const PUZZLES: Puzzle[] = [
       title: 'Mavericks draft Dennis Smith Jr.',
       sub: '9th overall pick',
       team: 'DAL',
+      player: 'Dennis Smith Jr.',
     },
     links: [
       {
@@ -317,6 +326,7 @@ export const PUZZLES: Puzzle[] = [
       title: 'Rockets trade Kevin Martin and Jeremy Lamb to OKC',
       sub: 'Plus two firsts and a second',
       team: 'HOU',
+      player: 'Kevin Martin',
     },
     links: [
       {
@@ -362,6 +372,7 @@ export const PUZZLES: Puzzle[] = [
       title: 'Sixers select Elfrid Payton',
       sub: '10th overall — for about ten minutes',
       team: 'PHI',
+      player: 'Elfrid Payton',
     },
     links: [
       {
@@ -427,6 +438,7 @@ export const PUZZLES: Puzzle[] = [
       title: 'Mavericks draft Dennis Smith Jr.',
       sub: '9th overall pick',
       team: 'DAL',
+      player: 'Dennis Smith Jr.',
     },
     links: [
       {
@@ -492,6 +504,12 @@ export function dailyIndex(date = new Date()): number {
   const now = easternDayStamp(date)
   const days = Math.max(0, Math.floor((now - epoch) / 86400000))
   return days % PUZZLES.length
+}
+
+// Total real transactions in the chain (guessable links + the auto-revealed
+// final one) — the "N" in "Turn X into Y in N moves" GM-framed copy.
+export function totalMoves(puzzle: Puzzle): number {
+  return puzzle.links.length + 1
 }
 
 // Inverse of dailyNumber: which puzzle a shared link's day number pointed at,

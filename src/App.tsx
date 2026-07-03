@@ -1,6 +1,6 @@
 import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { PLAYER_LIST, normalizeName } from './data/players'
-import { PUZZLES, dailyIndex, dailyNumber, puzzleForDayNumber, type ChainLink, type Puzzle } from './data/puzzles'
+import { PUZZLES, dailyIndex, dailyNumber, puzzleForDayNumber, totalMoves, type ChainLink, type Puzzle } from './data/puzzles'
 import { TEAMS } from './data/teams'
 import { POSSESSIONS, SHOT_CLOCK, challengeText, resultTier, shareText, type ShareSource, useGame } from './game/engine'
 import { isMuted, setMuted } from './game/sounds'
@@ -368,12 +368,12 @@ function Menu({ stats, onPlay }: { stats: Stats; onPlay: (idx: number) => void }
       <section className="hero">
         <BallIcon className="ball logo-ball" />
         <div className="hero-wordmark">CASUALS</div>
-        <div className="tagline">Six degrees of NBA transactions. Prove you're not one.</div>
+        <div className="tagline">Play GM. Turn one player into another. Prove you're not a casual.</div>
       </section>
       <section className="menu-card">
         <h3>Daily Chain</h3>
         <div className="daily-title">
-          {dailyPuzzle.start.title} → {dailyPuzzle.target.name}
+          Turn {dailyPuzzle.start.player} into {dailyPuzzle.target.name} in {totalMoves(dailyPuzzle)} moves
           <span className="diff">{Array.from({ length: 5 }).map((_, i) => <span key={i} className={i < dailyPuzzle.difficulty ? 'on' : ''} />)}</span>
         </div>
         <div className="daily-sub">{dailyPuzzle.difficultyLabel} · #{dailyNumber()}</div>
@@ -395,8 +395,8 @@ function Menu({ stats, onPlay }: { stats: Stats; onPlay: (idx: number) => void }
             <button className="archive-item" key={p.id} onClick={() => onPlay(i)}>
               <TeamPill abbr={p.franchise} />
               <span>
-                <span className="t">{p.start.title} → {p.target.name}</span>
-                <span className="s">{p.difficultyLabel}</span>
+                <span className="t">{p.start.player} → {p.target.name}</span>
+                <span className="s">{p.difficultyLabel} · {totalMoves(p)} moves</span>
               </span>
               {stats.completed[p.id] && <span className="done">{stats.completed[p.id].tier}</span>}
             </button>
@@ -406,9 +406,10 @@ function Menu({ stats, onPlay }: { stats: Stats; onPlay: (idx: number) => void }
       <section className="menu-card">
         <h3>How To Play</h3>
         <ol className="howto-list">
-          <li><span className="n">1</span><span>Fill the chain in order. Each link asks who came back in that transaction.</span></li>
-          <li><span className="n">2</span><span>Wrong guesses burn a possession and reset the clock to 14.</span></li>
-          <li><span className="n">3</span><span>When the clock expires, you get a stronger hint and lose a possession.</span></li>
+          <li><span className="n">1</span><span>You're the GM. Reconstruct the real moves a front office made to turn the starting player into the target.</span></li>
+          <li><span className="n">2</span><span>Fill the chain in order. Each link asks who came back in that transaction.</span></li>
+          <li><span className="n">3</span><span>Wrong guesses burn a possession and reset the clock to 14.</span></li>
+          <li><span className="n">4</span><span>When the clock expires, you get a stronger hint and lose a possession.</span></li>
         </ol>
       </section>
     </>

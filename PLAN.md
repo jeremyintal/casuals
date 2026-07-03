@@ -12,7 +12,7 @@
 
 ### Built and verified
 - Full game loop: 6 possessions, 24-second shot clock, turnover reset to 14, violation → hint + lost possession, buzzer-beater bonus, scoring (banked seconds + 100/unused possession)
-- 8 hand-curated real transaction chains (Bradley→Dončić, Ibaka→SGA, Rozier→White, Kyrie→Mitchell, Thad Young→Simmons, DSJ→Kyrie, Kevin Martin→Olynyk, Payton→Harden), difficulty-rated 1–5
+- 9 hand-curated real transaction chains (Bradley→Dončić, Ibaka→SGA, Rozier→White, Kyrie→Mitchell, Thad Young→Simmons, DSJ→Kyrie, Kevin Martin→Olynyk, Payton→Harden, DSJ→Morris→Davis), difficulty-rated 1–5
 - Menu, daily chain (rolls over at midnight ET), archive ("Classic Games"), stats + streaks in localStorage, share grid, end-sheet with full chain recap and tier stamps, synthesized sounds with mute, dark scoreboard UI with team-color chain cards
 - Manual browser QA passed at mobile (390×844) and desktop (1280×800); two P2 bugs (Enter-to-submit, header home button) found and fixed; production build green. Evidence in `proof-log.md`; open work in `project-tasks-queue.md`.
 
@@ -25,7 +25,8 @@
 - The third hint level (hangman-style blanked name after a second violation) is not implemented — the second violation currently repeats hint 2
 - Archive games are timed and scored like the daily; plan calls for untimed practice
 - Mute preference not persisted; no automated tests yet
-- Puzzle corpus shipped in-app is still 8. The data pipeline is now built (2026-07-03) and has produced 150 scored, unverified candidate chains — the remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
+- Puzzle corpus shipped in-app is 9 (was 8; `dal-dsj-morris-davis` added 2026-07-03 from the curation queue). The data pipeline is built and has produced 150 scored, unverified candidate chains — the remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
+- Growth-plan phase 1 shipped 2026-07-03: real deep links, "Challenge a friend" share button, per-device share attribution. See `GROWTH_PLAN.md` status note.
 
 ### Update — data pipeline built, 2026-07-03
 
@@ -45,6 +46,8 @@ The scraper → graph → candidate-generation pipeline described in §5 is buil
 Every franchise has these hidden threads. Die-hard NBA fans ("sickos") already trace them for fun on Twitter and Reddit. The name is the hook: **"casual" is NBA Twitter's favorite insult** for fans who only watch the Finals. The game weaponizes it — win and you're certified film junkie; lose and you get stamped **CERTIFIED CASUAL** on your shareable result. People will play just to avoid the stamp.
 
 **Positioning:** Wordle-shaped daily habit × basketball trivia depth × NBA Twitter culture. One puzzle a day, ~2 minutes, shareable emoji-grid result.
+
+**Copy framing (updated 2026-07-03):** the in-app pitch, share text, and challenge text now explicitly cast the player as a GM — "Turn Tony Bradley into Luka Dončić in 4 moves" — rather than describing the mechanic abstractly as "six degrees of separation." The turn-count invariants and possession system are unchanged; this is presentation only. Reasoning: naming the exact move count upfront states the challenge as concretely as a chess puzzle's mate-in-N, and "playing GM" gives the player a role to inhabit rather than just a trivia category to be quizzed on. See `src/data/puzzles.ts` (`start.player`, `totalMoves()`) and the `Menu`/`shareText`/`challengeText` copy in `src/App.tsx` / `src/game/engine.ts`.
 
 ---
 
