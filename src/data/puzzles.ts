@@ -417,6 +417,61 @@ export const PUZZLES: Puzzle[] = [
     epilogue:
       'Elfrid Payton → Šarić → Butler → Richardson → Curry → Harden. Five moves across eight years. Certified sicko material.',
   },
+  {
+    id: 'dal-dsj-morris-davis',
+    franchise: 'DAL',
+    difficulty: 4,
+    difficultyLabel: 'Tape study',
+    start: {
+      year: '2017',
+      title: 'Mavericks draft Dennis Smith Jr.',
+      sub: '9th overall pick',
+      team: 'DAL',
+    },
+    links: [
+      {
+        year: '2019',
+        teams: ['DAL', 'NYK'],
+        question: 'DSJ and DeAndre Jordan headed to New York in a deadline blockbuster. Who anchored the return?',
+        answers: ['Kristaps Porzingis', 'Tim Hardaway Jr', 'Courtney Lee', 'Trey Burke'],
+        canonical: 'Kristaps Porziņģis',
+        reveal:
+          'Dennis Smith Jr., DeAndre Jordan, Wesley Matthews and two future first-round picks went to New York for Kristaps Porziņģis, Tim Hardaway Jr., Courtney Lee and Trey Burke.',
+        hint1: 'A 7’3” Latvian unicorn rehabbing a torn ACL',
+        hint2: 'K.P. — the Unicorn',
+      },
+      {
+        year: '2022',
+        teams: ['DAL', 'WAS'],
+        question: 'Three years on, Dallas parted with the Unicorn. Who came to Dallas?',
+        answers: ['Spencer Dinwiddie', 'Davis Bertans'],
+        canonical: 'Spencer Dinwiddie',
+        reveal: 'Porziņģis and a second-round pick went to Washington for Spencer Dinwiddie and Davis Bertāns.',
+        hint1: 'A Colorado point guard and a Latvian sharpshooter',
+        hint2: 'S.D. — once tried to tokenize his own contract',
+      },
+      {
+        year: '2023',
+        teams: ['DAL', 'BKN'],
+        question: 'At the deadline, Dinwiddie and Dorian Finney-Smith went to Brooklyn. Two players came back — name either.',
+        answers: ['Kyrie Irving', 'Markieff Morris'],
+        canonical: 'Kyrie Irving',
+        reveal:
+          'Dinwiddie, Finney-Smith and three future picks went to Brooklyn for Kyrie Irving — plus a spare part named Markieff Morris. Forget Kyrie for a second. Morris is the thread.',
+        hint1: 'An All-Star guard, plus a journeyman big who barely played in Dallas',
+        hint2: 'K.I. — his tag-along was M.M.',
+      },
+    ],
+    final: {
+      year: '2025',
+      teams: ['DAL', 'LAL'],
+      reveal:
+        'In the three-team trade that sent Luka Dončić to LA, Markieff Morris rode along with Dončić and Maxi Kleber — and Dallas got Max Christie, a 2029 first, and Anthony Davis back.',
+    },
+    target: { name: 'Anthony Davis', sub: '2025 · the other side of the trade that gave up Luka' },
+    epilogue:
+      'A 9th overall pick became a top-3 center — and the piece that made it happen wasn’t the All-Star everyone was watching. It was Markieff Morris, still on an expiring contract nobody tracked. That’s the whole sport in one sentence.',
+  },
 ]
 
 function easternDayStamp(date: Date): number {

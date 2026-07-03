@@ -2,6 +2,19 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-03 (curation)
+
+### Curated and shipped the top candidate: `dal-dsj-morris-davis`
+
+- Worked the #1-scored candidate from `pipeline/data/curation-queue.md` (tied-top score 19, DAL, 4 real transactions 2019–2025) through the full curation checklist in `AGENTS.md` and added it to `src/data/puzzles.ts` and cross-checked `src/data/players.ts`.
+- Verification: pulled the exact scraped source text for all 4 legs directly from `pipeline/data/transactions.json` (not from memory) — 2019-01-31 DAL/NYK (DSJ, Jordan, Matthews, 2 firsts for Porziņģis, Hardaway Jr., Lee, Burke), 2022-02-10 DAL/WAS (Porziņģis for Dinwiddie, Bertāns), 2023-02-06 BKN/DAL (Dinwiddie, Finney-Smith, 3 picks for Kyrie Irving, Markieff Morris), 2025-02-02 3-team DAL/LAL/UTA (Morris rode with Dončić/Kleber to LA; Dallas got Christie, a 2029 first, and Anthony Davis). All four confirmed accurate.
+- **Editorial call, not a defect:** this candidate's first two legs are identical to the already-shipped `dal-dsj-kyrie` puzzle (same start, same first two links) — the pipeline correctly found the same real trade tree, then continued two hops further via Markieff Morris (an unglamorous throw-in piece, not Kyrie) to a different, bigger target: Anthony Davis via the actual Dončić trade. Shipped anyway because the full origin-to-superstar arc is genuine flagship content and the twist (the correct thread is the anonymous throw-in, not the All-Star) is exactly the "obscure middle" difficulty design the plan calls for. Wrote fresh question/hint phrasing so the two puzzles don't read as literal duplicates. **Follow-up for whoever schedules the daily rotation: do not run `dal-dsj-kyrie` and `dal-dsj-morris-davis` on adjacent days.**
+- Rated difficulty 4, introduced a new difficulty label ("Tape study") between "Film junkie" (3) and "Sicko special" (5) — no schema change needed, `difficultyLabel` is free text.
+- All 11 required player names already existed in `src/data/players.ts` from earlier puzzles — no autocomplete additions needed.
+- Verified in-browser via `mcp__Claude_Preview` against the dev server (`.claude/launch.json` added, first time this project had one): opened the puzzle from Classic Games, tipped off, submitted `Kristaps Porzingis` (link 1, exact match), `Davis Bertans` (link 2, multi-answer accept), `Markieff Morris` (link 3, multi-answer accept — confirms the alternate-answer path works, not just the canonical name), reached the win sheet: `SICKO`, 647 pts, 6/6 possessions left, all four transaction reveals and the epilogue rendered correctly. Screenshot not saved (accessibility snapshot used instead, sufficient to confirm state).
+- `npm run build` after adding the puzzle: passed, no TS errors.
+- Proof gaps: only this one candidate was curated this session; the other 149 in the queue remain unverified. Adding a 9th puzzle shifts the daily-rotation mapping for all future dates (expected consequence of `dailyIndex`'s modulo-length logic, not a bug, but note it if exact past/future daily assignments ever need to be reproduced).
+
 ## 2026-07-03
 
 ### Data pipeline: scrape → parse → graph → curation queue
