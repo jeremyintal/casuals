@@ -465,7 +465,8 @@ body::before {
   text-align: center;
   margin: 16px 0;
 }
-.end-actions { display: flex; gap: 10px; justify-content: center; margin-top: 18px; }
+.end-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 18px; }
+.end-actions .btn { flex: 1 1 auto; min-width: 130px; }
 
 /* ---------- menu ---------- */
 .hero { text-align: center; padding: 34px 0 22px; }

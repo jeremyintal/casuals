@@ -6,7 +6,7 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 ## Current Priorities
 
-0. **Growth plan added, cheapest items not yet built.** `GROWTH_PLAN.md` §10 phase 1 (deep-link fix for `shareText()`, "Challenge a friend" share button, share attribution tagging) are small, ungated, and higher near-term leverage than most other open items — consider pulling one into the next session.
+0. **Growth plan phase 1 shipped (2026-07-03).** Deep-link fix, "Challenge a friend" button, and per-device share attribution are built and verified — see `proof-log.md`. Remaining phase 1 item: generated image share card (`GROWTH_PLAN.md` §3, §10) — moderate effort, not yet started. Phase 2+ items (squads, head-to-head, buzzer-beater clip) depend on accounts and are correctly deferred.
 1. **Curate the candidate queue.** `pipeline/data/curation-queue.md` has 150 scored, unverified candidate chains; **1 down, ~49 more needed** to reach the plan's 60-puzzle runway target (9 shipped in `src/data/puzzles.ts` as of 2026-07-03). Fact-check against Basketball-Reference (or another primary source), write `reveal`/`hint1`/`hint2` copy in the game's voice, and add to `src/data/puzzles.ts` + `src/data/players.ts` following the schema and checklist in `AGENTS.md`. Done: `dal-dsj-morris-davis` (see `proof-log.md` 2026-07-03 curation entry — verified, in-browser tested, shipped). Strong next candidate already spot-checked: a Clippers Chris Paul → Lou Williams → Rondo → Bledsoe → Covington/Powell → Harden chain (see `proof-log.md` 2026-07-03 pipeline entry). **Scheduling note:** don't run `dal-dsj-kyrie` and `dal-dsj-morris-davis` on adjacent days — they share their first two links.
 2. Add focused automated tests for game engine state transitions and daily Eastern Time rollover.
 3. Persist mute preference and improve Replay/Menu end-sheet behavior.
@@ -46,6 +46,12 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 - Decide when to introduce server-side answer validation.
 
 ## Decisions
+
+### 2026-07-03 (growth phase 1 build)
+
+- Built and verified the three cheapest, ungated items from `GROWTH_PLAN.md` §10 phase 1. See `proof-log.md` for the full change list and verification trail, including a real bug found and fixed: the arrival-tracking effect double-counted under `React.StrictMode`'s dev-mode double-invoke, fixed with a ref guard matching the existing `recordResult` pattern in `App.tsx`.
+- Share attribution (`shareAttribution` in `storage.ts`) is explicitly per-device only, not aggregate analytics — documented directly in the type, not just in `GROWTH_PLAN.md`, so this limitation stays visible to whoever reads the code next.
+- `navigator.share` (native share sheet) could not be exercised in the available test browser (Web Share API not exposed in headless automation) — flagged as a proof gap, not assumed working. Recommend a real-device spot-check (mobile Safari or Chrome) before leaning on it further.
 
 ### 2026-07-03 (growth strategy)
 

@@ -2,6 +2,8 @@
 
 Companion to [`PLAN.md`](PLAN.md) (product strategy) and [`MOBILE_PLAN.md`](MOBILE_PLAN.md) (iOS/Android). This document is about one thing: how Casuals spreads without a paid acquisition budget. `PLAN.md` §3 and §9 already establish the share grid and a 15%+ share-rate target — this plan goes deeper on *why* people share, what's weak in the current mechanism, and what to build to make sharing the primary growth channel rather than a nice-to-have.
 
+> **Status (2026-07-03): §10 phase 1's three cheapest items are built and verified** — the deep-link fix, the "Challenge a friend" button, and per-device share attribution tracking. See `proof-log.md` 2026-07-03 for the verification trail (including a real StrictMode double-counting bug found and fixed). The generated image share card (§3) is the remaining phase-1 item, not yet started. Everything in §4 (squads) and later remains correctly deferred behind accounts.
+
 ---
 
 ## 1. The core thesis

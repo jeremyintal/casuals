@@ -494,6 +494,13 @@ export function dailyIndex(date = new Date()): number {
   return days % PUZZLES.length
 }
 
+// Inverse of dailyNumber: which puzzle a shared link's day number pointed at,
+// so a deep link to a past day replays exactly what that day showed.
+export function puzzleForDayNumber(dayNum: number): number {
+  const days = Math.max(1, Math.floor(dayNum)) - 1
+  return ((days % PUZZLES.length) + PUZZLES.length) % PUZZLES.length
+}
+
 export function dailyNumber(date = new Date()): number {
   const epoch = Date.UTC(2026, 6, 1)
   const now = easternDayStamp(date)

@@ -1,12 +1,39 @@
 import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react'
 import { PLAYER_LIST, normalizeName } from './data/players'
-import { PUZZLES, dailyIndex, dailyNumber, type ChainLink, type Puzzle } from './data/puzzles'
+import { PUZZLES, dailyIndex, dailyNumber, puzzleForDayNumber, type ChainLink, type Puzzle } from './data/puzzles'
 import { TEAMS } from './data/teams'
-import { POSSESSIONS, SHOT_CLOCK, resultTier, shareText, useGame } from './game/engine'
+import { POSSESSIONS, SHOT_CLOCK, challengeText, resultTier, shareText, type ShareSource, useGame } from './game/engine'
 import { isMuted, setMuted } from './game/sounds'
-import { loadStats, recordResult, type Stats } from './game/storage'
+import { loadStats, recordArrival, recordResult, recordShareCompletion, type Stats } from './game/storage'
 
 type View = 'menu' | 'game'
+
+interface DeepLink {
+  puzzleIdx: number
+  arrivedVia: ShareSource | null
+}
+
+// Parsed once per page load (module scope, not component state) — a fresh
+// page load is the only time a shared link's query params are meaningful.
+function parseDeepLink(): DeepLink | null {
+  if (typeof window === 'undefined') return null
+  const params = new URLSearchParams(window.location.search)
+  const src = params.get('src')
+  const arrivedVia: ShareSource | null = src === 'share' || src === 'challenge' ? src : null
+  const pParam = params.get('p')
+  if (pParam) {
+    const idx = PUZZLES.findIndex((p) => p.id === pParam)
+    if (idx >= 0) return { puzzleIdx: idx, arrivedVia }
+  }
+  const dParam = params.get('d')
+  if (dParam) {
+    const n = Number(dParam)
+    if (Number.isFinite(n) && n >= 1) return { puzzleIdx: puzzleForDayNumber(n), arrivedVia }
+  }
+  return null
+}
+
+const DEEP_LINK = parseDeepLink()
 
 function BallIcon({ className = '' }: { className?: string }) {
   return (
@@ -261,20 +288,42 @@ function AnswerBox({ disabled, onGuess }: { disabled: boolean; onGuess: (name: s
   )
 }
 
-function EndSheet({ puzzle, game, dayNum, onMenu, onReplay }: { puzzle: Puzzle; game: ReturnType<typeof useGame>; dayNum: number; onMenu: () => void; onReplay: () => void }) {
+function EndSheet({
+  puzzle,
+  game,
+  dayNum,
+  isDaily,
+  onMenu,
+  onReplay,
+}: {
+  puzzle: Puzzle
+  game: ReturnType<typeof useGame>
+  dayNum: number
+  isDaily: boolean
+  onMenu: () => void
+  onReplay: () => void
+}) {
   const { state } = game
   const tier = resultTier(state)
-  const [copied, setCopied] = useState(false)
+  const [copiedLabel, setCopiedLabel] = useState<string | null>(null)
   const won = state.phase === 'won'
   const secs = Math.round(state.elapsedMs / 1000)
   const stampClass = won && tier === 'SICKO' ? 'win' : won ? 'mid' : 'loss'
 
-  async function copyShare() {
-    const text = shareText(puzzle, state, dayNum)
+  async function doShare(kind: 'share' | 'challenge') {
+    const text = kind === 'share' ? shareText(puzzle, state, dayNum, isDaily) : challengeText(puzzle, state, dayNum, isDaily)
+    if (navigator.share) {
+      try {
+        await navigator.share({ text })
+      } catch {
+        // User cancelled the native share sheet — don't also fall back to clipboard.
+      }
+      return
+    }
     try {
       await navigator.clipboard.writeText(text)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1400)
+      setCopiedLabel(kind === 'share' ? 'Copied result' : 'Copied challenge')
+      setTimeout(() => setCopiedLabel(null), 1400)
     } catch {
       window.prompt('Share your result', text)
     }
@@ -299,12 +348,13 @@ function EndSheet({ puzzle, game, dayNum, onMenu, onReplay }: { puzzle: Puzzle; 
         </div>
         <p className="epilogue">{puzzle.epilogue}</p>
         <div className="end-actions">
-          <button className="btn" onClick={copyShare}>SHARE</button>
+          <button className="btn" onClick={() => doShare('share')}>SHARE</button>
+          <button className="btn" onClick={() => doShare('challenge')}>CHALLENGE A FRIEND</button>
           <button className="btn ghost" onClick={onReplay}>REPLAY</button>
           <button className="btn ghost" onClick={onMenu}>MENU</button>
         </div>
       </section>
-      {copied && <div className="copy-toast">Copied result</div>}
+      {copiedLabel && <div className="copy-toast">{copiedLabel}</div>}
     </div>
   )
 }
@@ -365,7 +415,17 @@ function Menu({ stats, onPlay }: { stats: Stats; onPlay: (idx: number) => void }
   )
 }
 
-function GameScreen({ puzzleIdx, onMenu, onStats }: { puzzleIdx: number; onMenu: () => void; onStats: (s: Stats) => void }) {
+function GameScreen({
+  puzzleIdx,
+  arrivedVia,
+  onMenu,
+  onStats,
+}: {
+  puzzleIdx: number
+  arrivedVia: ShareSource | null
+  onMenu: () => void
+  onStats: (s: Stats) => void
+}) {
   const puzzle = PUZZLES[puzzleIdx]
   const [session, setSession] = useState(0)
   const game = useGame(puzzle)
@@ -381,16 +441,18 @@ function GameScreen({ puzzleIdx, onMenu, onStats }: { puzzleIdx: number; onMenu:
   useEffect(() => {
     if ((state.phase === 'won' || state.phase === 'lost') && !recorded.current) {
       recorded.current = true
-      onStats(recordResult({
+      let s = recordResult({
         puzzleId: puzzle.id,
         dayNum,
         isDaily,
         won: state.phase === 'won',
         score: state.score,
         tier: resultTier(state),
-      }))
+      })
+      if (arrivedVia) s = recordShareCompletion(arrivedVia)
+      onStats(s)
     }
-  }, [dayNum, isDaily, onStats, puzzle.id, state])
+  }, [arrivedVia, dayNum, isDaily, onStats, puzzle.id, state])
 
   return (
     <>
@@ -404,6 +466,7 @@ function GameScreen({ puzzleIdx, onMenu, onStats }: { puzzleIdx: number; onMenu:
           puzzle={puzzle}
           game={game}
           dayNum={dayNum}
+          isDaily={isDaily}
           onMenu={onMenu}
           onReplay={() => {
             setSession((s) => s + 1)
@@ -416,10 +479,35 @@ function GameScreen({ puzzleIdx, onMenu, onStats }: { puzzleIdx: number; onMenu:
 }
 
 export default function App() {
-  const [view, setView] = useState<View>('menu')
-  const [puzzleIdx, setPuzzleIdx] = useState(dailyIndex())
+  const [view, setView] = useState<View>(DEEP_LINK ? 'game' : 'menu')
+  const [puzzleIdx, setPuzzleIdx] = useState(DEEP_LINK?.puzzleIdx ?? dailyIndex())
   const [stats, setStats] = useState<Stats>(() => loadStats())
   const [muted, setMutedState] = useState(() => isMuted())
+
+  // Guarded with a ref, not just an empty dep array — React.StrictMode
+  // (see main.tsx) deliberately double-invokes effects in dev, which would
+  // otherwise double-count this persisted, non-idempotent counter.
+  const arrivalRecorded = useRef(false)
+  useEffect(() => {
+    if (DEEP_LINK?.arrivedVia && !arrivalRecorded.current) {
+      arrivalRecorded.current = true
+      setStats(recordArrival(DEEP_LINK.arrivedVia))
+    }
+  }, [])
+
+  // Keeps the address bar reflecting whatever's on screen, so it stays
+  // shareable/bookmarkable and a refresh mid-game reopens the same puzzle.
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (view === 'game') {
+      const isDaily = puzzleIdx === dailyIndex()
+      if (isDaily) params.set('d', String(dailyNumber()))
+      else params.set('p', PUZZLES[puzzleIdx].id)
+    }
+    const qs = params.toString()
+    const url = qs ? `${window.location.pathname}?${qs}` : window.location.pathname
+    window.history.replaceState(null, '', url)
+  }, [view, puzzleIdx])
 
   function play(idx: number) {
     setPuzzleIdx(idx)
@@ -432,6 +520,8 @@ export default function App() {
     setMutedState(next)
   }
 
+  const arrivedVia = view === 'game' && puzzleIdx === DEEP_LINK?.puzzleIdx ? DEEP_LINK.arrivedVia : null
+
   return (
     <div className="app">
       <svg className="court-bg" viewBox="0 0 460 920" aria-hidden="true">
@@ -440,7 +530,17 @@ export default function App() {
         <path d="M80 120h300M150 0v190h160V0M150 920V730h160v190M80 800h300" fill="none" stroke="currentColor" strokeWidth="4" />
       </svg>
       <Header stats={stats} onHome={() => setView('menu')} muted={muted} onToggleMuted={toggleMuted} />
-      {view === 'menu' ? <Menu stats={stats} onPlay={play} /> : <GameScreen key={`${puzzleIdx}-${view}`} puzzleIdx={puzzleIdx} onMenu={() => setView('menu')} onStats={setStats} />}
+      {view === 'menu' ? (
+        <Menu stats={stats} onPlay={play} />
+      ) : (
+        <GameScreen
+          key={`${puzzleIdx}-${view}`}
+          puzzleIdx={puzzleIdx}
+          arrivedVia={arrivedVia}
+          onMenu={() => setView('menu')}
+          onStats={setStats}
+        />
+      )}
     </div>
   )
 }

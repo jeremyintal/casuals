@@ -2,6 +2,22 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-03 (growth: phase 1 build)
+
+### Implemented GROWTH_PLAN.md §10 phase 1: deep link fix, challenge-a-friend, share attribution
+
+- Files changed: `src/data/puzzles.ts` (added `puzzleForDayNumber`), `src/game/engine.ts` (`shareText` now builds a real deep link instead of the static `'casuals.game'` string; added `challengeText` and `shareUrl`), `src/game/storage.ts` (added `ShareAttribution`, `recordArrival`, `recordShareCompletion`), `src/App.tsx` (deep-link parsing on load, URL sync effect, "Challenge a friend" button in `EndSheet`, attribution wiring in `GameScreen`), `src/styles.css` (`.end-actions` wraps 4 buttons), `.claude/launch.json` (added, first time this project had a preview server config).
+- **Bug found and fixed during verification, not caught by build or code review**: the arrival-recording `useEffect` in `App` had no ref guard, only an empty dependency array. `main.tsx` wraps the app in `React.StrictMode`, which deliberately double-invokes effects in dev — this silently doubled the `shareAttribution.arrivals` counter on every deep-link page load. Caught by actually reading `localStorage` after a real navigation (`arrivals.share: 2` after one visit) rather than trusting the code. Fixed with the same ref-guard idiom (`arrivalRecorded.current`) already used elsewhere in this file for the analogous `recordResult` case. Re-verified after the fix: exactly 1 arrival per visit.
+- Verification commands and results:
+  - `npm run build` after each of the four implementation steps (engine/storage, App wiring, CSS, bugfix): passed every time, no TS errors.
+  - Browser verification via `mcp__Claude_Preview` against the dev server: navigated to `http://localhost:5173/?p=lal-bradley-luka&src=share` after `localStorage.clear()` — confirmed the app opened directly to the Lakers→Luka puzzle (skipping the menu), `shareAttribution.arrivals.share` was exactly `1`, and the address bar had already dropped `src` while correctly keeping `p` (via the URL-sync effect). Played the puzzle to completion (`Josh Hart`, `Anthony Davis` via Enter-key submission) — reached `SICKO`, and `shareAttribution.completions.share` incremented to `1` alongside `arrivals.share` staying at `1` (no double-count).
+  - Verified generated share text directly by dynamically importing `/src/game/engine.ts` and `/src/data/puzzles.ts` in-page and calling `shareText()`/`challengeText()` with a synthetic win state: confirmed correct deep-link format for both the archive case (`casuals.game/?p=lal-bradley-luka&src=share`) and the daily case (`casuals.game/?d=42&src=share`), and confirmed the challenge copy reads `"I got SICKO in 1:13 on today's Casuals. Think you can beat it?"` per the plan's proposed framing.
+  - Clicked the `SHARE` button in the actual UI: did not produce a visible "Copied result" toast or a readable clipboard value. Root cause understood, not a product bug: this automated/headless browser context denies both clipboard read (`NotAllowedError` confirmed directly) and, evidently, write outside a trusted user gesture, so the code correctly fell through to the `window.prompt` fallback path, which doesn't set the toast (correct behavior — nothing was actually copied). This is a limitation of testing clipboard access in headless automation, not of the shipped code; real browsers grant `navigator.clipboard.writeText` on an actual user-initiated click.
+- Proof gaps:
+  - `navigator.share` (the native share-sheet path, which both buttons prefer when available) was not exercised — this test browser doesn't expose the Web Share API. Only the clipboard-fallback code path was reachable in this environment. Should be spot-checked on a real mobile Safari/Chrome session before relying on it.
+  - Share-to-play conversion is tracked per-device only, as scoped in `GROWTH_PLAN.md` §8 and documented directly in the `ShareAttribution` type comment in `storage.ts` — this does not produce cross-user aggregate analytics; that requires a backend, which was explicitly out of scope for this phase.
+  - No automated test covers the deep-link parsing, URL sync, or attribution logic — this was verified manually in-browser this session only.
+
 ## 2026-07-03 (curation)
 
 ### Curated and shipped the top candidate: `dal-dsj-morris-davis`

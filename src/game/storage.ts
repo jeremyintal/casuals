@@ -1,3 +1,11 @@
+// Per-device only — counts this browser's own arrivals/completions via a
+// shared link. NOT aggregate cross-user analytics; that needs a backend to
+// collect events from other people's devices. See GROWTH_PLAN.md §8.
+export interface ShareAttribution {
+  arrivals: { share: number; challenge: number }
+  completions: { share: number; challenge: number }
+}
+
 export interface Stats {
   played: number
   wins: number
@@ -8,14 +16,27 @@ export interface Stats {
   lastPlayedDay: number | null
   tiers: Record<string, number>
   completed: Record<string, { won: boolean; score: number; tier: string }>
+  shareAttribution: ShareAttribution
 }
 
 const KEY = 'casuals-stats-v1'
 
+function defaultAttribution(): ShareAttribution {
+  return { arrivals: { share: 0, challenge: 0 }, completions: { share: 0, challenge: 0 } }
+}
+
 export function loadStats(): Stats {
   try {
     const raw = localStorage.getItem(KEY)
-    if (raw) return { tiers: {}, completed: {}, ...JSON.parse(raw) }
+    if (raw) {
+      const parsed = JSON.parse(raw)
+      return {
+        tiers: {},
+        completed: {},
+        shareAttribution: defaultAttribution(),
+        ...parsed,
+      }
+    }
   } catch {}
   return {
     played: 0,
@@ -27,6 +48,7 @@ export function loadStats(): Stats {
     lastPlayedDay: null,
     tiers: {},
     completed: {},
+    shareAttribution: defaultAttribution(),
   }
 }
 
@@ -63,6 +85,20 @@ export function recordResult(opts: {
       s.streak = 0
     }
   }
+  saveStats(s)
+  return s
+}
+
+export function recordArrival(source: 'share' | 'challenge'): Stats {
+  const s = loadStats()
+  s.shareAttribution.arrivals[source] += 1
+  saveStats(s)
+  return s
+}
+
+export function recordShareCompletion(source: 'share' | 'challenge'): Stats {
+  const s = loadStats()
+  s.shareAttribution.completions[source] += 1
   saveStats(s)
   return s
 }

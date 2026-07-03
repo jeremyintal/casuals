@@ -206,9 +206,10 @@ export function resultTier(state: GameState): Tier {
   return 'LEAGUE PASS'
 }
 
-export function shareText(puzzle: Puzzle, state: GameState, dayNum: number): string {
-  const tier = resultTier(state)
-  const grid = state.results
+export type ShareSource = 'share' | 'challenge'
+
+function resultGrid(state: GameState): string {
+  return state.results
     .map((r) => {
       if (!r.solved) return '⬛'
       if (r.violations > 0) return '🟥'
@@ -216,14 +217,60 @@ export function shareText(puzzle: Puzzle, state: GameState, dayNum: number): str
       return '🟩'
     })
     .join('')
+}
+
+function elapsedClock(state: GameState): string {
   const secs = Math.round(state.elapsedMs / 1000)
   const mm = Math.floor(secs / 60)
   const ss = String(secs % 60).padStart(2, '0')
+  return `${mm}:${ss}`
+}
+
+// Deep link so a clicked share always lands on the exact puzzle being
+// bragged about, not whatever the app defaults to that day. Daily puzzles
+// link by day number (?d=); archive puzzles link by id (?p=) since "day"
+// isn't meaningful once it's not the current day's rotation.
+export function shareUrl(
+  puzzle: Puzzle,
+  dayNum: number,
+  isDaily: boolean,
+  source: ShareSource
+): string {
+  const params = new URLSearchParams()
+  if (isDaily) params.set('d', String(dayNum))
+  else params.set('p', puzzle.id)
+  params.set('src', source)
+  return `casuals.game/?${params.toString()}`
+}
+
+export function shareText(
+  puzzle: Puzzle,
+  state: GameState,
+  dayNum: number,
+  isDaily: boolean
+): string {
+  const tier = resultTier(state)
   const bb = state.results.some((r) => r.buzzerBeater) ? ' 💥' : ''
   return [
     `CASUALS #${dayNum} — ${tier}${bb}`,
-    `${grid}  ⏱ ${mm}:${ss}  🏀 ${state.score} pts`,
+    `${resultGrid(state)}  ⏱ ${elapsedClock(state)}  🏀 ${state.score} pts`,
     `${puzzle.start.title} → ${puzzle.target.name}`,
-    'casuals.game',
+    shareUrl(puzzle, dayNum, isDaily, 'share'),
+  ].join('\n')
+}
+
+// Direct-dare framing, not a recap — challenge shares convert better than
+// broadcast shares because the recipient has a named reason to click.
+export function challengeText(
+  puzzle: Puzzle,
+  state: GameState,
+  dayNum: number,
+  isDaily: boolean
+): string {
+  const tier = resultTier(state)
+  return [
+    `I got ${tier} in ${elapsedClock(state)} on today's Casuals. Think you can beat it?`,
+    `${resultGrid(state)}  🏀 ${state.score} pts`,
+    shareUrl(puzzle, dayNum, isDaily, 'challenge'),
   ].join('\n')
 }
