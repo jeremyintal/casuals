@@ -6,6 +6,7 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 ## Current Priorities
 
+0. **Growth plan added, cheapest items not yet built.** `GROWTH_PLAN.md` §10 phase 1 (deep-link fix for `shareText()`, "Challenge a friend" share button, share attribution tagging) are small, ungated, and higher near-term leverage than most other open items — consider pulling one into the next session.
 1. **Curate the candidate queue.** `pipeline/data/curation-queue.md` has 150 scored, unverified candidate chains; **1 down, ~49 more needed** to reach the plan's 60-puzzle runway target (9 shipped in `src/data/puzzles.ts` as of 2026-07-03). Fact-check against Basketball-Reference (or another primary source), write `reveal`/`hint1`/`hint2` copy in the game's voice, and add to `src/data/puzzles.ts` + `src/data/players.ts` following the schema and checklist in `AGENTS.md`. Done: `dal-dsj-morris-davis` (see `proof-log.md` 2026-07-03 curation entry — verified, in-browser tested, shipped). Strong next candidate already spot-checked: a Clippers Chris Paul → Lou Williams → Rondo → Bledsoe → Covington/Powell → Harden chain (see `proof-log.md` 2026-07-03 pipeline entry). **Scheduling note:** don't run `dal-dsj-kyrie` and `dal-dsj-morris-davis` on adjacent days — they share their first two links.
 2. Add focused automated tests for game engine state transitions and daily Eastern Time rollover.
 3. Persist mute preference and improve Replay/Menu end-sheet behavior.
@@ -45,6 +46,11 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 - Decide when to introduce server-side answer validation.
 
 ## Decisions
+
+### 2026-07-03 (growth strategy)
+
+- Added `GROWTH_PLAN.md`: audits the current share mechanism (`shareText()` in `src/game/engine.ts`, `EndSheet` in `src/App.tsx`) and finds it text-only, broadcast-shaped, and missing a real deep link (share text ends with a static `'casuals.game'` string, not a link to the specific puzzle). Core thesis: shares only spread when they're a personal flex first and an ad for the game second — every tactic in the doc is tested against that bar. Recommends, in order: fix the deep link, add a "challenge a friend" direct-share button, add share attribution tracking, then a generated image share card, then squads/head-to-head (Phase 2+, needs accounts), then an auto-generated buzzer-beater video clip as the highest-ceiling but most expensive idea. No code changed — planning only.
+- Open decisions left for the user in `GROWTH_PLAN.md` §11: whether "rapid-response" puzzle authoring around real trade news is a standing capability or ad-hoc around the deadline/draft windows; whether to reach out to guest-curator NBA-Twitter accounts now or later; image share card vs. buzzer-beater clip if only one can be built next (recommendation on record: image card, cheaper and improves every share vs. only buzzer-beater games).
 
 ### 2026-07-03 (mobile strategy)
 

@@ -6,7 +6,7 @@
 
 ## 0. Status — updated July 2, 2026
 
-> **Continuity note for any agent or human picking this up:** this document is the *strategy and reasoning* for the web product. The agent-facing operating manual — repo map, design invariants, puzzle authoring rules, session workflow contract — is **`AGENTS.md`** (with `CLAUDE.md` pointing there). iOS/Android strategy is in **`MOBILE_PLAN.md`**, kept separate because it's a distribution/retention layer on top of this plan, not a different product. Open work and decisions live in `project-tasks-queue.md`; completed work and verification evidence in `proof-log.md`. Any session that changes strategy must update this section with a date; any session that changes code must append to the proof log. The project must remain continuable by a cold-start agent at all times.
+> **Continuity note for any agent or human picking this up:** this document is the *strategy and reasoning* for the web product. The agent-facing operating manual — repo map, design invariants, puzzle authoring rules, session workflow contract — is **`AGENTS.md`** (with `CLAUDE.md` pointing there). iOS/Android strategy is in **`MOBILE_PLAN.md`**; virality and sharing strategy is in **`GROWTH_PLAN.md`** — both kept separate because they're distribution/retention layers on top of this plan, not different products. Open work and decisions live in `project-tasks-queue.md`; completed work and verification evidence in `proof-log.md`. Any session that changes strategy must update this section with a date; any session that changes code must append to the proof log. The project must remain continuable by a cold-start agent at all times.
 
 **A playable prototype is built and QA-verified.** Current state, and where it deviates from the original plan below:
 
