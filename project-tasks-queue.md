@@ -48,6 +48,12 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 ## Decisions
 
+### 2026-07-03 (onboarding & accounts plan)
+
+- Added `ONBOARDING_PLAN.md` (planning only, nothing built): redesigns the first-run experience around a 30-second skippable tutorial possession (half-speed clock, infinite possessions, famous one-link trade) so new users stop burning their first daily while learning the rules, and introduces accounts as a post-activation soft ask — prompt appears on the first *win's* result sheet framed as streak protection, never as a gate. Auth is OAuth (Apple/Google) + email magic link only; passwords explicitly banned. Guest→account stats merge is transactional and treated as the one unforgivable-if-broken flow. Reaffirms `GROWTH_PLAN.md` §9's never-gate-the-loop rule as the plan's foundation.
+- Key structural call: the plan splits into a client-only half (tutorial, first-open menu state, funnel instrumentation — steps 1–2 of its build order, cheap, could ship anytime) and a backend half (auth + stats tables, steps 3–5) that should be built as ONE milestone with server-side answer validation, since both need the same backend and validation is already a launch blocker.
+- Open decisions left for the user in `ONBOARDING_PLAN.md` §11: tutorial-first vs. daily-first default, backend vendor (Supabase recommended), whether to prompt for an account on a day-1 loss (plan says wait for first win), and whether to pull the client-only half forward now or ship onboarding as one release with Phase 2.
+
 ### 2026-07-03 (mobile plan revision)
 
 - Revised `MOBILE_PLAN.md` in response to a direct user request to make it "more robust, clear, complete, appropriately detailed." Added: a full section on deep linking via iOS Universal Links / Android App Links (the biggest gap — the growth-plan share links built 2026-07-03 do nothing useful on mobile without this), a concrete Capacitor plugin table, a data-continuity callout (web `localStorage` and native Capacitor Preferences stats do not share, no migration exists yet), execution-level local-notification scheduling detail including a documented timezone edge case (device-local scheduling is safe for the vast majority of the audience; noted the specific case where it isn't and why it's acceptable to defer), and concrete cost/tooling/timeline/OS-version specifics that were entirely absent before.
