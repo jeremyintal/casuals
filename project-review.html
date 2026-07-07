@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Casuals Project Review</title>
+    <style>
+      :root {
+        --bg: #08090d;
+        --panel: #12141b;
+        --panel-2: #191c25;
+        --ink: #f4f1ea;
+        --muted: #a5a0ad;
+        --faint: #6e6977;
+        --line: #2d303c;
+        --orange: #e8622c;
+        --amber: #ffb02e;
+        --green: #2fd27d;
+        --red: #ff615c;
+        --blue: #78a6ff;
+        --radius: 18px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+          radial-gradient(circle at 18% -8%, rgba(232, 98, 44, 0.22), transparent 30rem),
+          radial-gradient(circle at 88% 8%, rgba(120, 166, 255, 0.16), transparent 26rem),
+          linear-gradient(180deg, #090a10 0%, #07080c 100%);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        width: min(1120px, calc(100% - 36px));
+        margin: 0 auto;
+        padding: 36px 0 72px;
+      }
+
+      .eyebrow {
+        color: var(--amber);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+        gap: 28px;
+        align-items: stretch;
+        padding: 34px 0 28px;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        margin-bottom: 18px;
+        font-size: clamp(48px, 8vw, 96px);
+        font-style: italic;
+        font-weight: 950;
+        letter-spacing: 0.04em;
+        line-height: 0.9;
+      }
+
+      h2 {
+        margin-bottom: 16px;
+        font-size: clamp(26px, 3vw, 42px);
+        line-height: 1.05;
+      }
+
+      h3 {
+        margin-bottom: 8px;
+        font-size: 18px;
+      }
+
+      .lede {
+        max-width: 760px;
+        color: #d8d2c8;
+        font-size: clamp(18px, 2vw, 23px);
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 28px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 32px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 6px 11px;
+        background: rgba(255, 255, 255, 0.04);
+        color: #ded8ce;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .status-card,
+      section {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: rgba(18, 20, 27, 0.88);
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+      }
+
+      .status-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 100%;
+        padding: 22px;
+      }
+
+      .score {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .metric {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 14px;
+        background: var(--panel-2);
+      }
+
+      .metric strong {
+        display: block;
+        color: var(--amber);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 30px;
+        line-height: 1;
+      }
+
+      .metric span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      section {
+        margin-top: 18px;
+        padding: 28px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .thirds {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .box {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.035);
+      }
+
+      .box p,
+      li {
+        color: #cac4bc;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      .tag {
+        display: inline-block;
+        margin-bottom: 10px;
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .tag.warn {
+        color: var(--amber);
+      }
+
+      .tag.risk {
+        color: var(--red);
+      }
+
+      ul,
+      ol {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      .timeline {
+        display: grid;
+        gap: 14px;
+      }
+
+      .event {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 16px;
+        border-left: 3px solid var(--orange);
+        padding: 4px 0 6px 16px;
+      }
+
+      .event time {
+        color: var(--amber);
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .event p {
+        margin-bottom: 0;
+        color: #d8d2c8;
+      }
+
+      .callout {
+        border-color: rgba(255, 176, 46, 0.45);
+        background: linear-gradient(180deg, rgba(255, 176, 46, 0.12), rgba(232, 98, 44, 0.06));
+      }
+
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .link-button {
+        display: inline-flex;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 9px 12px;
+        background: #0d0f15;
+        color: var(--ink);
+        font-size: 13px;
+        font-weight: 800;
+        text-decoration: none;
+      }
+
+      .footer {
+        margin-top: 26px;
+        color: var(--faint);
+        font-size: 13px;
+        text-align: center;
+      }
+
+      @media (max-width: 850px) {
+        .hero,
+        .grid,
+        .thirds {
+          grid-template-columns: 1fr;
+        }
+
+        .event {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <div class="hero">
+        <div>
+          <div class="eyebrow">Project review generated July 6, 2026</div>
+          <h1>CASUALS</h1>
+          <p class="lede">
+            A daily NBA transaction-chain puzzle where players try to "turn X into Y in N moves" before
+            the shot clock expires. The core loop is now playable, QA-verified, and supported by an
+            early content pipeline.
+          </p>
+          <div class="meta">
+            <span class="pill">Vite + React + TypeScript</span>
+            <span class="pill">Client-only prototype</span>
+            <span class="pill">9 shipped puzzles</span>
+            <span class="pill">150 unverified candidate chains</span>
+            <span class="pill">Current milestone: curation</span>
+          </div>
+        </div>
+
+        <aside class="status-card">
+          <div>
+            <div class="eyebrow">Current Snapshot</div>
+            <h2>Playable prototype, content bottleneck.</h2>
+            <p class="muted">
+              The game loop has been proven. The limiting factor is no longer whether the product can
+              exist; it is whether enough verified, high-quality chains can be curated before launch.
+            </p>
+          </div>
+          <div class="score">
+            <div class="metric"><strong>9</strong><span>In-app puzzles</span></div>
+            <div class="metric"><strong>12,570</strong><span>Parsed transactions</span></div>
+            <div class="metric"><strong>150</strong><span>Candidate chains</span></div>
+            <div class="metric"><strong>6</strong><span>Possessions</span></div>
+          </div>
+        </aside>
+      </div>
+
+      <section>
+        <div class="eyebrow">Hypothesis</div>
+        <h2>NBA fans already love trade trees. Casuals turns that behavior into a daily scoreboard.</h2>
+        <div class="grid">
+          <div class="box">
+            <span class="tag">Core Bet</span>
+            <p>
+              There is a repeatable daily habit hiding inside NBA Twitter's existing "how did this team
+              turn a random asset into a star?" conversations. Add scarcity, a shot clock, identity tiers,
+              and a spoiler-safe share result, and the behavior can become a Wordle-shaped game.
+            </p>
+          </div>
+          <div class="box">
+            <span class="tag">Why It Spreads</span>
+            <p>
+              The share is a personal flex first and an ad second. A result like SICKO or CERTIFIED CASUAL
+              gives players status, shame, and a reason to challenge friends who think they know ball.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="eyebrow">Problem It Solves</div>
+        <h2>The NBA has rich transaction lore, but no simple daily ritual for proving you know it.</h2>
+        <div class="thirds">
+          <div class="box">
+            <span class="tag warn">For fans</span>
+            <p>
+              The "sicko" knowledge is scattered across Reddit threads, tweets, Basketball-Reference pages,
+              and memory. Casuals packages it into a two-minute playable challenge.
+            </p>
+          </div>
+          <div class="box">
+            <span class="tag warn">For sharing</span>
+            <p>
+              NBA trade trivia is usually spoiled by explaining it. Casuals lets players share a score,
+              tier, time, and endpoint challenge without revealing the answers.
+            </p>
+          </div>
+          <div class="box">
+            <span class="tag warn">For retention</span>
+            <p>
+              The reveal is content: win or lose, players leave with a memorable trade story they can repeat.
+              That makes the end screen part of the product, not just a result modal.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="eyebrow">Product Goals</div>
+        <h2>Make a daily game that feels like playing GM under a shot clock.</h2>
+        <div class="grid">
+          <div class="box">
+            <h3>Experience goals</h3>
+            <ul>
+              <li>One daily chain, shared by everyone, rolling over at midnight Eastern.</li>
+              <li>Six possessions, 24-second clock, turnover reset to 14, violation reveals a hint.</li>
+              <li>Autocomplete answers, no spelling punishment, and multi-answer trade returns.</li>
+              <li>End sheet with full transaction recap, score, tier stamp, and spoiler-safe sharing.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>Business/product goals</h3>
+            <ul>
+              <li>Build a launch runway of at least 60 verified puzzles.</li>
+              <li>Target strong daily retention and a 15%+ share rate.</li>
+              <li>Use group chats, NBA Twitter, Reddit, and daily reveals as the growth loop.</li>
+              <li>Delay accounts, leaderboards, squads, and native apps until the core loop and content supply are strong.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="eyebrow">Current Status</div>
+        <h2>What exists now</h2>
+        <div class="thirds">
+          <div class="box">
+            <span class="tag">Built</span>
+            <ul>
+              <li>Playable SPA with menu, daily puzzle, archive, stats, streaks, scoreboard UI, sounds, and end sheet.</li>
+              <li>9 hand-curated puzzles in `src/data/puzzles.ts`.</li>
+              <li>Growth phase 1: deep links, Challenge a friend, and per-device share attribution.</li>
+              <li>Copy reframed as "Turn X into Y in N moves."</li>
+            </ul>
+          </div>
+          <div class="box">
+            <span class="tag">Verified</span>
+            <ul>
+              <li>Manual browser QA on mobile 390x844 and desktop 1280x800.</li>
+              <li>P2 bugs fixed: Enter-to-submit and header home click interception.</li>
+              <li>`npm run build` green in proof log after major changes.</li>
+              <li>Pipeline spot-checked against known real trades.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <span class="tag warn">Planned</span>
+            <ul>
+              <li>Growth plan, mobile plan, onboarding/account plan, and self-contained design prompt are written.</li>
+              <li>Recommended mobile path: Capacitor wrap, not React Native rewrite.</li>
+              <li>Recommended onboarding path: skippable tutorial possession before accounts.</li>
+              <li>Recommended backend milestone pairs accounts with server-side validation.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="eyebrow">Work Since Last Review</div>
+        <h2>Major Claude-delivered changes</h2>
+        <div class="timeline">
+          <div class="event">
+            <time>Jul 2</time>
+            <p>Initialized the project as a continuable repo with `AGENTS.md`, `CLAUDE.md`, `project-tasks-queue.md`, and `proof-log.md`.</p>
+          </div>
+          <div class="event">
+            <time>Jul 2</time>
+            <p>Ran manual browser QA, found two P2 interaction bugs, fixed them, and recorded screenshot evidence.</p>
+          </div>
+          <div class="event">
+            <time>Jul 3</time>
+            <p>Built the Basketball-Reference scrape/parse/graph/curate pipeline, producing 12,570 parsed transactions and 150 candidate chains.</p>
+          </div>
+          <div class="event">
+            <time>Jul 3</time>
+            <p>Curated and shipped the top candidate: Dennis Smith Jr. to Markieff Morris to Anthony Davis, bringing the shipped puzzle count to 9.</p>
+          </div>
+          <div class="event">
+            <time>Jul 3</time>
+            <p>Added growth, mobile, onboarding/accounts, and design planning docs; shipped growth phase 1 code.</p>
+          </div>
+          <div class="event">
+            <time>Jul 3</time>
+            <p>Reframed product copy around the stronger GM roleplay prompt: "Turn X into Y in N moves."</p>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="eyebrow">Known Gaps And Risks</div>
+        <h2>What is still not launch-ready</h2>
+        <div class="grid">
+          <div class="box">
+            <span class="tag risk">Launch blockers</span>
+            <ul>
+              <li>Answers ship in the client bundle; public launch needs server-side answer validation.</li>
+              <li>Only 9 puzzles are shipped; the plan needs roughly 60 verified puzzles for launch runway.</li>
+              <li>No automated tests yet for engine state transitions, rollover, stats, or sharing.</li>
+              <li>Third-level hangman hint is not implemented; second violation repeats hint 2.</li>
+            </ul>
+          </div>
+          <div class="box">
+            <span class="tag risk">Product risks</span>
+            <ul>
+              <li>Data credibility is the moat and the biggest failure mode: one wrong chain can damage trust.</li>
+              <li>Generated candidates are unverified by design; curation cannot be skipped.</li>
+              <li>Draft-day chains still require manual work because BBRef transaction pages do not include draft selections.</li>
+              <li>Web Share API and native share behavior still need real-device checks.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="callout">
+        <div class="eyebrow">What's Next</div>
+        <h2>The recommended next milestone is puzzle curation, not new mechanics.</h2>
+        <ol>
+          <li>
+            Curate roughly 49 more puzzles from `pipeline/data/curation-queue.md` to reach the 60-puzzle runway target.
+          </li>
+          <li>
+            Add automated tests for game engine transitions, daily Eastern rollover, share text, stats, and replay reset.
+          </li>
+          <li>
+            Decide the backend milestone: server-side answer validation, accounts, guest-to-account stats merge, and persistent streaks.
+          </li>
+          <li>
+            Build the remaining growth phase 1 item: generated image share card.
+          </li>
+          <li>
+            Make a user call on mobile timing: start Capacitor wrapper now in parallel, or wait until the puzzle corpus is stronger.
+          </li>
+        </ol>
+      </section>
+
+      <section>
+        <div class="eyebrow">Owner Decisions</div>
+        <h2>Questions worth answering before the next build sprint</h2>
+        <div class="grid">
+          <div class="box">
+            <h3>Scope</h3>
+            <ul>
+              <li>Do we keep the next sprint focused on curation, or split effort with tests and polish?</li>
+              <li>Should the client-only tutorial ship before the backend work, or as part of the accounts milestone?</li>
+              <li>Do archive games stay timed/scored for now, or move toward untimed practice as originally planned?</li>
+            </ul>
+          </div>
+          <div class="box">
+            <h3>Distribution</h3>
+            <ul>
+              <li>Should rapid-response puzzle authoring be a standing capability around NBA trade news?</li>
+              <li>Do we start guest-curator outreach now or after the 60-puzzle runway exists?</li>
+              <li>Do we prioritize image share cards before mobile wrapping?</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="eyebrow">Source Docs</div>
+        <h2>Review the underlying artifacts</h2>
+        <p class="muted">
+          This page summarizes the repo state as of July 6, 2026. The durable details live in the project docs and proof log.
+        </p>
+        <div class="links">
+          <a class="link-button" href="AGENTS.md">AGENTS.md</a>
+          <a class="link-button" href="PLAN.md">PLAN.md</a>
+          <a class="link-button" href="project-tasks-queue.md">project-tasks-queue.md</a>
+          <a class="link-button" href="proof-log.md">proof-log.md</a>
+          <a class="link-button" href="pipeline/README.md">pipeline/README.md</a>
+          <a class="link-button" href="GROWTH_PLAN.md">GROWTH_PLAN.md</a>
+          <a class="link-button" href="MOBILE_PLAN.md">MOBILE_PLAN.md</a>
+          <a class="link-button" href="ONBOARDING_PLAN.md">ONBOARDING_PLAN.md</a>
+        </div>
+      </section>
+
+      <div class="footer">
+        Generated from local repository docs, source files, proof log, and pipeline outputs. No external claims included.
+      </div>
+    </main>
+  </body>
+</html>

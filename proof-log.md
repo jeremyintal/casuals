@@ -2,6 +2,26 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-06 (project review HTML)
+
+### Progress Completed
+
+- Generated `project-review.html`, a standalone owner-review page summarizing the project, hypothesis, problem, goals, current status, major work since the prior review, known gaps, and recommended next steps.
+- Source material reviewed: `AGENTS.md`, `PLAN.md`, `project-tasks-queue.md`, `proof-log.md`, `pipeline/README.md`, `GROWTH_PLAN.md`, current puzzle data, pipeline counts, and recent git log.
+
+### Verification Evidence
+
+- Counted source state via local commands:
+  - `src/data/puzzles.ts`: 9 shipped puzzles.
+  - `pipeline/data/transactions.json`: 12,570 parsed transactions.
+  - `pipeline/data/candidates.json`: 150 candidate chains.
+  - Current daily number on July 6, 2026: 6.
+- Confirmed git worktree was clean before generating the review artifact.
+
+### Proof Gaps
+
+- This is a documentation/report artifact only; no app build or browser QA was required or run for this change.
+
 ## 2026-07-03 (copy reframe + doc audit)
 
 ### Audit: found and fixed stale puzzle-count references
