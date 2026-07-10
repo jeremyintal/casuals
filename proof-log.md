@@ -2,6 +2,38 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-10 (Sacramento DeMarcus Cousins to Zach LaVine candidate verification)
+
+### Progress Completed
+
+- Verified candidate #21 from `pipeline/data/curation-queue.md`: Sacramento `DeMarcus Cousins -> Buddy Hield -> Justin Holiday -> Kevin Huerter -> Zach LaVine` across transactions dated 2017-02-20, 2022-02-08, 2022-07-06, and 2025-02-03.
+- Matched all four edges to the parsed Basketball-Reference transaction records in `pipeline/data/transactions.json`. Each selected player arrived in Sacramento in one trade and later left in another Sacramento trade; no waiver, release, free-agent signing, or draft-pick bridge carries the thread.
+- Independently cross-checked the transactions against official NBA/team releases:
+  - 2017 DeMarcus Cousins trade: https://www.nba.com/kings/news/kings-acquire-hield-evans-galloway
+  - 2022 Buddy Hield trade: https://www.nba.com/kings/news/kings-acquire-domantas-sabonis-justin-holiday-jeremy-lamb-and-2023-second-round-draft-selection
+  - 2022 Justin Holiday trade: https://www.nba.com/news/hawks-kings-kevin-huerter-trade
+  - 2025 Kevin Huerter three-team trade: https://www.nba.com/kings/news/kings-acquire-zach-lavine-sidy-cissoko-and-multiple-draft-picks-in-three-team-trade
+- Confirmed the complete player-return sets for authoring: Sacramento received Buddy Hield, Tyreke Evans, and Langston Galloway in 2017; Domantas Sabonis, Justin Holiday, and Jeremy Lamb in February 2022; Kevin Huerter in July 2022; and Zach LaVine plus Sidy Cissoko in 2025. Draft picks and trade exceptions are reveal context, not player answers.
+
+### Verification Evidence
+
+- The candidate queue's dates, teams, sent assets, and received assets match the four independent official releases.
+- The 2025 transaction is a valid three-team ledger edge: Sacramento sent Kevin Huerter to Chicago as part of the same transaction in which Sacramento received Zach LaVine from Chicago and Sidy Cissoko plus draft capital from San Antonio. This satisfies the game's established aggregate team-ledger treatment of multi-team trades.
+- `npm run build` passed after verification: TypeScript and Vite completed successfully with 33 modules transformed.
+- `npm test` passed: `Validated 11 puzzles and 245 autocomplete names.` The first sandboxed attempt could not create `tsx`'s local IPC socket (`EPERM`); rerunning the same command with the permitted execution context completed normally and exposed no content failure.
+- No source conflict or broken chain-of-consideration was found. Candidate #21 is verified and ready for puzzle authoring, but is not yet counted as shipped.
+
+### Decision
+
+- Use DeMarcus Cousins as the GM-framed start and Zach LaVine as the target. Use Buddy Hield, Justin Holiday, and Kevin Huerter as the canonical intermediate route while accepting every headline player returned on each guessable link.
+- Sidy Cissoko should appear in the final reveal alongside LaVine. He is not a guessable answer because the final transaction auto-reveals after the Huerter link is solved.
+
+### Proof Gaps / Remaining Work
+
+- The live Basketball-Reference HTML was not fetched again; the primary-source side of the check used the pipeline's previously fetched BBRef records. Current official NBA/team releases supplied the independent web cross-check.
+- Reveal, question, hint, target, and epilogue copy have not been authored. The puzzle has not been added to `src/data/puzzles.ts` or `src/data/players.ts`, so `npm test` content validation and browser playthrough QA remain pending.
+- The official 2025 release describes Sacramento's full aggregate return, but does not assign individual incoming assets one-for-one to Huerter versus the other Sacramento players sent in the three-team deal. The game models multi-team trades by the franchise's aggregate sent/received ledger, consistent with existing puzzle rules and pipeline representation.
+
 ## 2026-07-10 (Minnesota Zach LaVine to Rudy Gobert puzzle + content validation)
 
 ### Progress Completed

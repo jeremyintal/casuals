@@ -14,7 +14,7 @@ You are working on **Casuals**, a daily web puzzle game: six degrees of separati
 
 ## Current state (as of 2026-07-10)
 
-Playable client-only prototype, QA-verified, production build green. Vite + React + TypeScript SPA, no backend. Git-initialized (`git init` done 2026-07-02) — commit as you go. 11 hand-curated puzzles shipped in-app (see `src/data/puzzles.ts`), including the verified Minnesota Zach LaVine → Rudy Gobert chain added 2026-07-10. The data pipeline (`pipeline/`) produced 150 scored candidates; 3 have now been curated and shipped, leaving 147 unverified — see `pipeline/data/curation-queue.md` and priority 1 in `project-tasks-queue.md`. Automated puzzle-content validation is available through `npm test`; focused engine/state tests are still unbuilt. Growth-plan phase 1 is also shipped: real deep links (`?d=`/`?p=`), a "Challenge a friend" share button, and per-device share attribution tracking — see `GROWTH_PLAN.md`'s status note and `proof-log.md`. Current milestone is puzzle curation, chosen over prototype polish because the loop was already proven and the puzzle corpus was the binding constraint.
+Playable client-only prototype, QA-verified, production build green. Vite + React + TypeScript SPA, no backend. Git-initialized (`git init` done 2026-07-02) — commit as you go. 11 hand-curated puzzles shipped in-app (see `src/data/puzzles.ts`), including the verified Minnesota Zach LaVine → Rudy Gobert chain added 2026-07-10. The data pipeline (`pipeline/`) produced 150 scored candidates; 3 have now been curated and shipped, candidate #21 (Sacramento DeMarcus Cousins → Zach LaVine) is source-verified and ready to author, and 146 remain unverified — see `pipeline/data/curation-queue.md` and priority 1 in `project-tasks-queue.md`. Automated puzzle-content validation is available through `npm test`; focused engine/state tests are still unbuilt. Growth-plan phase 1 is also shipped: real deep links (`?d=`/`?p=`), a "Challenge a friend" share button, and per-device share attribution tracking — see `GROWTH_PLAN.md`'s status note and `proof-log.md`. Current milestone is puzzle curation, chosen over prototype polish because the loop was already proven and the puzzle corpus was the binding constraint.
 
 ## Commands
 
@@ -76,7 +76,7 @@ These are the product's identity, chosen deliberately (reasoning in `PLAN.md` §
 ## Known launch blockers (fine for prototype, must fix before public)
 
 - Answers ship in the client bundle (view-source cheating) → needs server-side validation
-- Only 11 puzzles shipped in-app (~11 days of content) → 147 of the 150 generated candidates remain unverified in `pipeline/data/curation-queue.md`; the work remaining is human/agent fact-checking and conversion to `src/data/puzzles.ts`, not generation
+- Only 11 puzzles shipped in-app (~11 days of content) → candidate #21 is verified and awaiting authoring, while 146 of the 150 generated candidates remain unverified in `pipeline/data/curation-queue.md`; the work remaining is human/agent fact-checking and conversion to `src/data/puzzles.ts`, not generation
 - No automated tests on the engine (state transitions, ET rollover, streaks)
 - NBA IP caution: team names/colors only — no logos or player photos
 

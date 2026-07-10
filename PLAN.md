@@ -25,7 +25,7 @@
 - The third hint level (hangman-style blanked name after a second violation) is not implemented — the second violation currently repeats hint 2
 - Archive games are timed and scored like the daily; plan calls for untimed practice
 - Mute preference not persisted; automated puzzle-content validation exists, but game-engine state transitions still lack automated coverage
-- Puzzle corpus shipped in-app is 11 (`dal-dsj-morris-davis`, `lac-paul-harden`, and `min-lavine-gobert` were added from the curation queue). The data pipeline is built and produced 150 scored candidates; 3 are curated and shipped, leaving 147 unverified. The remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
+- Puzzle corpus shipped in-app is 11 (`dal-dsj-morris-davis`, `lac-paul-harden`, and `min-lavine-gobert` were added from the curation queue). The data pipeline is built and produced 150 scored candidates; 3 are curated and shipped, candidate #21 (Sacramento DeMarcus Cousins → Zach LaVine) is source-verified and ready to author, and 146 remain unverified. The remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
 - Growth-plan phase 1 shipped 2026-07-03: real deep links, "Challenge a friend" share button, per-device share attribution. See `GROWTH_PLAN.md` status note.
 
 ### Update — data pipeline built, 2026-07-03
