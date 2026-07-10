@@ -2,6 +2,41 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-10 (Minnesota Zach LaVine to Rudy Gobert puzzle + content validation)
+
+### Progress Completed
+
+- Verified candidate #11 from `pipeline/data/curation-queue.md`: Minnesota `Zach LaVine → Jimmy Butler → Robert Covington → Malik Beasley/Jarred Vanderbilt → Rudy Gobert` across transactions dated 2017-06-22, 2018-11-12, 2020-02-05, and 2022-07-06.
+- Confirmed all four edges against the parsed Basketball-Reference records in `pipeline/data/transactions.json`, including Minnesota's per-team ledger in the 2020 four-team trade. No waiver, release, separate free-agent signing, or draft-pick bridge connects the player thread.
+- Independently cross-checked the transactions against official NBA/team releases:
+  - 2017 Jimmy Butler trade: https://www.nba.com/timberwolves/timberwolves-acquire-three-time-nba-all-star-and-2016-17-all-nba-third-team-selection-jimmy-butler
+  - 2018 Butler/Covington trade: https://www.nba.com/timberwolves/news/minnesota-timberwolves-acquire-robert-covington-dario-saric-jerryd-bayless-and-future-second
+  - 2020 four-team Covington trade: https://www.nba.com/2019-20-trade-tracker and https://www.nba.com/nuggets/news/nuggets-four-team-trade-020520a
+  - 2022 Rudy Gobert trade: https://www.nba.com/timberwolves/news/minnesota-timberwolves-acquire-center-rudy-gobert-from-utah-jazz
+- Shipped the chain as `min-lavine-gobert`, difficulty 4 (`Tape study`), with three guessable links, complete multi-asset answer sets, source-grounded reveals/hints, and the Gobert trade as the auto-revealed finale.
+- Added `npm test` using `tsx` and `scripts/validate-puzzles.ts`. The validator checks unique puzzle IDs, known team metadata, required text, 2-4 question links, 3-5 total moves, canonical-answer membership, and autocomplete coverage; it also pins the new Minnesota answer sets.
+- Added missing team metadata for Memphis, Portland, Chicago, Denver, and Atlanta. The validator exposed that existing Clippers content had silently fallen back to bare `MEM`/`POR` labels because those teams were absent.
+
+### Verification Evidence
+
+- Clean baseline: `npm run build` passed before changes.
+- Proof-first test sequence: initial validator run exposed missing `MEM` metadata; after adding existing missing `MEM`/`POR` records, it produced the intended red failure (`Expected ... puzzle to be added`, `10 !== 11`). After authoring and adding the remaining team metadata, `npm test` passed: `Validated 11 puzzles and 245 autocomplete names.`
+- Final `npm run build` passed: TypeScript and Vite production build completed with 33 modules transformed.
+- Final `npm test` passed after simplification. The temporary exact `11`-puzzle assertion was removed after capturing the red proof because retaining it would make every future valid puzzle addition fail; the permanent test instead pins `min-lavine-gobert` and its complete answer contract. Inline simplification and code-review passes found no remaining actionable issues.
+- Browser playthrough at `?p=min-lavine-gobert` used alternate answer `Justin Patton`, unaccented `Dario Saric`, and unaccented `Juan Hernangomez`; all three advanced correctly, proving alternate-answer and diacritic normalization paths. The game reached `SICKO`, auto-revealed Rudy Gobert, and rendered all four recaps plus the epilogue.
+- Archive verification showed `MIN Zach LaVine → Rudy Gobert`, `Tape study · 4 moves`, with the persisted `SICKO` result. Gameplay result sheet and menu both reported no horizontal overflow at `360x740`; browser console warning/error checks returned no entries.
+
+### Decision
+
+- Candidate #11 is verified, editorially complete, and shipped. Zach LaVine is the GM-framed starting player; Jimmy Butler, Robert Covington, and Malik Beasley are canonical intermediate answers, while every headline player Minnesota received remains accepted.
+- Content validation is now a required local gate through `npm test`; engine transition, rollover, storage, and share-format tests remain separate open work.
+
+### Proof Gaps / Remaining Work
+
+- The live Basketball-Reference HTML was not fetched again; verification used the pipeline's previously fetched BBRef records plus independent official NBA/team releases.
+- `npm test` validates static puzzle contracts and the complete Minnesota answer sets, but it does not execute game-engine transitions or browser behavior. Those broader automated tests remain in the queue.
+- Adding an eleventh puzzle changes modulo-based daily rotation, but daily shares now include stable puzzle IDs; legacy day-only links remain best-effort.
+
 ## 2026-07-10 (Clippers Chris Paul to James Harden candidate verification)
 
 ### Progress Completed

@@ -549,6 +549,63 @@ export const PUZZLES: Puzzle[] = [
     epilogue:
       'The Clippers turned Chris Paul into James Harden in four trades across six years — with Patrick Beverley, Eric Bledsoe and Robert Covington carrying the thread.',
   },
+  {
+    id: 'min-lavine-gobert',
+    franchise: 'MIN',
+    difficulty: 4,
+    difficultyLabel: 'Tape study',
+    start: {
+      year: '2017',
+      title: 'Timberwolves trade Zach LaVine, Kris Dunn and Lauri Markkanen',
+      sub: 'Draft night · the Jimmy Butler gamble',
+      team: 'MIN',
+      player: 'Zach LaVine',
+    },
+    links: [
+      {
+        year: '2017',
+        teams: ['MIN', 'CHI'],
+        question: 'Minnesota sent its young core to Chicago. Name either player who came back.',
+        answers: ['Jimmy Butler', 'Justin Patton'],
+        canonical: 'Jimmy Butler',
+        reveal:
+          'On draft night, Minnesota sent Zach LaVine, Kris Dunn and the rights to Lauri Markkanen to Chicago for Jimmy Butler and the rights to Justin Patton.',
+        hint1: 'An All-NBA Marquette wing came back with a rookie center from Creighton',
+        hint2: 'J.B. — the other return was the No. 16 pick, J.P.',
+      },
+      {
+        year: '2018',
+        teams: ['MIN', 'PHI'],
+        question: 'The practice saga ended with Butler in Philadelphia. Name anyone Minnesota received.',
+        answers: ['Jerryd Bayless', 'Robert Covington', 'Dario Šarić'],
+        canonical: 'Robert Covington',
+        reveal:
+          'Butler and Justin Patton went to Philadelphia for Jerryd Bayless, Robert Covington, Dario Šarić and a 2022 second-round pick. Covington is the thread.',
+        hint1: 'An All-Defense wing, a Croatian forward and a veteran point guard came back',
+        hint2: 'R.C. — he arrived with D.Š. and J.B.',
+      },
+      {
+        year: '2020',
+        teams: ['MIN', 'HOU', 'DEN', 'ATL'],
+        question: 'Covington left in a four-team maze. Name any player Minnesota received.',
+        answers: ['Evan Turner', 'Malik Beasley', 'Juan Hernangómez', 'Jarred Vanderbilt'],
+        canonical: 'Malik Beasley',
+        reveal:
+          'Minnesota sent Robert Covington and Jordan Bell to Houston and received Evan Turner, Malik Beasley, Juan Hernangómez, Jarred Vanderbilt and a first-round pick in the four-team deal.',
+        hint1: 'A scoring guard, two Denver forwards and a veteran wing from Atlanta came back',
+        hint2: 'M.B. — one of the other Denver pieces was J.V.',
+      },
+    ],
+    final: {
+      year: '2022',
+      teams: ['MIN', 'UTA'],
+      reveal:
+        'Malik Beasley and Jarred Vanderbilt joined Patrick Beverley, Leandro Bolmaro, Walker Kessler, four first-round picks and a swap in the blockbuster package for Rudy Gobert.',
+    },
+    target: { name: 'Rudy Gobert', sub: '2022 · five players, four firsts and a swap' },
+    epilogue:
+      'Zach LaVine became Jimmy Butler, Butler became Covington, and Covington’s return helped become Rudy Gobert. Minnesota spent the same trade tree twice.',
+  },
 ]
 
 function easternDayStamp(date: Date): number {

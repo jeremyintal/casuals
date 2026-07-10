@@ -48,6 +48,7 @@ export const PLAYERS: string[] = [
   'Mike Muscala', 'Furkan Korkmaz', 'Matisse Thybulle', 'Shake Milton',
   'De\'Anthony Melton', 'Danuel House Jr.', 'Georges Niang', 'Kelly Oubre Jr.',
   'PJ Tucker', 'Eric Gordon', 'Clint Capela', 'Trevor Ariza', 'Gerald Green',
+  'Evan Turner', 'Juan Hernangómez',
   'Austin Rivers', 'Pat Connaughton', 'Delon Wright', 'Dejounte Murray',
   'Keldon Johnson', 'Devin Vassell', 'Zach Collins', 'Tre Jones',
   'Jeremy Sochan', 'Malaki Branham', 'Blake Wesley', 'Doug McDermott',

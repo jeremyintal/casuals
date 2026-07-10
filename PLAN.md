@@ -12,7 +12,7 @@
 
 ### Built and verified
 - Full game loop: 6 possessions, 24-second shot clock, turnover reset to 14, violation → hint + lost possession, buzzer-beater bonus, scoring (banked seconds + 100/unused possession)
-- 10 hand-curated real transaction chains (Bradley→Dončić, Ibaka→SGA, Rozier→White, Kyrie→Mitchell, Thad Young→Simmons, DSJ→Kyrie, Kevin Martin→Olynyk, Payton→Harden, DSJ→Morris→Davis, Chris Paul→Harden), difficulty-rated 1–5
+- 11 hand-curated real transaction chains (Bradley→Dončić, Ibaka→SGA, Rozier→White, Kyrie→Mitchell, Thad Young→Simmons, DSJ→Kyrie, Kevin Martin→Olynyk, Payton→Harden, DSJ→Morris→Davis, Chris Paul→Harden, Zach LaVine→Gobert), difficulty-rated 1–5
 - Menu, daily chain (rolls over at midnight ET), archive ("Classic Games"), stats + streaks in localStorage, share grid, end-sheet with full chain recap and tier stamps, synthesized sounds with mute, dark scoreboard UI with team-color chain cards
 - Manual browser QA passed at mobile (390×844) and desktop (1280×800); two P2 bugs (Enter-to-submit, header home button) found and fixed; production build green. Evidence in `proof-log.md`; open work in `project-tasks-queue.md`.
 
@@ -24,8 +24,8 @@
 ### Known gaps vs. this plan (tracked in the queue)
 - The third hint level (hangman-style blanked name after a second violation) is not implemented — the second violation currently repeats hint 2
 - Archive games are timed and scored like the daily; plan calls for untimed practice
-- Mute preference not persisted; no automated tests yet
-- Puzzle corpus shipped in-app is 10 (`dal-dsj-morris-davis` added 2026-07-03 and `lac-paul-harden` added 2026-07-10 from the curation queue). The data pipeline is built and produced 150 scored candidates; 2 are curated and shipped, leaving 148 unverified. The remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
+- Mute preference not persisted; automated puzzle-content validation exists, but game-engine state transitions still lack automated coverage
+- Puzzle corpus shipped in-app is 11 (`dal-dsj-morris-davis`, `lac-paul-harden`, and `min-lavine-gobert` were added from the curation queue). The data pipeline is built and produced 150 scored candidates; 3 are curated and shipped, leaving 147 unverified. The remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
 - Growth-plan phase 1 shipped 2026-07-03: real deep links, "Challenge a friend" share button, per-device share attribution. See `GROWTH_PLAN.md` status note.
 
 ### Update — data pipeline built, 2026-07-03
