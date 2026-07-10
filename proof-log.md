@@ -2,6 +2,43 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-10 (Clippers Chris Paul to James Harden candidate verification)
+
+### Progress Completed
+
+- Verified candidate #6 from `pipeline/data/curation-queue.md`: Clippers `Chris Paul → Patrick Beverley → Eric Bledsoe → Robert Covington → James Harden` across four transactions dated 2017-06-28, 2021-08-16, 2022-02-04, and 2023-11-01.
+- Confirmed every edge against the parsed Basketball-Reference transaction records in `pipeline/data/transactions.json`, including the per-team asset ledgers. All four edges are direct Clippers trade acquisitions followed by later Clippers trade departures; no waiver, release, free-agent signing, draft-pick bridge, or parenthetical parser artifact is involved.
+- Cross-checked each transaction against official NBA/team releases:
+  - 2017 Chris Paul trade: https://www.nba.com/rockets/news/chris-paul
+  - 2021 Eric Bledsoe trade: https://www.nba.com/grizzlies/news/grizzlies-acquire-patrick-beverley-rajon-rondo-and-daniel-oturu-from-clippers-210816
+  - 2022 Robert Covington/Norman Powell trade: https://www.nba.com/news/clippers-blazers-trade-norman-powell-eric-bledsoe-robert-covington
+  - 2023 James Harden trade: https://www.nba.com/clippers/news/clippers-acquire-10-time-nba-all-star-james-harden-and-p-j-tucker-in-three-team-deal
+- Corrected the earlier shorthand description of this candidate. Lou Williams and Rajon Rondo form a separate valid branch (`Chris Paul → Lou Williams → Rajon Rondo → Eric Bledsoe`) represented by other candidates in the generated queue. Candidate #6 reaches Harden through Patrick Beverley and Robert Covington; joining both branches into one chain would be inaccurate.
+- Authored and shipped the verified chain as `lac-paul-harden` in `src/data/puzzles.ts`: three guessable links plus the auto-revealed final Harden transaction, difficulty 4 (`Tape study`), with complete question, reveal, hint, target, and epilogue copy.
+- Preserved the multi-asset answer rule: all seven player returns in the 2017 Chris Paul trade are accepted, Eric Bledsoe is accepted in 2021, and either Robert Covington or Norman Powell is accepted in 2022. Added the previously missing 2017 return names to `src/data/players.ts`.
+
+### Verification Evidence
+
+- `npm run build` passed before verification work: TypeScript and Vite production build completed successfully.
+- `npm run build` passed again after implementation: 33 modules transformed and the production bundle completed with no TypeScript errors.
+- Queried `pipeline/data/transactions.json` for the four dates and inspected the complete `LAC.in` / `LAC.out` ledgers. Player IDs maintain identity across each adjacent transaction: `paulch01 → beverpa01 → bledser01 → covinro01 → hardeja01`.
+- Official releases independently match the dates, players, direction, and multi-team attribution stored by the pipeline.
+- Static content checks confirmed 10 puzzles, `totalMoves(puzzle) === 4`, the expected answer arrays, and every accepted answer present in `PLAYER_LIST` through `normalizeName` matching.
+- In-app browser playthrough at `?p=lac-paul-harden` passed end to end: used alternate answer `Lou Williams` for link 1, `Eric Bledsoe` for link 2, and alternate answer `Norman Powell` for link 3; the game reached `SICKO`, auto-revealed James Harden, and rendered all four transaction recaps plus the epilogue.
+- Browser menu verification confirmed the new archive row reads `Chris Paul → James Harden`, `Tape study · 4 moves`, and retains the completed result. A `360x740` viewport check reported document/body width exactly 360 with no horizontal overflow; the end sheet remained legible and scrollable. Browser console warning/error check returned no entries.
+- Adversarial review found a cross-version deep-link failure introduced by growing the corpus from 9 to 10 puzzles: an old client could share `?d=10` for puzzle index 0 while a new client would resolve the same day number to puzzle index 9. Fixed `shareUrl()` and the in-app address-bar sync so daily links carry both `d` and stable `p`; `parseDeepLink()` already resolves `p` first. This preserves the human-readable day number while pinning the actual puzzle across corpus changes.
+- Deep-link fix verification: production build passed; a deliberately conflicting URL (`?d=10&p=lal-bradley-luka&src=share`) opened the Lakers Tony Bradley puzzle, proving `p` overrides `d`; opening the current Clippers puzzle settled the address bar to `?d=10&p=lac-paul-harden`. A second full playthrough reached the result sheet with no browser console warnings/errors. The in-app browser did not expose copied/native share text for direct inspection, so the generated text itself was not read back from the share surface.
+
+### Decision
+
+- Candidate #6 passes transaction verification and editorial QA and is now shipped. James Harden is the target; Patrick Beverley, Eric Bledsoe, and Robert Covington are the canonical intermediate answers, with every other headline return accepted under the game's multi-asset rule.
+
+### Proof Gaps / Remaining Work
+
+- Basketball-Reference pages were represented by the pipeline's previously fetched transaction data; the independent web cross-check used official NBA/team releases. No claim is made that the current live Basketball-Reference HTML was fetched again during this pass.
+- No automated content regression test was added; verification used production builds, targeted static assertions, and a real browser playthrough. The broader automated-test gap remains tracked in `project-tasks-queue.md`.
+- Adding a tenth puzzle changes modulo-based daily rotation assignments, but newly generated daily links now include a stable `p` value and remain pinned across future corpus changes. Legacy links containing only `d` still use current-corpus modulo resolution because they carry no puzzle identity to recover.
+
 ## 2026-07-06 (project review HTML)
 
 ### Progress Completed

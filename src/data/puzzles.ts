@@ -484,6 +484,71 @@ export const PUZZLES: Puzzle[] = [
     epilogue:
       'A 9th overall pick became a top-3 center — and the piece that made it happen wasn’t the All-Star everyone was watching. It was Markieff Morris, still on an expiring contract nobody tracked. That’s the whole sport in one sentence.',
   },
+  {
+    id: 'lac-paul-harden',
+    franchise: 'LAC',
+    difficulty: 4,
+    difficultyLabel: 'Tape study',
+    start: {
+      year: '2017',
+      title: 'Clippers trade Chris Paul to Houston',
+      sub: 'CP3 opts in, then heads to the Rockets',
+      team: 'LAC',
+      player: 'Chris Paul',
+    },
+    links: [
+      {
+        year: '2017',
+        teams: ['LAC', 'HOU'],
+        question: 'Houston sent seven players back for CP3. Name anyone in the Clippers’ haul.',
+        answers: [
+          'Patrick Beverley',
+          'Sam Dekker',
+          'Montrezl Harrell',
+          'Darrun Hilliard',
+          'DeAndre Liggins',
+          'Lou Williams',
+          'Kyle Wiltjer',
+        ],
+        canonical: 'Patrick Beverley',
+        reveal:
+          'The Clippers sent Chris Paul to Houston for Patrick Beverley, Sam Dekker, Montrezl Harrell, Darrun Hilliard, DeAndre Liggins, Lou Williams, Kyle Wiltjer, a first-round pick and cash.',
+        hint1: 'A defense-first Arkansas guard came back alongside a former Sixth Man of the Year',
+        hint2: 'P.B. — the deal also included Lou Williams and Montrezl Harrell',
+      },
+      {
+        year: '2021',
+        teams: ['LAC', 'MEM'],
+        question: 'Beverley, Rajon Rondo and Daniel Oturu went to Memphis. Who came back?',
+        answers: ['Eric Bledsoe'],
+        canonical: 'Eric Bledsoe',
+        reveal:
+          'The Clippers traded Patrick Beverley, Rajon Rondo and Daniel Oturu to Memphis for Eric Bledsoe, bringing the guard back for a second stint in LA.',
+        hint1: 'A downhill Kentucky guard returning for his second Clippers stint',
+        hint2: 'E.B. — the Clippers originally acquired his draft rights in 2010',
+      },
+      {
+        year: '2022',
+        teams: ['LAC', 'POR'],
+        question: 'At the deadline, Bledsoe went to Portland. Name either veteran who came back.',
+        answers: ['Robert Covington', 'Norman Powell'],
+        canonical: 'Robert Covington',
+        reveal:
+          'Bledsoe, Justise Winslow, Keon Johnson and a second-round pick went to Portland for Robert Covington and Norman Powell. Covington is the thread.',
+        hint1: 'Two wings came back: a switchable forward and a Toronto champion scorer',
+        hint2: 'R.C. — his running mate in the deal was N.P.',
+      },
+    ],
+    final: {
+      year: '2023',
+      teams: ['LAC', 'PHI'],
+      reveal:
+        'Covington, Nicolas Batum, KJ Martin, Marcus Morris and a pile of draft capital went to Philadelphia in the three-team deal that brought James Harden, P.J. Tucker and Filip Petrušev to the Clippers.',
+    },
+    target: { name: 'James Harden', sub: '2023 · another MVP guard lands in LA' },
+    epilogue:
+      'The Clippers turned Chris Paul into James Harden in four trades across six years — with Patrick Beverley, Eric Bledsoe and Robert Covington carrying the thread.',
+  },
 ]
 
 function easternDayStamp(date: Date): number {

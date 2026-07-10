@@ -2,7 +2,7 @@
 
 Companion to [`PLAN.md`](PLAN.md) (product strategy) and [`MOBILE_PLAN.md`](MOBILE_PLAN.md) (iOS/Android). This document is about one thing: how Casuals spreads without a paid acquisition budget. `PLAN.md` §3 and §9 already establish the share grid and a 15%+ share-rate target — this plan goes deeper on *why* people share, what's weak in the current mechanism, and what to build to make sharing the primary growth channel rather than a nice-to-have.
 
-> **Status (2026-07-03): §10 phase 1's three cheapest items are built and verified** — the deep-link fix, the "Challenge a friend" button, and per-device share attribution tracking. See `proof-log.md` 2026-07-03 for the verification trail (including a real StrictMode double-counting bug found and fixed). The generated image share card (§3) is the remaining phase-1 item, not yet started. Everything in §4 (squads) and later remains correctly deferred behind accounts.
+> **Status (updated 2026-07-10): §10 phase 1's three cheapest items are built and verified** — the deep-link fix, the "Challenge a friend" button, and per-device share attribution tracking. Daily links now carry both the display day number (`d`) and stable puzzle ID (`p`) so adding puzzles cannot make an existing share open a different chain; parsing already prefers `p`. See `proof-log.md` for the verification trail. The generated image share card (§3) is the remaining phase-1 item, not yet started. Everything in §4 (squads) and later remains correctly deferred behind accounts.
 
 ---
 
@@ -31,7 +31,7 @@ None of this requires new game rules or touches the design invariants in `AGENTS
 
 ## 3. Make the share artifact itself un-ignorable
 
-- **Fix the deep link first.** Even before real per-puzzle routing exists, encode the day number in the URL (`casuals.game/?d=42` is enough) and have the app read it on load to show that specific puzzle instead of always defaulting to today's. This is small, unblocks everything else in this section, and should ship before any other growth work.
+- **Fix the deep link first.** Encode both the day number and stable puzzle ID in daily URLs (`casuals.game/?d=42&p=puzzle-id`) and have the app prefer `p` when resolving the link. The day number preserves the daily identity; the puzzle ID prevents corpus growth from remapping an older share to a different chain. This is small, unblocks everything else in this section, and should ship before any other growth work.
 - **Generate a shareable image**, rendered client-side (canvas or an off-screen styled DOM node rasterized to PNG) reusing the exact scoreboard visual language already in `styles.css` — the LED shot-clock digits, team-color accent bar, tier stamp. This is the app's strongest visual asset; the share artifact should look like a screenshot of the game, not a text summary of it. Offer it as the primary share action (native share sheet on mobile via Capacitor Share per `MOBILE_PLAN.md`, download-or-copy on web), with the text grid kept as a fallback for platforms where an image is friction (plain iMessage, Twitter replies).
 - **Rewrite the copy to challenge a specific target, not broadcast.** Two share buttons instead of one: "Share result" (current broadcast behavior, improved with the deep link and image) and "Challenge a friend" (opens the native share sheet pre-targeted at a contact/group where possible, with copy like *"I got SICKO in 1:12 on today's Casuals. Think you can beat it?"*). The second button is the higher-leverage one — build it even if the first is judged good enough already.
 - **Keep it spoiler-safe** — this already works correctly (grid shows outcome shape, not answers; the puzzle's start/target names shown in share text are the same info already public on the menu screen pre-game, so nothing new is being leaked). Don't regress this while adding the image/challenge features above.
@@ -102,7 +102,7 @@ Ordered by leverage-per-effort, not by dependency chain — several of these can
 
 | Phase | Item | Depends on |
 |---|---|---|
-| **Now — cheap, ship first** | Deep-link fix (§3): encode day number in URL, read it on load | Nothing |
+| **Now — cheap, ship first** | Deep-link fix (§3): encode day number + stable puzzle ID in URL, read it on load | Nothing |
 | **Now — cheap** | "Challenge a friend" share button with direct-target copy (§3) | Deep-link fix |
 | **Now — cheap** | Share-link attribution tagging + completion-via-share event (§8) | Deep-link fix |
 | **Soon — moderate** | Generated image share card (§3) | Nothing blocking; can build independent of the above |

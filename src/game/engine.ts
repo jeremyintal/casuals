@@ -226,10 +226,8 @@ function elapsedClock(state: GameState): string {
   return `${mm}:${ss}`
 }
 
-// Deep link so a clicked share always lands on the exact puzzle being
-// bragged about, not whatever the app defaults to that day. Daily puzzles
-// link by day number (?d=); archive puzzles link by id (?p=) since "day"
-// isn't meaningful once it's not the current day's rotation.
+// Daily links carry both the display day number and the stable puzzle id.
+// The id keeps a share pointing at the same puzzle when the corpus grows.
 export function shareUrl(
   puzzle: Puzzle,
   dayNum: number,
@@ -238,7 +236,7 @@ export function shareUrl(
 ): string {
   const params = new URLSearchParams()
   if (isDaily) params.set('d', String(dayNum))
-  else params.set('p', puzzle.id)
+  params.set('p', puzzle.id)
   params.set('src', source)
   return `casuals.game/?${params.toString()}`
 }

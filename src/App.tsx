@@ -503,7 +503,7 @@ export default function App() {
     if (view === 'game') {
       const isDaily = puzzleIdx === dailyIndex()
       if (isDaily) params.set('d', String(dailyNumber()))
-      else params.set('p', PUZZLES[puzzleIdx].id)
+      params.set('p', PUZZLES[puzzleIdx].id)
     }
     const qs = params.toString()
     const url = qs ? `${window.location.pathname}?${qs}` : window.location.pathname
