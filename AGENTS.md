@@ -14,7 +14,7 @@ You are working on **Casuals**, a daily web puzzle game: six degrees of separati
 
 ## Current state (as of 2026-07-13)
 
-Playable client-only prototype, QA-verified, production build green. Vite + React + TypeScript SPA, no backend. Git-initialized (`git init` done 2026-07-02) — commit as you go. 12 hand-curated puzzles ship in-app (see `src/data/puzzles.ts`), including the Sacramento DeMarcus Cousins → Zach LaVine chain added 2026-07-13. The data pipeline (`pipeline/`) produced 150 scored candidates; 4 have now been curated and shipped, and 146 remain unverified — see `pipeline/data/curation-queue.md` and priority 1 in `project-tasks-queue.md`. Automated puzzle-content validation is available through `npm test`; focused engine/state tests are still unbuilt. Growth-plan phase 1 is also shipped: real deep links (`?d=`/`?p=`), a "Challenge a friend" share button, and per-device share attribution tracking — see `GROWTH_PLAN.md`'s status note and `proof-log.md`. Current milestone is puzzle curation in three-puzzle batches, with reliability/onboarding work interleaved and a product-learning checkpoint at 14–21 puzzles rather than waiting for the full 60-puzzle runway.
+Playable client-only prototype, QA-verified, production build green. Vite + React + TypeScript SPA, no backend. Git-initialized (`git init` done 2026-07-02) — commit as you go. 13 hand-curated puzzles ship in-app (see `src/data/puzzles.ts`), including the Boston Kevin Garnett → Kyrie Irving chain added 2026-07-13. The data pipeline (`pipeline/`) produced 150 scored candidates; 5 have now been curated and shipped, 1 was reviewed and rejected, and 144 remain unverified — see `pipeline/data/curation-queue.md` and priority 1 in `project-tasks-queue.md`. Automated puzzle-content validation is available through `npm test`; focused engine/state tests are still unbuilt. Growth-plan phase 1 is also shipped: real deep links (`?d=`/`?p=`), a "Challenge a friend" share button, and per-device share attribution tracking — see `GROWTH_PLAN.md`'s status note and `proof-log.md`. Current milestone is puzzle curation in three-puzzle batches, with reliability/onboarding work interleaved and a product-learning checkpoint at 14–21 puzzles rather than waiting for the full 60-puzzle runway.
 
 ## Commands
 
@@ -56,6 +56,7 @@ These are the product's identity, chosen deliberately (reasoning in `PLAN.md` §
 
 - Every chain must be a **real, source-verified** sequence of transactions. One wrong chain destroys credibility with the exact audience we need. Verify against Basketball-Reference and/or prosportstransactions.com before shipping
 - Valid edges: trade, draft-night rights swap, sign-and-trade, waiver claim, pick → drafted player. **Invalid:** player waived/released then signed elsewhere as a free agent (the chain of consideration breaks)
+- For multi-team trades, the franchise-level sent/received ledger is only a discovery aid. If an official release explicitly partitions incoming assets among separate outgoing packages, do not connect assets across those sub-deals merely because the pipeline aggregated them into one team ledger. Candidate #18 is the canonical rejected example: Keon Johnson was consideration for Deandre Ayton/Toumani Camara, while Damian Lillard was consideration for Jrue Holiday.
 - Schema is `Puzzle` in `src/data/puzzles.ts`: each link needs `answers` (all headline players in the return), `canonical`, `reveal` (the storytelling payoff — write it well), `hint1` (free, shown at ≤10s), `hint2` (shown after a violation)
 - `start.title` is the full sentence shown on the chain card ("Lakers draft Tony Bradley"); `start.player` is the bare display name ("Tony Bradley") — required separately because it feeds the "Turn X into Y in N moves" GM-framed copy on the menu, archive rows, and share/challenge text (`totalMoves()` in `puzzles.ts`, used throughout `App.tsx` and `engine.ts`). Don't skip populating it when adding a puzzle — the copy silently renders `undefined` if you do.
 - Add every answer name to `src/data/players.ts`; names with diacritics must match via `normalizeName`
@@ -76,7 +77,7 @@ These are the product's identity, chosen deliberately (reasoning in `PLAN.md` §
 ## Known launch blockers (fine for prototype, must fix before public)
 
 - Answers ship in the client bundle (view-source cheating) → needs server-side validation
-- Only 12 puzzles shipped in-app (~12 days of content) → 146 of the 150 generated candidates remain unverified in `pipeline/data/curation-queue.md`; the work remaining is human/agent fact-checking and conversion to `src/data/puzzles.ts`, not generation
+- Only 13 puzzles shipped in-app (~13 days of content) → 1 generated candidate is rejected and 144 remain unverified in `pipeline/data/curation-queue.md`; the work remaining is human/agent fact-checking and conversion to `src/data/puzzles.ts`, not generation
 - No automated tests on the engine (state transitions, ET rollover, streaks)
 - NBA IP caution: team names/colors only — no logos or player photos
 

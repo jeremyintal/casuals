@@ -12,7 +12,7 @@
 
 ### Built and verified
 - Full game loop: 6 possessions, 24-second shot clock, turnover reset to 14, violation → hint + lost possession, buzzer-beater bonus, scoring (banked seconds + 100/unused possession)
-- 12 hand-curated real transaction chains (Bradley→Dončić, Ibaka→SGA, Rozier→White, Kyrie→Mitchell, Thad Young→Simmons, DSJ→Kyrie, Kevin Martin→Olynyk, Payton→Harden, DSJ→Morris→Davis, Chris Paul→Harden, Zach LaVine→Gobert, DeMarcus Cousins→Zach LaVine), difficulty-rated 1–5
+- 13 hand-curated real transaction chains (Bradley→Dončić, Ibaka→SGA, Rozier→White, Kyrie→Mitchell, Thad Young→Simmons, DSJ→Kyrie, Kevin Martin→Olynyk, Payton→Harden, DSJ→Morris→Davis, Chris Paul→Harden, Zach LaVine→Gobert, DeMarcus Cousins→Zach LaVine, Kevin Garnett→Kyrie Irving), difficulty-rated 1–5
 - Menu, daily chain (rolls over at midnight ET), archive ("Classic Games"), stats + streaks in localStorage, share grid, end-sheet with full chain recap and tier stamps, synthesized sounds with mute, dark scoreboard UI with team-color chain cards
 - Manual browser QA passed at mobile (390×844) and desktop (1280×800); two P2 bugs (Enter-to-submit, header home button) found and fixed; production build green. Evidence in `proof-log.md`; open work in `project-tasks-queue.md`.
 
@@ -25,7 +25,7 @@
 - The third hint level (hangman-style blanked name after a second violation) is not implemented — the second violation currently repeats hint 2
 - Archive games are timed and scored like the daily; plan calls for untimed practice
 - Mute preference not persisted; automated puzzle-content validation exists, but game-engine state transitions still lack automated coverage
-- Puzzle corpus shipped in-app is 12 (`dal-dsj-morris-davis`, `lac-paul-harden`, `min-lavine-gobert`, and `sac-cousins-lavine` were added from the curation queue). The data pipeline is built and produced 150 scored candidates; 4 are curated and shipped, and 146 remain unverified. The remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
+- Puzzle corpus shipped in-app is 13 (`dal-dsj-morris-davis`, `lac-paul-harden`, `min-lavine-gobert`, `sac-cousins-lavine`, and `bos-garnett-irving` were added from the curation queue). The data pipeline produced 150 scored candidates; 5 are curated and shipped, candidate #18 was reviewed and rejected, and 144 remain unverified. The remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
 - Growth-plan phase 1 shipped 2026-07-03: real deep links, "Challenge a friend" share button, per-device share attribution. See `GROWTH_PLAN.md` status note.
 
 ### Execution review — 2026-07-13
@@ -166,6 +166,7 @@ A directed multigraph of **asset lineage**:
 
 - **Draft picks as connective tissue** — most great chains route through picks; picks need identity (protections, swaps) or chains break
 - **Three-team trades** — decompose into per-team "sent/received" ledgers, not pairwise trades
+- **Partitioned multi-team consideration** — a team ledger can still over-connect separate sub-deals. When an official announcement says outgoing package A returned assets X/Y while outgoing package B returned Z, lineage cannot jump from A to Z merely because all assets share one transaction record. Candidate #18's attempted Keon Johnson → Jrue Holiday edge was rejected on this basis.
 - **Waive → re-sign** — the user's spec includes waivers; a waiver claim is a valid edge, but a player waived and signed elsewhere as a free agent is NOT (the chain of consideration breaks). This rule needs to be crisp and stated in the how-to-play.
 - **Sign-and-trades** — valid edges
 

@@ -663,6 +663,63 @@ export const PUZZLES: Puzzle[] = [
     epilogue:
       'DeMarcus Cousins became Buddy Hield, Hield became Justin Holiday, and Holiday became Kevin Huerter. Eight years after trading its franchise center, Sacramento cashed that thread into Zach LaVine.',
   },
+  {
+    id: 'bos-garnett-irving',
+    franchise: 'BOS',
+    difficulty: 5,
+    difficultyLabel: 'Sicko special',
+    start: {
+      year: '2013',
+      title: 'Celtics trade Kevin Garnett, Paul Pierce and Jason Terry to Brooklyn',
+      sub: 'The teardown that launched Boston’s next era',
+      team: 'BOS',
+      player: 'Kevin Garnett',
+    },
+    links: [
+      {
+        year: '2013',
+        teams: ['BOS', 'BKN'],
+        question: 'Boston sent its championship core to Brooklyn. Name any player who came back.',
+        answers: ['Gerald Wallace', 'Kris Humphries', 'Keith Bogans', 'MarShon Brooks', 'Kris Joseph'],
+        canonical: 'Keith Bogans',
+        reveal:
+          'Kevin Garnett, Paul Pierce, Jason Terry and D.J. White went to Brooklyn for Gerald Wallace, Kris Humphries, Keith Bogans, MarShon Brooks, Kris Joseph and a famous pile of first-round draft capital. Bogans is the thread here.',
+        hint1: 'Five players came back alongside the picks; the thread is a veteran Kentucky wing',
+        hint2: 'K.B. — a defense-first guard who played only six games for Boston',
+      },
+      {
+        year: '2014',
+        teams: ['BOS', 'CLE'],
+        question: 'Boston sent Bogans and two conditional seconds to Cleveland. Name any player received.',
+        answers: ['Dwight Powell', 'Erik Murphy', 'Malcolm Thomas', 'John Lucas III'],
+        canonical: 'Dwight Powell',
+        reveal:
+          'The Celtics traded Keith Bogans and two conditional second-round picks for Dwight Powell, Erik Murphy, Malcolm Thomas, John Lucas III, two more seconds and a trade exception. Powell lasted less than three months in Boston.',
+        hint1: 'The thread is a rookie Stanford big who became a long-time Maverick',
+        hint2: 'D.P. — selected 45th overall in 2014',
+      },
+      {
+        year: '2014',
+        teams: ['BOS', 'DAL'],
+        question: 'Powell and Rajon Rondo went to Dallas. Name any player Boston received.',
+        answers: ['Jae Crowder', 'Jameer Nelson', 'Brandan Wright'],
+        canonical: 'Jae Crowder',
+        reveal:
+          'Boston sent Rajon Rondo and Dwight Powell to Dallas for Jae Crowder, Jameer Nelson, Brandan Wright, a first-round pick and a second-round pick. Crowder became the lasting piece.',
+        hint1: 'A rugged Marquette wing arrived with a former All-Star point guard and an athletic center',
+        hint2: 'J.C. — the wing later started 157 games for Boston',
+      },
+    ],
+    final: {
+      year: '2017',
+      teams: ['BOS', 'CLE'],
+      reveal:
+        'The Celtics sent Jae Crowder, Isaiah Thomas, Ante Žižić, Brooklyn’s 2018 first-round pick and a 2020 second to Cleveland for Kyrie Irving.',
+    },
+    target: { name: 'Kyrie Irving', sub: '2017 · the championship shot-maker arrives in Boston' },
+    epilogue:
+      'The famous Brooklyn picks rebuilt Boston, but a quieter player thread did work too: Kevin Garnett became Keith Bogans, Bogans became Dwight Powell, and Powell helped bring back Jae Crowder — one of the pieces that landed Kyrie Irving.',
+  },
 ]
 
 function easternDayStamp(date: Date): number {

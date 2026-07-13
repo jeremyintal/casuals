@@ -2,6 +2,34 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-13 (Portland rejection + Boston Garnett to Kyrie shipment)
+
+### Progress Completed
+
+- Reviewed candidate #18, Portland `Trevor Ariza/Isaiah Stewart -> Robert Covington -> Keon Johnson -> Jrue Holiday -> Malcolm Brogdon/Robert Williams`, and rejected it. Portland's official 2023 three-team release explicitly partitions the transaction: Keon Johnson, Nassir Little and Jusuf Nurkić were exchanged for Deandre Ayton and Toumani Camara, while Damian Lillard was exchanged for Jrue Holiday and Milwaukee draft capital. The pipeline's aggregate ledger over-connected Keon Johnson to Holiday.
+- Verified candidate #19 against parsed Basketball-Reference records and official Celtics releases: `Kevin Garnett -> Keith Bogans -> Dwight Powell -> Jae Crowder -> Kyrie Irving`, across 2013-07-12, 2014-09-25, 2014-12-18, and 2017-08-30.
+- Official sources: https://www.nba.com/celtics/news/press_release/celtics-complete-trade-brooklyn-nets, https://www.nba.com/celtics/news/pressrelease/boston-celtics-announce-roster-moves, https://www.nba.com/celtics/news/sidebar/misc-052015-2015-season-recap, and https://www.nba.com/celtics/news/pressrelease/statement-boston-celtics.
+- Shipped `bos-garnett-irving`, difficulty 5 (`Sicko special`), with complete answer sets for all 12 player returns across its three guessable links. Added 11 missing autocomplete names and a permanent validator contract for the puzzle ID, target, and answer arrays.
+- Added a durable multi-team curation rule to `AGENTS.md`, `PLAN.md`, and `pipeline/README.md`: an aggregate team ledger cannot override an official source that partitions consideration among separate sub-deals.
+
+### Verification Evidence
+
+- Clean baseline `npm run build` passed before edits.
+- Proof-first test failed as intended with `Missing bos-garnett-irving puzzle`; final `npm test` passed: `Validated 13 puzzles and 260 autocomplete names.`
+- Final `npm run build` passed with 33 modules transformed.
+- In-app browser playthrough used non-canonical answers `Gerald Wallace`, `John Lucas III`, and `Brandan Wright`; all advanced correctly. The game reached `SICKO`, auto-revealed Kyrie Irving, and rendered all four recaps plus the epilogue.
+- Menu/archive rendered `BOS Kevin Garnett -> Kyrie Irving`, `Sicko special · 4 moves`, and the current daily card resolved to the same stable puzzle. Result and menu states both reported document/body width exactly 360 at `360x740`, with no horizontal overflow. Browser console warning/error check returned no entries.
+
+### Decision
+
+- Candidate #18 is rejected, not pending. Candidate #19 is source-verified, editorially complete, tested, and shipped.
+- Source-screen multi-team candidate structure before authoring. Franchise-level aggregate ledgers remain useful for discovery but are insufficient proof when an official release assigns different returns to different outgoing packages.
+
+### Proof Gaps / Remaining Work
+
+- No automated pipeline test detects partitioned-consideration false positives; this remains a human/agent curation responsibility documented in the operating manual.
+- Browser QA covered the new Boston puzzle and its alternate answers, not every existing puzzle or native share behavior.
+
 ## 2026-07-13 (strategy review + Sacramento puzzle shipment)
 
 ### Progress Completed
