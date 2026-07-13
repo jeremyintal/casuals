@@ -6,12 +6,20 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 ## Current Priorities
 
-0. **Copy reframed to "Turn X into Y in N moves" GM framing (2026-07-03).** Menu, archive rows, tagline, how-to-play, and share/challenge text all updated — see `proof-log.md`. New puzzles added to `src/data/puzzles.ts` must populate `start.player` (bare player name) alongside `start.title` — the copy silently breaks if it's skipped, see `AGENTS.md`.
-0. **Growth plan phase 1 shipped (2026-07-03).** Deep-link fix, "Challenge a friend" button, and per-device share attribution are built and verified — see `proof-log.md`. Remaining phase 1 item: generated image share card (`GROWTH_PLAN.md` §3, §10) — moderate effort, not yet started. Phase 2+ items (squads, head-to-head, buzzer-beater clip) depend on accounts and are correctly deferred.
+> Numbered by priority; **P1 (curation) is the standing top priority** because corpus size is the binding constraint on launch. P-Onboarding runs as a **parallel track** (different skill set, no dependency on curation) — pick it up in parallel or interleave, but it does not displace P1. Items marked "shipped" below are recently-completed context, not open work.
+
+**Recently shipped (context, not open work):**
+- **Copy reframed to "Turn X into Y in N moves" GM framing (2026-07-03).** Menu, archive rows, tagline, how-to-play, and share/challenge text all updated — see `proof-log.md`. New puzzles added to `src/data/puzzles.ts` must populate `start.player` (bare player name) alongside `start.title` — the copy silently breaks if it's skipped, see `AGENTS.md`.
+- **Growth plan phase 1 shipped (2026-07-03).** Deep-link fix, "Challenge a friend" button, and per-device share attribution are built and verified — see `proof-log.md`. Remaining phase 1 item is tracked as **P5** below.
+
 1. **Curate the candidate queue.** `pipeline/data/curation-queue.md` has 150 scored candidate chains; **3 are curated and shipped, candidate #21 is source-verified and ready to author, 146 remain unverified, and 49 more shipped puzzles are needed** to reach the plan's 60-puzzle runway target (11 shipped in `src/data/puzzles.ts` as of 2026-07-10). Next author candidate #21 as Sacramento `DeMarcus Cousins -> Buddy Hield -> Justin Holiday -> Kevin Huerter -> Zach LaVine`, preserving the verified player-return sets recorded in `proof-log.md`. Then continue fact-checking against Basketball-Reference plus an independent official source, write `reveal`/`hint1`/`hint2` copy in the game's voice, and add each approved puzzle to `src/data/puzzles.ts` + `src/data/players.ts` following the schema and checklist in `AGENTS.md`. Shipped from the queue: `dal-dsj-morris-davis`, `lac-paul-harden`, and `min-lavine-gobert` (see `proof-log.md`). The Lou Williams/Rajon Rondo route is a separate valid Clippers branch ending at Bledsoe and must not be combined with the Patrick Beverley/Robert Covington route to Harden. **Scheduling note:** don't run `dal-dsj-kyrie` and `dal-dsj-morris-davis` on adjacent days — they share their first two links.
+
+- **P-Onboarding (parallel track): build the client-only half of `ONBOARDING_PLAN.md`.** Steps 1–2 of that plan's §10 build order — funnel instrumentation, first-open menu state, the ~30s skippable tutorial possession (half-speed clock, infinite possessions, isolated from real game state/stats), and the one-line Path B deep-link overlay. **No backend, no accounts, no auth** — those are steps 3–5 and are gated on the backend milestone (see P4). This slice is planned but not started; it can ship anytime and independently of curation. A ready-to-paste Codex prompt for exactly this scope was drafted in chat on 2026-07-13 — regenerate from `ONBOARDING_PLAN.md` §4, §8, §10 if not to hand. Implements the plan's recommended tutorial-first default (open decision #1, reversible). Related: the accounts/backend half is P4.
+
 2. Add focused automated tests for game engine state transitions and daily Eastern Time rollover.
 3. Persist mute preference and improve Replay/Menu end-sheet behavior.
-4. Decide when to introduce server-side answer validation (required before public launch — see `AGENTS.md` launch blockers).
+4. **Backend milestone (accounts + server-side answer validation, one build).** Required before public launch (see `AGENTS.md` launch blockers). Per `ONBOARDING_PLAN.md` §7, accounts (steps 3–5) and answer validation share the same backend and should ship together. Blocked on the backend-vendor decision (Supabase recommended — `ONBOARDING_PLAN.md` §11).
+5. Generated image share card — remaining `GROWTH_PLAN.md` phase 1 item (§3, §10). Moderate effort, not started. Phase 2+ growth items (squads, head-to-head, buzzer-beater clip) depend on accounts (P4) and are correctly deferred.
 
 ## Open Tasks
 
@@ -45,9 +53,21 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 - Current prototype exposes puzzle answers in client data; acceptable for local prototype, but not MVP anti-cheat.
 - Puzzle data is hand-entered and not source-verified in-app.
 - Transaction graph, source scraping, and candidate chain generation are **done** (`pipeline/`, 2026-07-03) — 150 candidates were generated; 3 are shipped, 1 is verified and ready to author, and 146 remain unverified. The admin curation *screen* from `PLAN.md` §5 is still unstarted; for now curation is a manual pass over `pipeline/data/curation-queue.md` (see priority 1). Revisit building a real curation UI once the manual pass shows it's the bottleneck.
-- Decide when to introduce server-side answer validation.
+- Server-side answer validation is tracked as **P4** (bundled with the accounts backend milestone).
+
+### Planning artifacts (no code; for handoff reference)
+
+- `ONBOARDING_PLAN.md` — first-run + accounts strategy (execution split into P-Onboarding client-only and P4 backend halves).
+- `DESIGN_PROMPT.md` — self-contained prompt (committed `af1deae`, 2026-07-13) for a Claude design session to redesign the web + mobile UI. Paste-ready; needs no repo access. Not yet run.
+- `MOBILE_PLAN.md`, `GROWTH_PLAN.md` — see `AGENTS.md` required-reading list.
 
 ## Decisions
+
+### 2026-07-13 (docs audit + priority reconciliation)
+
+- Audited `proof-log.md` and `project-tasks-queue.md` against actual repo state (11 shipped puzzle IDs, clean tree, `npm run build` + `npm test` green — "Validated 11 puzzles and 245 autocomplete names"). No state contradictions found; the two files agreed with each other and with the code.
+- Fixed two cosmetic issues: the duplicate `0.` priority numbering (recently-shipped items moved into a labeled "Recently shipped" block so the numbered list is genuinely priority-ordered), and logged the two previously-untracked planning artifacts (`DESIGN_PROMPT.md`, `ONBOARDING_PLAN.md`).
+- **Priority reconciliation:** curation stays **P1** (corpus size is the binding launch constraint). The client-only onboarding slice is added as **P-Onboarding, a parallel track** that does not displace P1 — it has a different skill set and no dependency on curation. The accounts/backend half of onboarding is folded into **P4** alongside server-side answer validation, since `ONBOARDING_PLAN.md` §7 establishes they share one backend build. This resolves the divergence between the queue (which ranked curation first) and the in-chat recommendation to build onboarding next: both are valid, and they are now explicitly concurrent tracks rather than competing for the same slot.
 
 ### 2026-07-10 (candidate #21 Sacramento lineage)
 

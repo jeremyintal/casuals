@@ -2,6 +2,26 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-13 (tracking-doc audit + priority reconciliation)
+
+### Progress Completed
+
+- Audited `proof-log.md` and `project-tasks-queue.md` for staleness, cross-file contradictions, and inconsistent next-steps, at the user's request. Documentation-only change; no game code touched.
+- Verified doc claims against actual repo state rather than trusting the docs: 11 shipped puzzle IDs enumerated from `src/data/puzzles.ts` (`lal-bradley-luka` … `min-lavine-gobert`), clean working tree, candidate #21 (Sacramento) confirmed verified-but-not-shipped (no `sac-` puzzle present; latest commit `fff41dc` is a verification commit, matching both docs' "authoring pending" status).
+- Fixed the duplicate `0.` priority numbering in the queue by splitting recently-shipped context out of the numbered priority list, and logged the two previously-untracked planning artifacts (`DESIGN_PROMPT.md`, `ONBOARDING_PLAN.md`).
+- Reconciled the one real next-steps divergence: the queue ranked curation P1 while the in-chat recommendation was to build onboarding next. Resolved by making curation P1 (binding launch constraint) and the client-only onboarding slice a labeled parallel track (P-Onboarding), with the accounts/backend half folded into P4 next to server-side answer validation per `ONBOARDING_PLAN.md` §7.
+
+### Verification Evidence
+
+- `grep -oE "id: '[^']+'" src/data/puzzles.ts` → 11 IDs; `git status --short` → empty (clean).
+- Stale-count grep across tracking docs found only correctly-dated historical references (07-06 review "9 shipped puzzles", 07-03 reframe "all 9 puzzles", 07-10 Clippers "10 puzzles") — snapshots of past state, not current-state claims.
+- `npm run build` → PASS (TypeScript + Vite). `npm test` → PASS, "Validated 11 puzzles and 245 autocomplete names." Both confirm the docs' "green" claims are still accurate at this commit.
+
+### Proof Gaps / Remaining Work
+
+- Audit was scoped to the two tracking files plus a spot-check of counts and build/test state; a line-by-line reverification of every historical proof-log entry's original evidence was not repeated (those entries are dated records, not current claims).
+- No source-code or gameplay behavior was exercised beyond `npm test`; this change adds no runtime behavior.
+
 ## 2026-07-10 (Sacramento DeMarcus Cousins to Zach LaVine candidate verification)
 
 ### Progress Completed
