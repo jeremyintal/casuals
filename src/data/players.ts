@@ -22,6 +22,7 @@ export const PLAYERS: string[] = [
   'OG Anunoby', 'Mikal Bridges', 'Cam Johnson', 'Deandre Ayton', 'Chris Bosh',
   'Dwyane Wade', 'Klay Thompson', 'Draymond Green',
   'Andrew Wiggins', 'Zach LaVine', 'DeMarcus Cousins', 'Buddy Hield',
+  'Tyreke Evans', 'Langston Galloway', 'Justin Holiday', 'Kevin Huerter',
   'Tyrese Haliburton', 'Tyrese Maxey', 'De\'Aaron Fox', 'Marcus Smart',
   'Malcolm Brogdon', 'Jalen Brunson', 'Julius Randle',
   'RJ Barrett', 'Immanuel Quickley', 'Evan Fournier', 'Alec Burks',

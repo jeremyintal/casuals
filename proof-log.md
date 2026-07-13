@@ -2,6 +2,33 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-13 (strategy review + Sacramento puzzle shipment)
+
+### Progress Completed
+
+- Reviewed Fable's `PLAN.md`, `MOBILE_PLAN.md`, `GROWTH_PLAN.md`, `ONBOARDING_PLAN.md`, task queue, proof log, latest commits, and actual repository state. Ratified the core direction while changing execution from a 60-puzzle-first sequence to three-puzzle curation batches with a product-learning checkpoint at 14–21 puzzles.
+- Corrected `PLAN.md`'s stale `sign-after-waive` graph-edge label to `sign-and-trade`, aligning strategy with the established rule that a waiver claim preserves lineage but a later free-agent signing does not.
+- Authored and shipped verified candidate #21 as `sac-cousins-lavine`: `DeMarcus Cousins -> Buddy Hield -> Justin Holiday -> Kevin Huerter -> Zach LaVine`, difficulty 4 (`Tape study`). Added Sacramento team metadata and the four missing autocomplete names: Tyreke Evans, Langston Galloway, Justin Holiday, and Kevin Huerter.
+- Added a permanent validator contract for the puzzle ID, target, and complete player-return answer arrays. The first run failed as intended with `Missing sac-cousins-lavine puzzle`; the completed implementation passes.
+
+### Verification Evidence
+
+- Clean baseline `npm run build` passed before edits.
+- Final `npm test` passed: `Validated 12 puzzles and 249 autocomplete names.`
+- Final `npm run build` passed: TypeScript and Vite completed with 33 modules transformed.
+- In-app browser playthrough at `?p=sac-cousins-lavine` used alternate answers `Tyreke Evans` and `Domantas Sabonis`, then `Kevin Huerter`. All advanced correctly; the game reached `SICKO`, auto-revealed Zach LaVine and Sidy Cissoko, and rendered every recap plus the epilogue.
+- The archive row rendered `SAC DeMarcus Cousins -> Zach LaVine`, `Tape study · 4 moves`, with the completed result. Result and menu states both reported document/body width exactly 360 at a `360x740` viewport, with no horizontal overflow. Browser console warning/error check returned no entries.
+
+### Decision
+
+- Keep 60 verified puzzles as runway, not as a reason to postpone learning. Complete the current curation batch at 14 shipped puzzles, then interleave client onboarding and engine reliability work while continuing later content batches.
+- Public launch still requires server-side answer validation. Mobile and image-share work remain deferred until activation and retention evidence justify them.
+
+### Proof Gaps / Remaining Work
+
+- This session did not collect external user activation or retention data; the 14–21 puzzle checkpoint defines when to begin that learning, not a claim that the hypothesis is validated.
+- Native share-sheet behavior and server-side answer validation remain unverified launch blockers. Browser QA covered the new puzzle's gameplay and layout, not every existing puzzle.
+
 ## 2026-07-13 (tracking-doc audit + priority reconciliation)
 
 ### Progress Completed

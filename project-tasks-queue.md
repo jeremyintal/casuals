@@ -6,13 +6,13 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 ## Current Priorities
 
-> Numbered by priority; **P1 (curation) is the standing top priority** because corpus size is the binding constraint on launch. P-Onboarding runs as a **parallel track** (different skill set, no dependency on curation) — pick it up in parallel or interleave, but it does not displace P1. Items marked "shipped" below are recently-completed context, not open work.
+> Numbered by priority; **P1 (curation) is the standing top priority** because corpus size is the binding constraint on launch. Execute curation in three-puzzle batches, interleaving P-Onboarding and P2 reliability work; review product learning at 14–21 shipped puzzles instead of waiting for all 60. Items marked "shipped" below are recently-completed context, not open work.
 
 **Recently shipped (context, not open work):**
 - **Copy reframed to "Turn X into Y in N moves" GM framing (2026-07-03).** Menu, archive rows, tagline, how-to-play, and share/challenge text all updated — see `proof-log.md`. New puzzles added to `src/data/puzzles.ts` must populate `start.player` (bare player name) alongside `start.title` — the copy silently breaks if it's skipped, see `AGENTS.md`.
 - **Growth plan phase 1 shipped (2026-07-03).** Deep-link fix, "Challenge a friend" button, and per-device share attribution are built and verified — see `proof-log.md`. Remaining phase 1 item is tracked as **P5** below.
 
-1. **Curate the candidate queue.** `pipeline/data/curation-queue.md` has 150 scored candidate chains; **3 are curated and shipped, candidate #21 is source-verified and ready to author, 146 remain unverified, and 49 more shipped puzzles are needed** to reach the plan's 60-puzzle runway target (11 shipped in `src/data/puzzles.ts` as of 2026-07-10). Next author candidate #21 as Sacramento `DeMarcus Cousins -> Buddy Hield -> Justin Holiday -> Kevin Huerter -> Zach LaVine`, preserving the verified player-return sets recorded in `proof-log.md`. Then continue fact-checking against Basketball-Reference plus an independent official source, write `reveal`/`hint1`/`hint2` copy in the game's voice, and add each approved puzzle to `src/data/puzzles.ts` + `src/data/players.ts` following the schema and checklist in `AGENTS.md`. Shipped from the queue: `dal-dsj-morris-davis`, `lac-paul-harden`, and `min-lavine-gobert` (see `proof-log.md`). The Lou Williams/Rajon Rondo route is a separate valid Clippers branch ending at Bledsoe and must not be combined with the Patrick Beverley/Robert Covington route to Harden. **Scheduling note:** don't run `dal-dsj-kyrie` and `dal-dsj-morris-davis` on adjacent days — they share their first two links.
+1. **Curate the candidate queue in three-puzzle batches.** `pipeline/data/curation-queue.md` has 150 scored candidate chains; **4 are curated and shipped, 146 remain unverified, and 48 more shipped puzzles are needed** to reach the 60-puzzle runway target (12 shipped in `src/data/puzzles.ts` as of 2026-07-13). Candidate #21 shipped as `sac-cousins-lavine`; next verify and author two more story-strong, franchise-diverse candidates to complete the current batch and reach 14 shipped puzzles. Candidate #18 (Portland Trevor Ariza → Malcolm Brogdon/Robert Williams) is the recommended next verification target. Fact-check against Basketball-Reference plus an independent official source, write `reveal`/`hint1`/`hint2` copy in the game's voice, and add each approved puzzle to `src/data/puzzles.ts` + `src/data/players.ts` following `AGENTS.md`. Shipped from the queue: `dal-dsj-morris-davis`, `lac-paul-harden`, `min-lavine-gobert`, and `sac-cousins-lavine` (see `proof-log.md`). **Scheduling note:** don't run `dal-dsj-kyrie` and `dal-dsj-morris-davis` on adjacent days — they share their first two links.
 
 - **P-Onboarding (parallel track): build the client-only half of `ONBOARDING_PLAN.md`.** Steps 1–2 of that plan's §10 build order — funnel instrumentation, first-open menu state, the ~30s skippable tutorial possession (half-speed clock, infinite possessions, isolated from real game state/stats), and the one-line Path B deep-link overlay. **No backend, no accounts, no auth** — those are steps 3–5 and are gated on the backend milestone (see P4). This slice is planned but not started; it can ship anytime and independently of curation. A ready-to-paste Codex prompt for exactly this scope was drafted in chat on 2026-07-13 — regenerate from `ONBOARDING_PLAN.md` §4, §8, §10 if not to hand. Implements the plan's recommended tutorial-first default (open decision #1, reversible). Related: the accounts/backend half is P4.
 
@@ -52,7 +52,7 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 - Current prototype exposes puzzle answers in client data; acceptable for local prototype, but not MVP anti-cheat.
 - Puzzle data is hand-entered and not source-verified in-app.
-- Transaction graph, source scraping, and candidate chain generation are **done** (`pipeline/`, 2026-07-03) — 150 candidates were generated; 3 are shipped, 1 is verified and ready to author, and 146 remain unverified. The admin curation *screen* from `PLAN.md` §5 is still unstarted; for now curation is a manual pass over `pipeline/data/curation-queue.md` (see priority 1). Revisit building a real curation UI once the manual pass shows it's the bottleneck.
+- Transaction graph, source scraping, and candidate chain generation are **done** (`pipeline/`, 2026-07-03) — 150 candidates were generated; 4 are shipped and 146 remain unverified. The admin curation *screen* from `PLAN.md` §5 is still unstarted; for now curation is a manual pass over `pipeline/data/curation-queue.md` (see priority 1). Revisit building a real curation UI only if the manual workflow proves to be the bottleneck.
 - Server-side answer validation is tracked as **P4** (bundled with the accounts backend milestone).
 
 ### Planning artifacts (no code; for handoff reference)
@@ -62,6 +62,12 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 - `MOBILE_PLAN.md`, `GROWTH_PLAN.md` — see `AGENTS.md` required-reading list.
 
 ## Decisions
+
+### 2026-07-13 (batched launch-learning plan)
+
+- Keep the 60-puzzle corpus as the two-month runway goal, not as a prerequisite for all market feedback. Curate in three-puzzle batches and evaluate activation, completion, difficulty, and return intent once 14–21 puzzles are available to trusted testers.
+- Public launch remains gated on server-side answer validation. Client-only onboarding and focused engine tests interleave with curation; mobile packaging and generated image sharing remain downstream of retention evidence.
+- Corrected a stale strategy contradiction: `PLAN.md`'s graph model now lists sign-and-trades, not sign-after-waive edges. A waiver claim is valid; a waived player later signing elsewhere as a free agent is not a consideration-preserving edge.
 
 ### 2026-07-13 (backend vendor decided: Supabase)
 

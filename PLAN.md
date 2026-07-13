@@ -4,7 +4,7 @@
 
 ---
 
-## 0. Status — updated July 10, 2026
+## 0. Status — updated July 13, 2026
 
 > **Continuity note for any agent or human picking this up:** this document is the *strategy and reasoning* for the web product. The agent-facing operating manual — repo map, design invariants, puzzle authoring rules, session workflow contract — is **`AGENTS.md`** (with `CLAUDE.md` pointing there). iOS/Android strategy is in **`MOBILE_PLAN.md`**; virality and sharing strategy is in **`GROWTH_PLAN.md`** — both kept separate because they're distribution/retention layers on top of this plan, not different products. Open work and decisions live in `project-tasks-queue.md`; completed work and verification evidence in `proof-log.md`. Any session that changes strategy must update this section with a date; any session that changes code must append to the proof log. The project must remain continuable by a cold-start agent at all times.
 
@@ -12,7 +12,7 @@
 
 ### Built and verified
 - Full game loop: 6 possessions, 24-second shot clock, turnover reset to 14, violation → hint + lost possession, buzzer-beater bonus, scoring (banked seconds + 100/unused possession)
-- 11 hand-curated real transaction chains (Bradley→Dončić, Ibaka→SGA, Rozier→White, Kyrie→Mitchell, Thad Young→Simmons, DSJ→Kyrie, Kevin Martin→Olynyk, Payton→Harden, DSJ→Morris→Davis, Chris Paul→Harden, Zach LaVine→Gobert), difficulty-rated 1–5
+- 12 hand-curated real transaction chains (Bradley→Dončić, Ibaka→SGA, Rozier→White, Kyrie→Mitchell, Thad Young→Simmons, DSJ→Kyrie, Kevin Martin→Olynyk, Payton→Harden, DSJ→Morris→Davis, Chris Paul→Harden, Zach LaVine→Gobert, DeMarcus Cousins→Zach LaVine), difficulty-rated 1–5
 - Menu, daily chain (rolls over at midnight ET), archive ("Classic Games"), stats + streaks in localStorage, share grid, end-sheet with full chain recap and tier stamps, synthesized sounds with mute, dark scoreboard UI with team-color chain cards
 - Manual browser QA passed at mobile (390×844) and desktop (1280×800); two P2 bugs (Enter-to-submit, header home button) found and fixed; production build green. Evidence in `proof-log.md`; open work in `project-tasks-queue.md`.
 
@@ -25,8 +25,14 @@
 - The third hint level (hangman-style blanked name after a second violation) is not implemented — the second violation currently repeats hint 2
 - Archive games are timed and scored like the daily; plan calls for untimed practice
 - Mute preference not persisted; automated puzzle-content validation exists, but game-engine state transitions still lack automated coverage
-- Puzzle corpus shipped in-app is 11 (`dal-dsj-morris-davis`, `lac-paul-harden`, and `min-lavine-gobert` were added from the curation queue). The data pipeline is built and produced 150 scored candidates; 3 are curated and shipped, candidate #21 (Sacramento DeMarcus Cousins → Zach LaVine) is source-verified and ready to author, and 146 remain unverified. The remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
+- Puzzle corpus shipped in-app is 12 (`dal-dsj-morris-davis`, `lac-paul-harden`, `min-lavine-gobert`, and `sac-cousins-lavine` were added from the curation queue). The data pipeline is built and produced 150 scored candidates; 4 are curated and shipped, and 146 remain unverified. The remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
 - Growth-plan phase 1 shipped 2026-07-03: real deep links, "Challenge a friend" share button, per-device share attribution. See `GROWTH_PLAN.md` status note.
+
+### Execution review — 2026-07-13
+
+- The strategy remains sound: verified content is the moat, server-side validation is the hard public-launch gate, and accounts should share the Supabase backend milestone rather than create a second backend project.
+- The execution plan is now batched instead of fully sequential. Keep 60 verified puzzles as the two-month runway target, but curate in three-puzzle batches and run a product-learning checkpoint once 14–21 puzzles exist. Trusted/closed testing can begin in that window; a broad public launch still waits for server-side answer validation.
+- Client-only onboarding and focused engine tests should interleave between curation batches. Mobile packaging and generated image sharing remain downstream until activation and retention evidence justify them.
 
 ### Update — data pipeline built, 2026-07-03
 
@@ -153,7 +159,7 @@ The game is only as good as the transaction graph. This is 60% of the engineerin
 A directed multigraph of **asset lineage**:
 
 - **Nodes:** assets — a player-stint (player + team + acquisition date) or a draft pick (year, round, original owner, protections)
-- **Edges:** transactions — trade, waiver claim, draft (pick → player), sign-after-waive
+- **Edges:** transactions — trade, waiver claim, draft (pick → player), sign-and-trade
 - The core query: within a franchise, *what did asset X become?* Follow the edge where X was sent out, land on the package received, continue from any asset in that package. That's exactly the Bradley → Hart → Davis → Dončić walk.
 
 ### Edge cases to handle deliberately
@@ -205,8 +211,8 @@ Daily results are self-reported flexes at MVP — same trust model as Wordle. Se
 *Revised July 2, 2026: we inverted the original order — the game client was built first (see Status) to prove the loop is fun before investing in the pipeline.*
 
 - ~~Week 2: core game — chain UI, shot clock, possession system, autocomplete, end-of-game reveal, share grid, localStorage streaks~~ **Done (prototype, client-only)**
-- Week B: scraper + graph + entity resolution for 2010–present; generate and hand-verify **60 puzzles** (2 months of runway); admin curation screen
-- Week C: server-side answer validation (required before public launch), remaining polish (third hint level, untimed archive, persisted mute), automated engine tests, deploy
+- Week B: scraper + graph + entity resolution for 2010–present; generate and hand-verify puzzles in three-puzzle batches toward **60 puzzles** (2 months of runway). Run a product-learning checkpoint at 14–21 shipped puzzles; build an admin curation screen only if the manual workflow proves to be the bottleneck.
+- Week C runs in parallel with later curation batches: server-side answer validation (required before public launch), client-only onboarding, remaining polish (third hint level, untimed archive, persisted mute), automated engine tests, deploy
 
 **Explicitly cut from MVP:** accounts, leaderboards, Sicko Mode, multiplayer, pre-2010 data, native apps.
 

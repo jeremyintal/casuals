@@ -47,4 +47,11 @@ assert.deepEqual(minnesota.links[0].answers, ['Jimmy Butler', 'Justin Patton'])
 assert.deepEqual(minnesota.links[1].answers, ['Jerryd Bayless', 'Robert Covington', 'Dario Šarić'])
 assert.deepEqual(minnesota.links[2].answers, ['Evan Turner', 'Malik Beasley', 'Juan Hernangómez', 'Jarred Vanderbilt'])
 
+const sacramento = PUZZLES.find((puzzle) => puzzle.id === 'sac-cousins-lavine')
+assert(sacramento, 'Missing sac-cousins-lavine puzzle')
+assert.equal(sacramento.target.name, 'Zach LaVine')
+assert.deepEqual(sacramento.links[0].answers, ['Buddy Hield', 'Tyreke Evans', 'Langston Galloway'])
+assert.deepEqual(sacramento.links[1].answers, ['Domantas Sabonis', 'Justin Holiday', 'Jeremy Lamb'])
+assert.deepEqual(sacramento.links[2].answers, ['Kevin Huerter'])
+
 console.log(`Validated ${PUZZLES.length} puzzles and ${PLAYER_LIST.length} autocomplete names.`)

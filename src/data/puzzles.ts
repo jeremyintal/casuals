@@ -606,6 +606,63 @@ export const PUZZLES: Puzzle[] = [
     epilogue:
       'Zach LaVine became Jimmy Butler, Butler became Covington, and Covington’s return helped become Rudy Gobert. Minnesota spent the same trade tree twice.',
   },
+  {
+    id: 'sac-cousins-lavine',
+    franchise: 'SAC',
+    difficulty: 4,
+    difficultyLabel: 'Tape study',
+    start: {
+      year: '2017',
+      title: 'Kings trade DeMarcus Cousins to New Orleans',
+      sub: 'All-Star break · Sacramento resets the franchise',
+      team: 'SAC',
+      player: 'DeMarcus Cousins',
+    },
+    links: [
+      {
+        year: '2017',
+        teams: ['SAC', 'NOP'],
+        question: 'Sacramento sent Cousins and Omri Casspi to New Orleans. Name any player who came back.',
+        answers: ['Buddy Hield', 'Tyreke Evans', 'Langston Galloway'],
+        canonical: 'Buddy Hield',
+        reveal:
+          'The Kings sent DeMarcus Cousins and Omri Casspi to New Orleans for Buddy Hield, Tyreke Evans, Langston Galloway and two 2017 draft picks. Hield is the thread.',
+        hint1: 'A rookie Bahamian sharpshooter arrived with two veteran guards',
+        hint2: 'B.H. — the other player returns were T.E. and L.G.',
+      },
+      {
+        year: '2022',
+        teams: ['SAC', 'IND'],
+        question: 'Hield, Tyrese Haliburton and Tristan Thompson went to Indiana. Name any player Sacramento received.',
+        answers: ['Domantas Sabonis', 'Justin Holiday', 'Jeremy Lamb'],
+        canonical: 'Justin Holiday',
+        reveal:
+          'Sacramento dealt Buddy Hield, Tyrese Haliburton and Tristan Thompson for Domantas Sabonis, Justin Holiday, Jeremy Lamb and a second-round pick. Holiday carries this chain.',
+        hint1: 'A two-time All-Star big came back with two veteran wings',
+        hint2: 'J.H. — his brother Jrue was already an NBA champion',
+      },
+      {
+        year: '2022',
+        teams: ['SAC', 'ATL'],
+        question: 'Five months later, Holiday and Maurice Harkless went to Atlanta. Who came back?',
+        answers: ['Kevin Huerter'],
+        canonical: 'Kevin Huerter',
+        reveal:
+          'The Kings sent Justin Holiday, Maurice Harkless and a protected first-round pick to Atlanta for Kevin Huerter — Red Velvet headed west.',
+        hint1: 'A Maryland sharpshooter nicknamed Red Velvet',
+        hint2: 'K.H. — Atlanta drafted him 19th overall in 2018',
+      },
+    ],
+    final: {
+      year: '2025',
+      teams: ['SAC', 'CHI', 'SAS'],
+      reveal:
+        'In a three-team blockbuster, Sacramento sent Kevin Huerter to Chicago and De’Aaron Fox and Jordan McLaughlin to San Antonio. The Kings received Zach LaVine, Sidy Cissoko and a haul of draft capital.',
+    },
+    target: { name: 'Zach LaVine', sub: '2025 · a two-time All-Star lands in Sacramento' },
+    epilogue:
+      'DeMarcus Cousins became Buddy Hield, Hield became Justin Holiday, and Holiday became Kevin Huerter. Eight years after trading its franchise center, Sacramento cashed that thread into Zach LaVine.',
+  },
 ]
 
 function easternDayStamp(date: Date): number {
