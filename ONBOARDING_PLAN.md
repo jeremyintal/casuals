@@ -110,7 +110,7 @@ The account prompt copy should only ever promise the tier that's actually live.
 
 Accounts are the first feature that genuinely requires a backend — and per `PLAN.md` §6 and `AGENTS.md`, **server-side answer validation is already a launch blocker that needs the same backend**. Build them as one milestone, not two:
 
-- **Recommended: Supabase** (matches the original `PLAN.md` §6 stack sketch) — Postgres + Auth (Apple/Google OAuth and magic links out of the box) + edge functions for answer validation. Alternatives (Clerk + separate API, Firebase) are viable; decide at build time, but the plan assumes "hosted auth + Postgres + serverless functions," not a hand-rolled auth system. Hand-rolling auth is explicitly out.
+- **Chosen: Supabase** (decided 2026-07-13; matches the original `PLAN.md` §6 stack sketch) — Postgres + Auth (Apple/Google OAuth and magic links out of the box) + edge functions for answer validation. Alternatives (Clerk + separate API, Firebase) were considered and set aside. Hand-rolling auth is explicitly out.
 - Data model (minimal): `users` (id, auth identity, display_name, created_at), `user_stats` (streak, best_streak, tiers, best_score, last_win_day), `completions` (user_id, puzzle_id, day_num, tier, score, time_ms, arrived_via). The `completions` table also finally turns `GROWTH_PLAN.md` §8's per-device share attribution into real cross-user funnel data.
 - Guest model: keep guests entirely client-side (as today) rather than creating anonymous server users. Simpler, no orphan-account cleanup, and the merge-on-signup flow (§5) covers continuity. Revisit anonymous server identities only if squads later need "invite a guest."
 - Privacy surface area stays tiny: email + gameplay stats. A one-paragraph privacy policy, but it must exist before accounts ship (and is required for App Store submission anyway).
@@ -151,7 +151,7 @@ A/B candidates once traffic allows (in priority order): tutorial-first vs. strai
 
 1. **Instrumentation first**: first-open detection, funnel events, baseline capture. (Client-only, no backend needed.)
 2. **Tutorial + first-run menu state + Path B overlay line.** (Client-only. This half of the plan has zero backend dependency and could ship well before accounts.)
-3. **Backend milestone**: Supabase (or chosen equivalent) auth + user_stats/completions + **server-side answer validation in the same push** (it's the standing launch blocker; one backend build, two blockers cleared).
+3. **Backend milestone**: Supabase auth + user_stats/completions + **server-side answer validation in the same push** (it's the standing launch blocker; one backend build, two blockers cleared).
 4. **Account sheet + merge flow + prompt triggers/re-arm logic.**
 5. **Escalation triggers, decline persistence, settings entry points.**
 6. **A/B harness** on the two highest-leverage prompts (§8) once traffic justifies it.
@@ -163,6 +163,6 @@ Steps 1–2 are independent of steps 3–5 and cheaper; they can be pulled forwa
 ## 11. Open decisions for the user
 
 1. **Tutorial default**: should Path A default to the tutorial (recommended — protects the first daily) or default to the daily with the tutorial offered? The A/B in §8 can settle it, but the pre-data default is a judgment call.
-2. **Backend choice**: Supabase (recommended, matches original plan sketch) vs. Clerk/Firebase/other — decide at build time, affects nothing else in this plan.
+2. ~~**Backend choice**: Supabase vs. Clerk/Firebase/other.~~ **RESOLVED 2026-07-13 — Supabase.** Postgres + Auth (Apple/Google OAuth + magic links) + edge functions for answer validation, matching the original `PLAN.md` §6 stack sketch.
 3. **Account prompt on day-1 loss**: this plan says wait for the first win (§5). The counterargument — a loss is when streak *insurance* framing lands hardest — is legitimate; flagging it rather than deciding unilaterally.
 4. **Timing**: steps 1–2 of §10 are client-only and cheap — pull them forward now, or hold everything until the Phase 2 backend milestone so onboarding ships as one coherent release?

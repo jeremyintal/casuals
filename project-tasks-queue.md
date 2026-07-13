@@ -18,7 +18,7 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 2. Add focused automated tests for game engine state transitions and daily Eastern Time rollover.
 3. Persist mute preference and improve Replay/Menu end-sheet behavior.
-4. **Backend milestone (accounts + server-side answer validation, one build).** Required before public launch (see `AGENTS.md` launch blockers). Per `ONBOARDING_PLAN.md` §7, accounts (steps 3–5) and answer validation share the same backend and should ship together. Blocked on the backend-vendor decision (Supabase recommended — `ONBOARDING_PLAN.md` §11).
+4. **Backend milestone (accounts + server-side answer validation, one build). Vendor decided 2026-07-13: Supabase.** Required before public launch (see `AGENTS.md` launch blockers). Per `ONBOARDING_PLAN.md` §7, accounts (steps 3–5) and answer validation share the same backend and ship together: Supabase Postgres + Auth (Apple/Google OAuth + email magic link, passwords banned) + edge functions for answer validation. Data model in `ONBOARDING_PLAN.md` §7 (`users`, `user_stats`, `completions`). No longer blocked on a decision; unstarted, and larger than the other open items. Guest→account stats merge (§5) is the must-not-break flow.
 5. Generated image share card — remaining `GROWTH_PLAN.md` phase 1 item (§3, §10). Moderate effort, not started. Phase 2+ growth items (squads, head-to-head, buzzer-beater clip) depend on accounts (P4) and are correctly deferred.
 
 ## Open Tasks
@@ -62,6 +62,11 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 - `MOBILE_PLAN.md`, `GROWTH_PLAN.md` — see `AGENTS.md` required-reading list.
 
 ## Decisions
+
+### 2026-07-13 (backend vendor decided: Supabase)
+
+- Resolved `ONBOARDING_PLAN.md` §11 open decision #2: **Supabase** is the backend for the accounts + server-side-answer-validation milestone (P4). Chosen for hosted Postgres + Auth (Apple/Google OAuth and email magic links out of the box, matching the passwords-banned rule) + edge functions for answer validation, consistent with the original `PLAN.md` §6 stack sketch. Clerk and Firebase were the considered alternatives.
+- Consequence: P4 is no longer decision-blocked. It remains unstarted and is the heaviest open item; it clears two standing launch blockers at once (accounts and answer validation) per `ONBOARDING_PLAN.md` §7. The client-only onboarding slice (P-Onboarding) still has no dependency on this and can proceed independently.
 
 ### 2026-07-13 (docs audit + priority reconciliation)
 
