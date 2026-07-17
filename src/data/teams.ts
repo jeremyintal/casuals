@@ -30,5 +30,6 @@ export const TEAMS: Record<string, Team> = {
   SAC: { abbr: 'SAC', name: 'Kings', color: '#5A2D81', color2: '#C4CED4' },
   MIA: { abbr: 'MIA', name: 'Heat', color: '#98002E', color2: '#F9A01B' },
   NYK: { abbr: 'NYK', name: 'Knicks', color: '#F58426', color2: '#006BB6' },
+  TOR: { abbr: 'TOR', name: 'Raptors', color: '#CE1141', color2: '#000000' },
   WAS: { abbr: 'WAS', name: 'Wizards', color: '#E31837', color2: '#002B5C' },
 }

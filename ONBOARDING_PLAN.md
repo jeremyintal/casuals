@@ -108,7 +108,7 @@ The account prompt copy should only ever promise the tier that's actually live.
 
 ## 7. Backend implications (what this actually requires)
 
-Accounts are the first feature that genuinely requires a backend — and per `PLAN.md` §6 and `AGENTS.md`, **server-side answer validation is already a launch blocker that needs the same backend**. Build them as one milestone, not two:
+Accounts are the first feature that genuinely requires a backend, and server-side answer validation needs the same infrastructure. The July 17 soft-beta decision moved both post-traction, but they should still be built as one milestone, not two:
 
 - **Chosen: Supabase** (decided 2026-07-13; matches the original `PLAN.md` §6 stack sketch) — Postgres + Auth (Apple/Google OAuth and magic links out of the box) + edge functions for answer validation. Alternatives (Clerk + separate API, Firebase) were considered and set aside. Hand-rolling auth is explicitly out.
 - Data model (minimal): `users` (id, auth identity, display_name, created_at), `user_stats` (streak, best_streak, tiers, best_score, last_win_day), `completions` (user_id, puzzle_id, day_num, tier, score, time_ms, arrived_via). The `completions` table also finally turns `GROWTH_PLAN.md` §8's per-device share attribution into real cross-user funnel data.
@@ -151,7 +151,7 @@ A/B candidates once traffic allows (in priority order): tutorial-first vs. strai
 
 1. **Instrumentation first**: first-open detection, funnel events, baseline capture. (Client-only, no backend needed.)
 2. **Tutorial + first-run menu state + Path B overlay line.** (Client-only. This half of the plan has zero backend dependency and could ship well before accounts.)
-3. **Backend milestone**: Supabase auth + user_stats/completions + **server-side answer validation in the same push** (it's the standing launch blocker; one backend build, two blockers cleared).
+3. **Post-traction backend milestone**: Supabase auth + user_stats/completions + **server-side answer validation in the same push** (one backend build, two scaling risks addressed).
 4. **Account sheet + merge flow + prompt triggers/re-arm logic.**
 5. **Escalation triggers, decline persistence, settings entry points.**
 6. **A/B harness** on the two highest-leverage prompts (§8) once traffic justifies it.

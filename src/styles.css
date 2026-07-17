@@ -525,6 +525,8 @@ body::before {
 .archive-item .t { font-size: 14px; font-weight: 700; }
 .archive-item .s { font-size: 12px; color: var(--dim); margin-top: 2px; }
 .archive-item .done { margin-left: auto; font-size: 11px; font-weight: 800; letter-spacing: 1px; }
+.lineage-menu-item { min-height: 64px; }
+.lineage-open { margin-left: auto; color: var(--amber); font-size: 22px; }
 .howto-list { margin: 10px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
 .howto-list li { display: flex; gap: 10px; font-size: 13.5px; color: var(--dim); line-height: 1.5; }
 .howto-list .n {
@@ -542,6 +544,105 @@ body::before {
   justify-content: center;
   margin-top: 1px;
 }
+
+/* ---------- asset lineage ---------- */
+.lineage-view { padding: 8px 0 20px; }
+.lineage-back {
+  color: var(--dim);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin: 2px 0 24px;
+}
+.lineage-back:hover { color: var(--txt); }
+.lineage-heading { border-bottom: 1px solid var(--line2); padding-bottom: 22px; }
+.lineage-kicker {
+  color: var(--amber);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.lineage-heading h1 {
+  font-size: 27px;
+  line-height: 1.12;
+  letter-spacing: 0;
+  margin: 8px 0 10px;
+}
+.lineage-heading p { color: var(--txt); font-size: 15px; line-height: 1.5; margin: 0; }
+.lineage-path { padding: 20px 0; }
+.lineage-stage { position: relative; }
+.asset-node {
+  background: var(--panel);
+  border: 1px solid var(--line2);
+  border-left: 4px solid var(--amber-dim);
+  border-radius: 8px;
+  padding: 14px 15px;
+}
+.asset-node.emphasized { border-color: var(--green); border-left-width: 4px; }
+.asset-node-topline {
+  align-items: center;
+  color: var(--faint);
+  display: flex;
+  font-size: 10.5px;
+  font-weight: 800;
+  justify-content: space-between;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+.asset-node-teams { display: inline-flex; gap: 5px; }
+.asset-node h2 { font-size: 17px; letter-spacing: 0; margin: 6px 0 4px; }
+.asset-node p { color: var(--dim); font-size: 12.5px; line-height: 1.5; margin: 0; }
+.asset-connector {
+  color: var(--green);
+  height: 38px;
+  margin-left: 21px;
+  position: relative;
+}
+.asset-connector::before { background: var(--green); content: ''; inset: 0 auto 0 0; position: absolute; width: 2px; }
+.asset-connector::after {
+  border-bottom: 2px solid var(--green);
+  border-right: 2px solid var(--green);
+  bottom: 1px;
+  content: '';
+  height: 7px;
+  left: -3px;
+  position: absolute;
+  transform: rotate(45deg);
+  width: 7px;
+}
+.asset-connector span {
+  background: var(--bg);
+  color: var(--dim);
+  font-size: 10px;
+  left: 12px;
+  padding: 3px 6px;
+  position: absolute;
+  top: 9px;
+  white-space: nowrap;
+}
+.context-branch {
+  border-left: 2px dashed var(--faint);
+  margin: 14px 0 0 22px;
+  padding: 0 0 2px 16px;
+}
+.context-branch .asset-node { background: #101017; border-color: var(--line); border-left-color: var(--faint); }
+.branch-label { color: var(--faint); font-size: 10.5px; font-weight: 800; margin: 0 0 8px; text-transform: uppercase; }
+.context-connector { color: var(--faint); font-size: 10px; height: 24px; padding: 6px 0 0 12px; }
+.lineage-clarifier {
+  border-bottom: 1px solid var(--line2);
+  border-top: 1px solid var(--line2);
+  color: var(--dim);
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 18px 0;
+}
+.lineage-clarifier strong { color: var(--txt); }
+.lineage-sources { display: flex; flex-direction: column; gap: 9px; padding-top: 20px; }
+.lineage-sources h2 { color: var(--faint); font-size: 11px; letter-spacing: 0; margin: 0 0 2px; text-transform: uppercase; }
+.lineage-sources a { color: var(--amber); font-size: 12.5px; line-height: 1.4; text-decoration: none; }
+.lineage-sources a:hover { text-decoration: underline; }
 
 .confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
 
@@ -563,4 +664,6 @@ body::before {
 @media (max-width: 400px) {
   .led { font-size: 60px; min-width: 96px; }
   .hero-wordmark { font-size: 38px; letter-spacing: 6px; }
+  .lineage-heading h1 { font-size: 24px; }
+  .asset-node-topline { align-items: flex-start; gap: 8px; }
 }

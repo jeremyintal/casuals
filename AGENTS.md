@@ -12,9 +12,9 @@ You are working on **Casuals**, a daily web puzzle game: six degrees of separati
 6. **`project-tasks-queue.md`** — open tasks, priorities, and the decision log. Pick work from here
 7. **`proof-log.md`** — completed work with verification evidence. Append here after each session
 
-## Current state (as of 2026-07-13)
+## Current state (as of 2026-07-17)
 
-Playable client-only prototype, QA-verified, production build green. Vite + React + TypeScript SPA, no backend. Git-initialized (`git init` done 2026-07-02) — commit as you go. 13 hand-curated puzzles ship in-app (see `src/data/puzzles.ts`), including the Boston Kevin Garnett → Kyrie Irving chain added 2026-07-13. The data pipeline (`pipeline/`) produced 150 scored candidates; 5 have now been curated and shipped, 1 was reviewed and rejected, and 144 remain unverified — see `pipeline/data/curation-queue.md` and priority 1 in `project-tasks-queue.md`. Automated puzzle-content validation is available through `npm test`; focused engine/state tests are still unbuilt. Growth-plan phase 1 is also shipped: real deep links (`?d=`/`?p=`), a "Challenge a friend" share button, and per-device share attribution tracking — see `GROWTH_PLAN.md`'s status note and `proof-log.md`. Current milestone is puzzle curation in three-puzzle batches, with reliability/onboarding work interleaved and a product-learning checkpoint at 14–21 puzzles rather than waiting for the full 60-puzzle runway.
+Playable client-only prototype, QA-verified, production build green. Vite + React + TypeScript SPA, no backend. Git-initialized (`git init` done 2026-07-02) — commit as you go. 13 hand-curated puzzles ship in-app (see `src/data/puzzles.ts`). A separate verified asset-lineage viewer ships at `?lineage=nyk-keon-og`; it is not counted as a playable puzzle. The July 17 launch decision targets a public soft beta the week of July 22 with 10 selected puzzles; client-side answers and no accounts/backend are explicitly accepted for this learning release. See `project-tasks-queue.md` for the remaining launch sequence. Automated puzzle and lineage validation runs through `npm test`; focused engine/state tests are still unbuilt.
 
 ## Commands
 
@@ -33,6 +33,7 @@ npm run build      # tsc + vite build — must pass before ending a session
 | `src/game/sounds.ts` | WebAudio-synthesized SFX (tick, swish, clank, buzzer, crowd), mute flag |
 | `src/game/storage.ts` | localStorage stats, streaks, per-puzzle completion |
 | `src/data/puzzles.ts` | Puzzle content + daily rotation (midnight **America/New_York** rollover) |
+| `src/data/assetLineages.ts` | Sourced non-game asset graphs: nodes, causal edges, context branches, and source links |
 | `src/data/players.ts` | Autocomplete player list + `normalizeName` (diacritics/punctuation-safe matching) |
 | `src/data/teams.ts` | Team abbreviations and colors |
 | `src/App.tsx` | All UI: menu, scoreboard, chain, answer box, end sheet, archive, stats |
@@ -62,6 +63,13 @@ These are the product's identity, chosen deliberately (reasoning in `PLAN.md` §
 - Add every answer name to `src/data/players.ts`; names with diacritics must match via `normalizeName`
 - 2–4 question links per puzzle; difficulty 1–5 rated by intermediate-player obscurity and chain length
 
+## Asset-lineage authoring rules
+
+- Asset lineages are explanatory graphs, not automatically playable puzzles. Never imply a direct player-for-player trade when the connection runs through draft rights, picks, or a package.
+- Mark only consideration-preserving edges with `onContributionPath: true`. Other assets returned in the same transaction belong on `context` branches unless they independently continue toward the target.
+- Distinguish a draft pick from the player selected with it. Model both nodes and connect them explicitly.
+- Require at least two official NBA/team sources, stable source URLs, and the framing “This asset helped contribute to the acquisition of…” for partial-package causality.
+
 ## Workflow contract (how sessions stay continuable)
 
 1. Start: read the four docs above; run `npm run build` to confirm a clean baseline
@@ -74,10 +82,10 @@ These are the product's identity, chosen deliberately (reasoning in `PLAN.md` §
 4. Browser QA: use an in-app/driver browser against the dev server; Playwright/Chromium may be blocked by the macOS sandbox (see proof-log 2026-07-02). Screenshots go outside the repo (`/private/tmp/`)
 5. Never ship a puzzle you haven't fact-checked; never claim verification you didn't run
 
-## Known launch blockers (fine for prototype, must fix before public)
+## Known post-beta risks
 
-- Answers ship in the client bundle (view-source cheating) → needs server-side validation
-- Only 13 puzzles shipped in-app (~13 days of content) → 1 generated candidate is rejected and 144 remain unverified in `pipeline/data/curation-queue.md`; the work remaining is human/agent fact-checking and conversion to `src/data/puzzles.ts`, not generation
+- Answers ship in the client bundle (view-source cheating). Explicitly accepted for the July 2026 soft beta; server-side validation is a post-traction milestone before scaling.
+- Only 13 puzzles ship in-app. Ten are used for the soft-beta launch sequence, three are immediate inventory, and weekly three-puzzle curation resumes after launch.
 - No automated tests on the engine (state transitions, ET rollover, streaks)
 - NBA IP caution: team names/colors only — no logos or player photos
 

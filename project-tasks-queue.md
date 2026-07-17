@@ -4,22 +4,35 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 **New here? Read `AGENTS.md` first** — it is the canonical operating manual (repo map, design invariants, puzzle authoring rules, session workflow contract). `PLAN.md` holds strategy and reasoning.
 
+## LAUNCH SCOPE DECISION — 2026-07-17 (decided by Jeremy; recorded by Claude)
+
+1. Casuals launches publicly the week of Jul 22, 2026 as a soft beta with **10 connect-the-dot trade puzzles**, selected from the 13 already shipped. **No new curation is required before launch.**
+2. Client-side answers are accepted at launch: no backend, no accounts. The Supabase milestone (P4) is post-traction work, not a launch gate.
+3. The 60-puzzle runway target is void as a launch gate. Runway math is acknowledged: 10 puzzles = 10 daily slots; the 3 unused shipped puzzles are day-11+ inventory; a standing minimum of one 3-puzzle curation batch per week begins the week after launch. Corpus strategy gets revisited at the first post-launch Friday check-in.
+4. Ordering the launch 10: honor the adjacency rule (`dal-dsj-kyrie` and `dal-dsj-morris-davis` never on adjacent days).
+5. Remaining pre-launch work is only: select/order the 10, final readiness pass, public URL, launch list + share text (see `../STATUS.md` focus items).
+
 ## Current Priorities
 
-> Numbered by priority; **P1 (curation) is the standing top priority** because corpus size is the binding constraint on launch. Execute curation in three-puzzle batches, interleaving P-Onboarding and P2 reliability work; review product learning at 14–21 shipped puzzles instead of waiting for all 60. Items marked "shipped" below are recently-completed context, not open work.
+> Pre-launch priorities follow the July 17 scope decision above. Curation and backend work remain important post-launch work, but neither is a soft-beta gate.
 
 **Recently shipped (context, not open work):**
 - **Copy reframed to "Turn X into Y in N moves" GM framing (2026-07-03).** Menu, archive rows, tagline, how-to-play, and share/challenge text all updated — see `proof-log.md`. New puzzles added to `src/data/puzzles.ts` must populate `start.player` (bare player name) alongside `start.title` — the copy silently breaks if it's skipped, see `AGENTS.md`.
 - **Growth plan phase 1 shipped (2026-07-03).** Deep-link fix, "Challenge a friend" button, and per-device share attribution are built and verified — see `proof-log.md`. Remaining phase 1 item is tracked as **P5** below.
+- **First asset-lineage viewer shipped (2026-07-17).** `Keon Johnson pick → OG Anunoby` is modeled as a sourced asset graph with a contribution path and a separate Quentin Grimes context branch. It is accessible from Asset Film Room and by `?lineage=nyk-keon-og`; it is not a 14th playable puzzle.
 
-1. **Curate the candidate queue in three-puzzle batches.** `pipeline/data/curation-queue.md` has 150 scored candidate chains; **5 are curated and shipped, 1 is rejected, 144 remain unverified, and 47 more shipped puzzles are needed** to reach the 60-puzzle runway target (13 shipped in `src/data/puzzles.ts` as of 2026-07-13). Candidate #19 shipped as `bos-garnett-irving`; candidate #18 is permanently rejected because its Keon Johnson → Jrue Holiday edge crosses explicitly partitioned sub-deals inside Portland's 2023 three-team transaction. Verify and author one more story-strong candidate to complete the current batch and reach 14 shipped puzzles; source-screen multi-team candidates before investing in copy. Fact-check against Basketball-Reference plus an independent official source, then add approved puzzles to `src/data/puzzles.ts` + `src/data/players.ts` following `AGENTS.md`. Shipped from the queue: `dal-dsj-morris-davis`, `lac-paul-harden`, `min-lavine-gobert`, `sac-cousins-lavine`, and `bos-garnett-irving` (see `proof-log.md`). **Scheduling note:** don't run `dal-dsj-kyrie` and `dal-dsj-morris-davis` on adjacent days — they share their first two links.
+1. **Select and order the 10 soft-beta puzzles.** Choose from the 13 shipped puzzles; do not schedule `dal-dsj-kyrie` and `dal-dsj-morris-davis` on adjacent days because they share their first two links.
+2. **Run the final launch-readiness pass.** Verify the selected daily order, direct puzzle links, share/challenge copy, menu/archive behavior, mobile layout, and console health on the production candidate.
+3. **Publish the public URL.** Confirm the production deployment serves direct `?p=` and `?lineage=` routes without fallback failures.
+4. **Prepare the launch list and share text.** Keep this deliberately small for the soft beta and instrument the first post-launch Friday review.
+5. **Resume curation after launch.** Run at least one three-puzzle source-screened batch per week. The queue has 150 candidates: 5 shipped, 1 rejected, and 144 unverified. The former 60-puzzle target is a runway aspiration, not a gate.
 
 - **P-Onboarding (parallel track): build the client-only half of `ONBOARDING_PLAN.md`.** Steps 1–2 of that plan's §10 build order — funnel instrumentation, first-open menu state, the ~30s skippable tutorial possession (half-speed clock, infinite possessions, isolated from real game state/stats), and the one-line Path B deep-link overlay. **No backend, no accounts, no auth** — those are steps 3–5 and are gated on the backend milestone (see P4). This slice is planned but not started; it can ship anytime and independently of curation. A ready-to-paste Codex prompt for exactly this scope was drafted in chat on 2026-07-13 — regenerate from `ONBOARDING_PLAN.md` §4, §8, §10 if not to hand. Implements the plan's recommended tutorial-first default (open decision #1, reversible). Related: the accounts/backend half is P4.
 
-2. Add focused automated tests for game engine state transitions and daily Eastern Time rollover.
-3. Persist mute preference and improve Replay/Menu end-sheet behavior.
-4. **Backend milestone (accounts + server-side answer validation, one build). Vendor decided 2026-07-13: Supabase.** Required before public launch (see `AGENTS.md` launch blockers). Per `ONBOARDING_PLAN.md` §7, accounts (steps 3–5) and answer validation share the same backend and ship together: Supabase Postgres + Auth (Apple/Google OAuth + email magic link, passwords banned) + edge functions for answer validation. Data model in `ONBOARDING_PLAN.md` §7 (`users`, `user_stats`, `completions`). No longer blocked on a decision; unstarted, and larger than the other open items. Guest→account stats merge (§5) is the must-not-break flow.
-5. Generated image share card — remaining `GROWTH_PLAN.md` phase 1 item (§3, §10). Moderate effort, not started. Phase 2+ growth items (squads, head-to-head, buzzer-beater clip) depend on accounts (P4) and are correctly deferred.
+- **Post-launch reliability:** add focused automated tests for game engine state transitions and daily Eastern Time rollover.
+- **Post-launch polish:** persist mute preference and improve Replay/Menu end-sheet behavior.
+- **Post-traction backend milestone:** Supabase accounts + server-side answer validation in one build. Client-side answers are explicitly accepted for soft beta; guest-to-account stats merge remains the must-not-break future flow.
+- **Post-launch growth:** generated image share card, followed by account-dependent squads, head-to-head, and buzzer-beater clips only when traction warrants them.
 
 ## Open Tasks
 
@@ -70,14 +83,15 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 ### 2026-07-13 (batched launch-learning plan)
 
+- **Superseded in launch timing by the July 17 soft-beta decision above.** The curation cadence and product-learning rationale remain useful post-launch; the former server-validation gate does not.
 - Keep the 60-puzzle corpus as the two-month runway goal, not as a prerequisite for all market feedback. Curate in three-puzzle batches and evaluate activation, completion, difficulty, and return intent once 14–21 puzzles are available to trusted testers.
-- Public launch remains gated on server-side answer validation. Client-only onboarding and focused engine tests interleave with curation; mobile packaging and generated image sharing remain downstream of retention evidence.
+- Client-only onboarding and focused engine tests interleave with curation; mobile packaging and generated image sharing remain downstream of retention evidence.
 - Corrected a stale strategy contradiction: `PLAN.md`'s graph model now lists sign-and-trades, not sign-after-waive edges. A waiver claim is valid; a waived player later signing elsewhere as a free agent is not a consideration-preserving edge.
 
 ### 2026-07-13 (backend vendor decided: Supabase)
 
 - Resolved `ONBOARDING_PLAN.md` §11 open decision #2: **Supabase** is the backend for the accounts + server-side-answer-validation milestone (P4). Chosen for hosted Postgres + Auth (Apple/Google OAuth and email magic links out of the box, matching the passwords-banned rule) + edge functions for answer validation, consistent with the original `PLAN.md` §6 stack sketch. Clerk and Firebase were the considered alternatives.
-- Consequence: P4 is no longer decision-blocked. It remains unstarted and is the heaviest open item; it clears two standing launch blockers at once (accounts and answer validation) per `ONBOARDING_PLAN.md` §7. The client-only onboarding slice (P-Onboarding) still has no dependency on this and can proceed independently.
+- Consequence: P4 is no longer decision-blocked. It remains unstarted and is the heaviest post-traction item; it addresses accounts and answer validation in one build per `ONBOARDING_PLAN.md` §7. The client-only onboarding slice still has no dependency on this and can proceed independently.
 
 ### 2026-07-13 (docs audit + priority reconciliation)
 
@@ -97,7 +111,7 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 ### 2026-07-03 (onboarding & accounts plan)
 
 - Added `ONBOARDING_PLAN.md` (planning only, nothing built): redesigns the first-run experience around a 30-second skippable tutorial possession (half-speed clock, infinite possessions, famous one-link trade) so new users stop burning their first daily while learning the rules, and introduces accounts as a post-activation soft ask — prompt appears on the first *win's* result sheet framed as streak protection, never as a gate. Auth is OAuth (Apple/Google) + email magic link only; passwords explicitly banned. Guest→account stats merge is transactional and treated as the one unforgivable-if-broken flow. Reaffirms `GROWTH_PLAN.md` §9's never-gate-the-loop rule as the plan's foundation.
-- Key structural call: the plan splits into a client-only half (tutorial, first-open menu state, funnel instrumentation — steps 1–2 of its build order, cheap, could ship anytime) and a backend half (auth + stats tables, steps 3–5) that should be built as ONE milestone with server-side answer validation, since both need the same backend and validation is already a launch blocker.
+- Key structural call: the plan splits into a client-only half (tutorial, first-open menu state, funnel instrumentation — steps 1–2 of its build order, cheap, could ship anytime) and a backend half (auth + stats tables, steps 3–5) that should be built as ONE post-traction milestone with server-side answer validation, since both need the same backend.
 - Open decisions left for the user in `ONBOARDING_PLAN.md` §11: tutorial-first vs. daily-first default, backend vendor (Supabase recommended), whether to prompt for an account on a day-1 loss (plan says wait for first win), and whether to pull the client-only half forward now or ship onboarding as one release with Phase 2.
 
 ### 2026-07-03 (mobile plan revision)

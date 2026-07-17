@@ -4,7 +4,7 @@
 
 ---
 
-## 0. Status — updated July 13, 2026
+## 0. Status — updated July 17, 2026
 
 > **Continuity note for any agent or human picking this up:** this document is the *strategy and reasoning* for the web product. The agent-facing operating manual — repo map, design invariants, puzzle authoring rules, session workflow contract — is **`AGENTS.md`** (with `CLAUDE.md` pointing there). iOS/Android strategy is in **`MOBILE_PLAN.md`**; virality and sharing strategy is in **`GROWTH_PLAN.md`** — both kept separate because they're distribution/retention layers on top of this plan, not different products. Open work and decisions live in `project-tasks-queue.md`; completed work and verification evidence in `proof-log.md`. Any session that changes strategy must update this section with a date; any session that changes code must append to the proof log. The project must remain continuable by a cold-start agent at all times.
 
@@ -13,13 +13,15 @@
 ### Built and verified
 - Full game loop: 6 possessions, 24-second shot clock, turnover reset to 14, violation → hint + lost possession, buzzer-beater bonus, scoring (banked seconds + 100/unused possession)
 - 13 hand-curated real transaction chains (Bradley→Dončić, Ibaka→SGA, Rozier→White, Kyrie→Mitchell, Thad Young→Simmons, DSJ→Kyrie, Kevin Martin→Olynyk, Payton→Harden, DSJ→Morris→Davis, Chris Paul→Harden, Zach LaVine→Gobert, DeMarcus Cousins→Zach LaVine, Kevin Garnett→Kyrie Irving), difficulty-rated 1–5
+- A sourced asset-lineage viewer for `Keon Johnson pick → OG Anunoby`, with draft rights, pick, player-selection, transaction, and acquisition nodes. The contribution path follows Detroit's 2024 second-round pick; Quentin Grimes is displayed as a separate context branch and is not represented as part of the OG package.
 - Menu, daily chain (rolls over at midnight ET), archive ("Classic Games"), stats + streaks in localStorage, share grid, end-sheet with full chain recap and tier stamps, synthesized sounds with mute, dark scoreboard UI with team-color chain cards
 - Manual browser QA passed at mobile (390×844) and desktop (1280×800); two P2 bugs (Enter-to-submit, header home button) found and fixed; production build green. Evidence in `proof-log.md`; open work in `project-tasks-queue.md`.
 
 ### Ratified deviations from the original plan
-- **Stack is Vite + React SPA, not Next.js + Supabase.** Right call for a client-only prototype; revisit Next.js (or a thin API) only when server-side answer validation and leaderboards arrive. Consequence: answers ship in the client bundle — acceptable now, still a hard blocker for public launch.
+- **Stack is Vite + React SPA, not Next.js + Supabase.** Right call for the client-only prototype and soft beta; revisit Next.js (or a thin API) when server-side answer validation and leaderboards are justified. Consequence: answers ship in the client bundle — accepted for the July 2026 soft beta, but a material anti-cheat risk before scaling.
 - Third tier label is **"LEAGUE PASS"** (was "League Pass Subscriber") and the share grid uses 🟩🟧🟥⬛.
 - Tier math counts turnovers *and* violations together (0 = SICKO, ≤2 = FILM JUNKIE).
+- **Soft-beta scope changed on 2026-07-17.** Public beta launches the week of July 22 with 10 puzzles selected from the 13 shipped. Client-side answers, no accounts, and no backend are accepted for this learning release. The 60-puzzle corpus and Supabase validation milestone remain post-launch investments, not launch gates.
 
 ### Known gaps vs. this plan (tracked in the queue)
 - The third hint level (hangman-style blanked name after a second violation) is not implemented — the second violation currently repeats hint 2
@@ -28,10 +30,10 @@
 - Puzzle corpus shipped in-app is 13 (`dal-dsj-morris-davis`, `lac-paul-harden`, `min-lavine-gobert`, `sac-cousins-lavine`, and `bos-garnett-irving` were added from the curation queue). The data pipeline produced 150 scored candidates; 5 are curated and shipped, candidate #18 was reviewed and rejected, and 144 remain unverified. The remaining gap is human/agent curation and conversion to the puzzle schema, not pipeline engineering. See `pipeline/data/curation-queue.md` and queue priority 1.
 - Growth-plan phase 1 shipped 2026-07-03: real deep links, "Challenge a friend" share button, per-device share attribution. See `GROWTH_PLAN.md` status note.
 
-### Execution review — 2026-07-13
+### Execution review — 2026-07-13, superseded in part 2026-07-17
 
-- The strategy remains sound: verified content is the moat, server-side validation is the hard public-launch gate, and accounts should share the Supabase backend milestone rather than create a second backend project.
-- The execution plan is now batched instead of fully sequential. Keep 60 verified puzzles as the two-month runway target, but curate in three-puzzle batches and run a product-learning checkpoint once 14–21 puzzles exist. Trusted/closed testing can begin in that window; a broad public launch still waits for server-side answer validation.
+- The strategy remains sound: verified content is the moat, and accounts should share the eventual Supabase answer-validation milestone rather than create a second backend project.
+- The July 17 decision supersedes the former broad-launch gate: soft beta proceeds with 10 selected puzzles and client-side answers. Curation resumes weekly after launch; backend timing is driven by traction and cheating risk.
 - Client-only onboarding and focused engine tests should interleave between curation batches. Mobile packaging and generated image sharing remain downstream until activation and retention evidence justify them.
 
 ### Update — data pipeline built, 2026-07-03
@@ -213,7 +215,7 @@ Daily results are self-reported flexes at MVP — same trust model as Wordle. Se
 
 - ~~Week 2: core game — chain UI, shot clock, possession system, autocomplete, end-of-game reveal, share grid, localStorage streaks~~ **Done (prototype, client-only)**
 - Week B: scraper + graph + entity resolution for 2010–present; generate and hand-verify puzzles in three-puzzle batches toward **60 puzzles** (2 months of runway). Run a product-learning checkpoint at 14–21 shipped puzzles; build an admin curation screen only if the manual workflow proves to be the bottleneck.
-- Week C runs in parallel with later curation batches: server-side answer validation (required before public launch), client-only onboarding, remaining polish (third hint level, untimed archive, persisted mute), automated engine tests, deploy
+- Post-launch work runs in parallel with weekly curation: evaluate server-side answer validation from observed traction/cheating risk, build client-only onboarding, complete remaining polish (third hint level, untimed archive, persisted mute), and add automated engine tests
 
 **Explicitly cut from MVP:** accounts, leaderboards, Sicko Mode, multiplayer, pre-2010 data, native apps.
 

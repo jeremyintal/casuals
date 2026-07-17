@@ -1,4 +1,5 @@
 import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react'
+import { ASSET_LINEAGES, type AssetLineage, type AssetLineageNode } from './data/assetLineages'
 import { PLAYER_LIST, normalizeName } from './data/players'
 import { PUZZLES, dailyIndex, dailyNumber, puzzleForDayNumber, totalMoves, type ChainLink, type Puzzle } from './data/puzzles'
 import { TEAMS } from './data/teams'
@@ -6,7 +7,7 @@ import { POSSESSIONS, SHOT_CLOCK, challengeText, resultTier, shareText, type Sha
 import { isMuted, setMuted } from './game/sounds'
 import { loadStats, recordArrival, recordResult, recordShareCompletion, type Stats } from './game/storage'
 
-type View = 'menu' | 'game'
+type View = 'menu' | 'game' | 'lineage'
 
 interface DeepLink {
   puzzleIdx: number
@@ -34,6 +35,14 @@ function parseDeepLink(): DeepLink | null {
 }
 
 const DEEP_LINK = parseDeepLink()
+
+function parseLineageLink(): string | null {
+  if (typeof window === 'undefined') return null
+  const id = new URLSearchParams(window.location.search).get('lineage')
+  return ASSET_LINEAGES.some((lineage) => lineage.id === id) ? id : null
+}
+
+const LINEAGE_LINK = DEEP_LINK ? null : parseLineageLink()
 
 function BallIcon({ className = '' }: { className?: string }) {
   return (
@@ -359,7 +368,15 @@ function EndSheet({
   )
 }
 
-function Menu({ stats, onPlay }: { stats: Stats; onPlay: (idx: number) => void }) {
+function Menu({
+  stats,
+  onPlay,
+  onOpenLineage,
+}: {
+  stats: Stats
+  onPlay: (idx: number) => void
+  onOpenLineage: (id: string) => void
+}) {
   const daily = dailyIndex()
   const dailyPuzzle = PUZZLES[daily]
   const winRate = stats.played ? Math.round((stats.wins / stats.played) * 100) : 0
@@ -404,6 +421,21 @@ function Menu({ stats, onPlay }: { stats: Stats; onPlay: (idx: number) => void }
         </div>
       </section>
       <section className="menu-card">
+        <h3>Asset Film Room</h3>
+        <div className="archive-grid">
+          {ASSET_LINEAGES.map((lineage) => (
+            <button className="archive-item lineage-menu-item" key={lineage.id} onClick={() => onOpenLineage(lineage.id)}>
+              <TeamPill abbr="NYK" />
+              <span>
+                <span className="t">{lineage.shortTitle}</span>
+                <span className="s">Trace the verified asset path</span>
+              </span>
+              <span className="lineage-open" aria-hidden="true">→</span>
+            </button>
+          ))}
+        </div>
+      </section>
+      <section className="menu-card">
         <h3>How To Play</h3>
         <ol className="howto-list">
           <li><span className="n">1</span><span>You're the GM. Reconstruct the real moves a front office made to turn the starting player into the target.</span></li>
@@ -413,6 +445,80 @@ function Menu({ stats, onPlay }: { stats: Stats; onPlay: (idx: number) => void }
         </ol>
       </section>
     </>
+  )
+}
+
+function AssetNode({ node, emphasized = false }: { node: AssetLineageNode; emphasized?: boolean }) {
+  return (
+    <article className={`asset-node ${emphasized ? 'emphasized' : ''}`}>
+      <div className="asset-node-topline">
+        <span>{node.label} · {node.year}</span>
+        <span className="asset-node-teams">
+          {node.teams.map((team) => <TeamPill key={team} abbr={team} />)}
+        </span>
+      </div>
+      <h2>{node.title}</h2>
+      <p>{node.detail}</p>
+    </article>
+  )
+}
+
+function AssetLineageView({ lineage, onMenu }: { lineage: AssetLineage; onMenu: () => void }) {
+  const pathNodes = lineage.nodes
+    .filter((node) => node.lane === 'contribution')
+    .sort((a, b) => a.order - b.order)
+  const contextNodes = lineage.nodes
+    .filter((node) => node.lane === 'context')
+    .sort((a, b) => a.order - b.order)
+  const branchEdge = lineage.edges.find((edge) => !edge.onContributionPath && pathNodes.some((node) => node.id === edge.from))
+
+  return (
+    <main className="lineage-view">
+      <button className="plain lineage-back" onClick={onMenu}>← BACK TO MENU</button>
+      <div className="lineage-heading">
+        <div className="lineage-kicker">Verified asset lineage</div>
+        <h1>{lineage.title}</h1>
+        <p>{lineage.claim}</p>
+      </div>
+
+      <section className="lineage-path" aria-label={lineage.shortTitle}>
+        {pathNodes.map((node, index) => {
+          const previous = pathNodes[index - 1]
+          const edge = previous
+            ? lineage.edges.find((candidate) => candidate.from === previous.id && candidate.to === node.id)
+            : null
+          return (
+            <div key={node.id} className="lineage-stage">
+              {edge && <div className="asset-connector"><span>{edge.label}</span></div>}
+              <AssetNode node={node} emphasized={node.id === lineage.targetNodeId} />
+              {branchEdge?.from === node.id && (
+                <aside className="context-branch" aria-label="Additional return that did not continue to the OG trade">
+                  <div className="branch-label">Sibling branch · not in the OG trade</div>
+                  {contextNodes.map((contextNode, contextIndex) => (
+                    <div key={contextNode.id}>
+                      {contextIndex > 0 && <div className="context-connector">used to select</div>}
+                      <AssetNode node={contextNode} />
+                    </div>
+                  ))}
+                </aside>
+              )}
+            </div>
+          )
+        })}
+      </section>
+
+      <section className="lineage-clarifier">
+        <strong>Lineage, not a player-for-player trade.</strong>
+        <span> Keon Johnson was not traded for OG Anunoby. His draft rights produced multiple assets; only the Detroit pick continued into the 2023 package.</span>
+      </section>
+
+      <section className="lineage-sources">
+        <h2>Sources</h2>
+        {lineage.sources.map((source) => (
+          <a key={source.url} href={source.url} target="_blank" rel="noreferrer">{source.label} ↗</a>
+        ))}
+      </section>
+    </main>
   )
 }
 
@@ -480,8 +586,9 @@ function GameScreen({
 }
 
 export default function App() {
-  const [view, setView] = useState<View>(DEEP_LINK ? 'game' : 'menu')
+  const [view, setView] = useState<View>(DEEP_LINK ? 'game' : LINEAGE_LINK ? 'lineage' : 'menu')
   const [puzzleIdx, setPuzzleIdx] = useState(DEEP_LINK?.puzzleIdx ?? dailyIndex())
+  const [lineageId, setLineageId] = useState(LINEAGE_LINK ?? ASSET_LINEAGES[0].id)
   const [stats, setStats] = useState<Stats>(() => loadStats())
   const [muted, setMutedState] = useState(() => isMuted())
 
@@ -504,15 +611,22 @@ export default function App() {
       const isDaily = puzzleIdx === dailyIndex()
       if (isDaily) params.set('d', String(dailyNumber()))
       params.set('p', PUZZLES[puzzleIdx].id)
+    } else if (view === 'lineage') {
+      params.set('lineage', lineageId)
     }
     const qs = params.toString()
     const url = qs ? `${window.location.pathname}?${qs}` : window.location.pathname
     window.history.replaceState(null, '', url)
-  }, [view, puzzleIdx])
+  }, [view, puzzleIdx, lineageId])
 
   function play(idx: number) {
     setPuzzleIdx(idx)
     setView('game')
+  }
+
+  function openLineage(id: string) {
+    setLineageId(id)
+    setView('lineage')
   }
 
   function toggleMuted() {
@@ -531,15 +645,20 @@ export default function App() {
         <path d="M80 120h300M150 0v190h160V0M150 920V730h160v190M80 800h300" fill="none" stroke="currentColor" strokeWidth="4" />
       </svg>
       <Header stats={stats} onHome={() => setView('menu')} muted={muted} onToggleMuted={toggleMuted} />
-      {view === 'menu' ? (
-        <Menu stats={stats} onPlay={play} />
-      ) : (
+      {view === 'menu' && <Menu stats={stats} onPlay={play} onOpenLineage={openLineage} />}
+      {view === 'game' && (
         <GameScreen
           key={`${puzzleIdx}-${view}`}
           puzzleIdx={puzzleIdx}
           arrivedVia={arrivedVia}
           onMenu={() => setView('menu')}
           onStats={setStats}
+        />
+      )}
+      {view === 'lineage' && (
+        <AssetLineageView
+          lineage={ASSET_LINEAGES.find((lineage) => lineage.id === lineageId) ?? ASSET_LINEAGES[0]}
+          onMenu={() => setView('menu')}
         />
       )}
     </div>

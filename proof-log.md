@@ -2,6 +2,34 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-17 (Keon Johnson draft asset to OG Anunoby lineage)
+
+### Progress Completed
+
+- Verified the 2021 draft-night transaction against the official Clippers release: New York sent Keon Johnson's No. 21 draft rights and received No. 25 plus Detroit's 2024 second-round pick.
+- Verified the December 2023 transaction against NBA and Knicks records: New York sent RJ Barrett, Immanuel Quickley, and the 2024 second-round pick via Detroit; New York received OG Anunoby, Precious Achiuwa, and Malachi Flynn.
+- Added `src/data/assetLineages.ts`, a structured graph model for draft rights, draft picks, selected players, transactions, acquisitions, causal edges, context branches, and sources.
+- Added the Asset Film Room entry, direct `?lineage=nyk-keon-og` routing, responsive lineage viewer, and Toronto team metadata. The contribution lane follows the Detroit pick; No. 25 and Quentin Grimes are visibly separated and labeled as a sibling branch that was not in the OG trade.
+- Extended `npm test` with graph-integrity checks, official-source requirements, the exact contribution path, and a permanent assertion that Quentin Grimes is not on that path.
+- Preserved Claude's pre-existing July 17 soft-beta decision and reconciled stale queue/plan language that still described curation, Supabase, and 60 puzzles as launch gates.
+
+### Verification Evidence
+
+- Proof-first validator failed with `ERR_MODULE_NOT_FOUND` before `src/data/assetLineages.ts` existed.
+- Final `npm test` passed: `Validated 13 puzzles, 1 asset lineage, and 260 autocomplete names.`
+- Final `npm run build` passed: TypeScript succeeded and Vite built 34 modules.
+- Chromium QA passed direct-link loading, menu-to-lineage navigation, source/clarifier copy, exact contribution-node ordering, and zero captured console warnings/errors.
+- Layout checks passed at `1280x800` and `360x740`: document and body widths exactly matched each viewport. Screenshots: `/private/tmp/casuals-lineage-desktop.png` and `/private/tmp/casuals-lineage-mobile.png`.
+
+### Decision
+
+- The truthful lineage is `No. 21 draft rights → 2021 trade-down → Detroit 2024 second-round pick → 2023 Toronto package → OG Anunoby acquisition`. Pick No. 25 and Quentin Grimes are additional returns from the trade-down, not assets that contributed to the OG trade.
+- This ships as an explanatory asset-lineage surface, not a daily answer-chain puzzle, because the causal connection depends on a pick asset and a multi-asset package rather than a sequence of player-return guesses.
+
+### Proof Gaps / Remaining Work
+
+- Browser QA used bundled headless Chromium because the in-app Browser control bridge was unavailable in this session. Native link-opening behavior for the three external source links was not exercised.
+
 ## 2026-07-13 (Portland rejection + Boston Garnett to Kyrie shipment)
 
 ### Progress Completed
