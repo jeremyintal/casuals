@@ -20,6 +20,7 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 - **Copy reframed to "Turn X into Y in N moves" GM framing (2026-07-03).** Menu, archive rows, tagline, how-to-play, and share/challenge text all updated — see `proof-log.md`. New puzzles added to `src/data/puzzles.ts` must populate `start.player` (bare player name) alongside `start.title` — the copy silently breaks if it's skipped, see `AGENTS.md`.
 - **Growth plan phase 1 shipped (2026-07-03).** Deep-link fix, "Challenge a friend" button, and per-device share attribution are built and verified — see `proof-log.md`. Remaining phase 1 item is tracked as **P5** below.
 - **First asset-lineage viewer shipped (2026-07-17).** `Keon Johnson pick → OG Anunoby` is modeled as a sourced asset graph with a contribution path and a separate Quentin Grimes context branch. It is accessible from Asset Film Room and by `?lineage=nyk-keon-og`; it is not a 14th playable puzzle.
+- **Second asset lineage shipped (2026-07-17).** `Jrue Holiday trade pick → Mikal Bridges` follows custody of Milwaukee's 2025 first through New Orleans, Portland, Detroit, New York, and Brooklyn. It corrects the submitted chronology by using the 2022 CJ McCollum fallback, not the unrelated 2023 Lillard trade.
 
 1. **Select and order the 10 soft-beta puzzles.** Choose from the 13 shipped puzzles; do not schedule `dal-dsj-kyrie` and `dal-dsj-morris-davis` on adjacent days because they share their first two links.
 2. **Run the final launch-readiness pass.** Verify the selected daily order, direct puzzle links, share/challenge copy, menu/archive behavior, mobile layout, and console health on the production candidate.
@@ -75,6 +76,12 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 - `MOBILE_PLAN.md`, `GROWTH_PLAN.md` — see `AGENTS.md` required-reading list.
 
 ## Decisions
+
+### 2026-07-17 (Jrue Holiday trade pick → Mikal Bridges shipped with corrected custody path)
+
+- Approved the underlying Milwaukee 2025 first-round-pick lineage but corrected the Portland segment. New Orleans acquired the pick in Milwaukee's 2020 Jrue Holiday package. Portland received it as fallback consideration from the 2022 CJ McCollum trade, then sent it to Detroit in the 2022 Jerami Grant trade. Portland did not acquire this pick in the 2023 Damian Lillard trade.
+- Detroit sent the same pick to New York for Kemba Walker and Jalen Duren's draft rights. New York later included it as the protected fifth first-round pick in the 2024 Mikal Bridges package.
+- Frame the start as `Jrue Holiday trade pick`, not `Jrue Holiday → Mikal Bridges`: the pick was one asset Milwaukee conveyed for Holiday and one of five firsts New York conveyed for Bridges.
 
 ### 2026-07-17 (Darko → Mitchell Robinson lineage rejected; corrected candidate retained)
 

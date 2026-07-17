@@ -22,6 +22,8 @@ export const TEAMS: Record<string, Team> = {
   HOU: { abbr: 'HOU', name: 'Rockets', color: '#CE1141', color2: '#000000' },
   PHI: { abbr: 'PHI', name: '76ers', color: '#006BB6', color2: '#ED174C' },
   MIN: { abbr: 'MIN', name: 'Timberwolves', color: '#78BE20', color2: '#0C2340' },
+  MIL: { abbr: 'MIL', name: 'Bucks', color: '#00471B', color2: '#EEE1C6' },
+  DET: { abbr: 'DET', name: 'Pistons', color: '#C8102E', color2: '#1D42BA' },
   MEM: { abbr: 'MEM', name: 'Grizzlies', color: '#5D76A9', color2: '#12173F' },
   POR: { abbr: 'POR', name: 'Trail Blazers', color: '#E03A3E', color2: '#000000' },
   CHI: { abbr: 'CHI', name: 'Bulls', color: '#CE1141', color2: '#000000' },

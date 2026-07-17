@@ -79,8 +79,8 @@ for (const lineage of ASSET_LINEAGES) {
   assert(nodeIds.has(lineage.targetNodeId), `${lineage.id}: missing target node`)
   assert(lineage.sources.length >= 2, `${lineage.id}: at least two sources are required`)
   assert(
-    lineage.sources.every((source) => source.url.startsWith('https://www.nba.com/')),
-    `${lineage.id}: sources must be official NBA or team releases`
+    lineage.sources.filter((source) => source.url.startsWith('https://www.nba.com/')).length >= 2,
+    `${lineage.id}: at least two sources must be official NBA or team releases`
   )
 
   for (const edge of lineage.edges) {
@@ -108,6 +108,33 @@ assert(
   'nyk-keon-og: Quentin Grimes must remain a non-contributing sibling branch'
 )
 
+const jruePickToBridges = ASSET_LINEAGES.find((lineage) => lineage.id === 'mil-jrue-pick-bridges')
+assert(jruePickToBridges, 'Missing mil-jrue-pick-bridges asset lineage')
+assert.equal(
+  jruePickToBridges.claim,
+  'This draft asset helped contribute to the acquisition of Mikal Bridges.'
+)
+assert.deepEqual(
+  jruePickToBridges.edges.filter((edge) => edge.onContributionPath).map((edge) => [edge.from, edge.to]),
+  [
+    ['jrue-trade-2020', 'nop-mil-2025-first'],
+    ['nop-mil-2025-first', 'cj-trade-2022'],
+    ['cj-trade-2022', 'por-mil-2025-first'],
+    ['por-mil-2025-first', 'grant-trade-2022'],
+    ['grant-trade-2022', 'det-mil-2025-first'],
+    ['det-mil-2025-first', 'duren-trade-2022'],
+    ['duren-trade-2022', 'nyk-mil-2025-first'],
+    ['nyk-mil-2025-first', 'bridges-trade-2024'],
+    ['bridges-trade-2024', 'mikal-bridges'],
+  ]
+)
+assert(
+  jruePickToBridges.nodes.every((node) => node.year !== 2023),
+  'mil-jrue-pick-bridges: the unrelated 2023 Lillard trade must not appear in this lineage'
+)
+assert(jruePickToBridges.clarification.includes('same Milwaukee 2025 first-round pick'))
+assert(!jruePickToBridges.clarification.includes('Keon Johnson'))
+
 console.log(
-  `Validated ${PUZZLES.length} puzzles, ${ASSET_LINEAGES.length} asset lineage, and ${PLAYER_LIST.length} autocomplete names.`
+  `Validated ${PUZZLES.length} puzzles, ${ASSET_LINEAGES.length} asset lineages, and ${PLAYER_LIST.length} autocomplete names.`
 )

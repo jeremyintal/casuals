@@ -14,7 +14,7 @@ You are working on **Casuals**, a daily web puzzle game: six degrees of separati
 
 ## Current state (as of 2026-07-17)
 
-Playable client-only prototype, QA-verified, production build green. Vite + React + TypeScript SPA, no backend. Git-initialized (`git init` done 2026-07-02) — commit as you go. 13 hand-curated puzzles ship in-app (see `src/data/puzzles.ts`). A separate verified asset-lineage viewer ships at `?lineage=nyk-keon-og`; it is not counted as a playable puzzle. The July 17 launch decision targets a public soft beta the week of July 22 with 10 selected puzzles; client-side answers and no accounts/backend are explicitly accepted for this learning release. See `project-tasks-queue.md` for the remaining launch sequence. Automated puzzle and lineage validation runs through `npm test`; focused engine/state tests are still unbuilt.
+Playable client-only prototype, QA-verified, production build green. Vite + React + TypeScript SPA, no backend. Git-initialized (`git init` done 2026-07-02) — commit as you go. 13 hand-curated puzzles ship in-app (see `src/data/puzzles.ts`). Two separate verified asset-lineage viewers ship at `?lineage=nyk-keon-og` and `?lineage=mil-jrue-pick-bridges`; they are not counted as playable puzzles. The July 17 launch decision targets a public soft beta the week of July 22 with 10 selected puzzles; client-side answers and no accounts/backend are explicitly accepted for this learning release. See `project-tasks-queue.md` for the remaining launch sequence. Automated puzzle and lineage validation runs through `npm test`; focused engine/state tests are still unbuilt.
 
 ## Commands
 

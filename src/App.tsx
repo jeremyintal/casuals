@@ -509,7 +509,7 @@ function AssetLineageView({ lineage, onMenu }: { lineage: AssetLineage; onMenu: 
 
       <section className="lineage-clarifier">
         <strong>Lineage, not a player-for-player trade.</strong>
-        <span> Keon Johnson was not traded for OG Anunoby. His draft rights produced multiple assets; only the Detroit pick continued into the 2023 package.</span>
+        <span> {lineage.clarification}</span>
       </section>
 
       <section className="lineage-sources">

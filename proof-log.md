@@ -2,6 +2,32 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-17 (Jrue Holiday trade pick to Mikal Bridges lineage)
+
+### Progress Completed
+
+- Source-screened the submitted chain and removed the incorrect 2023 Portland step. The same Milwaukee 2025 first moved from New Orleans to Portland as fallback consideration in the 2022 CJ McCollum trade, then to Detroit in the Jerami Grant trade, to New York in the Jalen Duren/Kemba Walker trade, and to Brooklyn in the Mikal Bridges package.
+- Added `mil-jrue-pick-bridges` to `src/data/assetLineages.ts` with ten ordered transaction/custody/acquisition nodes, nine consideration-preserving edges, five official NBA/team sources, and independent reporting for the CJ fallback clause.
+- Added Milwaukee and Detroit team metadata. Asset Film Room and `?lineage=mil-jrue-pick-bridges` now expose the second graph.
+- Moved the bottom clarification from hard-coded Keon/OG copy into the lineage data contract after visual QA caught the wrong story appearing beneath the otherwise-correct Mikal graph. Added automated and browser regressions against cross-lineage copy leakage.
+
+### Verification Evidence
+
+- Proof-first `npm test` failed with `Missing mil-jrue-pick-bridges asset lineage` before authoring.
+- Final `npm test` passed: `Validated 13 puzzles, 2 asset lineages, and 260 autocomplete names.`
+- Final `npm run build` passed: TypeScript succeeded and Vite built 34 modules.
+- Chromium QA passed the exact ten-node custody order, corrected claim/clarification copy, absence of 2023 path nodes and Keon text, two-item Asset Film Room navigation, stable direct URL, and zero captured console warnings/errors.
+- Layout checks passed at `1280x800` and `360x740`, with document/body widths exactly matching each viewport. Screenshots: `/private/tmp/casuals-jrue-bridges-desktop.png` and `/private/tmp/casuals-jrue-bridges-mobile.png`.
+
+### Decision
+
+- The canonical path is `2020 Jrue Holiday package → New Orleans holds MIL 2025 first → 2022 CJ McCollum fallback → Portland → 2022 Jerami Grant package → Detroit → 2022 Jalen Duren/Kemba Walker package → New York → 2024 Mikal Bridges package → Brooklyn`.
+- “Jrue Holiday trade pick → Mikal Bridges” is the truthful short title. Neither player was directly traded for the other.
+
+### Proof Gaps / Remaining Work
+
+- Native opening behavior for external source links was not exercised. The exact CJ fallback clause is corroborated by independent reporting; the official Pelicans release names the protected 2022 first, while the official Detroit release confirms Portland later conveyed the Milwaukee 2025 first.
+
 ## 2026-07-17 (Darko to Mitchell Robinson source-screen rejection)
 
 ### Verification Evidence

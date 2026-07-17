@@ -13,7 +13,7 @@
 ### Built and verified
 - Full game loop: 6 possessions, 24-second shot clock, turnover reset to 14, violation → hint + lost possession, buzzer-beater bonus, scoring (banked seconds + 100/unused possession)
 - 13 hand-curated real transaction chains (Bradley→Dončić, Ibaka→SGA, Rozier→White, Kyrie→Mitchell, Thad Young→Simmons, DSJ→Kyrie, Kevin Martin→Olynyk, Payton→Harden, DSJ→Morris→Davis, Chris Paul→Harden, Zach LaVine→Gobert, DeMarcus Cousins→Zach LaVine, Kevin Garnett→Kyrie Irving), difficulty-rated 1–5
-- A sourced asset-lineage viewer for `Keon Johnson pick → OG Anunoby`, with draft rights, pick, player-selection, transaction, and acquisition nodes. The contribution path follows Detroit's 2024 second-round pick; Quentin Grimes is displayed as a separate context branch and is not represented as part of the OG package.
+- Two sourced asset-lineage viewers: `Keon Johnson pick → OG Anunoby`, whose contribution path follows Detroit's 2024 second while Quentin Grimes remains a context branch; and `Jrue Holiday trade pick → Mikal Bridges`, which tracks Milwaukee's 2025 first through New Orleans, Portland, Detroit, New York, and Brooklyn.
 - Menu, daily chain (rolls over at midnight ET), archive ("Classic Games"), stats + streaks in localStorage, share grid, end-sheet with full chain recap and tier stamps, synthesized sounds with mute, dark scoreboard UI with team-color chain cards
 - Manual browser QA passed at mobile (390×844) and desktop (1280×800); two P2 bugs (Enter-to-submit, header home button) found and fixed; production build green. Evidence in `proof-log.md`; open work in `project-tasks-queue.md`.
 
