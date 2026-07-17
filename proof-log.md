@@ -2,6 +2,23 @@
 
 Chronological record of completed progress, verification commands, test results, and known proof gaps. Use `project-tasks-queue.md` for open tasks and decisions.
 
+## 2026-07-17 (Darko to Mitchell Robinson source-screen rejection)
+
+### Verification Evidence
+
+- Official NBA/team records contradict the first two proposed edges. The Knicks sent Quentin Richardson to Memphis for Darko Miličić on June 25, 2009; Minnesota's official record says it acquired Darko from New York on February 17, 2010.
+- The Knicks' official 2011 Carmelo trade release identifies Raymond Felton as a free-agent signing before the 2010-11 season, not a return for Darko. It also confirms Felton was one asset in the package sent to Denver for Carmelo Anthony and the complete New York return.
+- Oklahoma City's official September 25, 2017 release confirms Carmelo returned Enes Kanter, Doug McDermott, and Chicago's 2018 second-round pick. The Knicks' official 2018 draft release confirms Mitchell Robinson was selected No. 36.
+
+### Decision
+
+- Rejected `Darko Miličić → Raymond Felton` because no consideration-preserving transaction connects them. The proposed chronology also incorrectly places Darko's Knicks arrival in July 2010 and describes a Charlotte trade that did not happen.
+- Retained a corrected, source-supported candidate beginning with the independent Felton signing: `Raymond Felton → Carmelo Anthony → Chicago 2018 second-round pick → Mitchell Robinson`. It remains unimplemented pending confirmation that the changed starting asset preserves the desired story.
+
+### Proof Gaps / Remaining Work
+
+- The corrected Felton candidate has been source-screened but has not received editorial approval, schema authoring, automated validation, or browser QA.
+
 ## 2026-07-17 (Keon Johnson draft asset to OG Anunoby lineage)
 
 ### Progress Completed

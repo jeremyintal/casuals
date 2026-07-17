@@ -76,6 +76,12 @@ Living queue for planned work, open items, decisions, and retrospective notes. U
 
 ## Decisions
 
+### 2026-07-17 (Darko → Mitchell Robinson lineage rejected; corrected candidate retained)
+
+- Rejected the proposed `Darko Miličić → Raymond Felton → Carmelo Anthony → Mitchell Robinson` lineage. New York acquired Darko from Memphis for Quentin Richardson in June 2009, then sent Darko to Minnesota in February 2010. Raymond Felton independently signed with New York as a free agent on July 12, 2010; Charlotte did not trade Felton to New York for Darko, Anthony Randolph, or Cuttino Mobley.
+- The valid downstream lineage begins with Felton: `Raymond Felton free-agent signing → 2011 Carmelo Anthony package → 2017 Chicago second-round pick → Mitchell Robinson at No. 36`. Felton was one of several assets sent for the Carmelo package, and the Chicago pick was one of three assets received for Carmelo, so both edges require “helped contribute” framing.
+- Do not author the corrected Felton lineage until the user confirms the changed starting asset. This is a materially different story from the requested Darko butterfly effect.
+
 ### 2026-07-13 (candidate #18 rejected; candidate #19 shipped)
 
 - Rejected Portland candidate #18. Portland's official September 27, 2023 release explicitly maps Keon Johnson, Nassir Little and Jusuf Nurkić to the Deandre Ayton/Toumani Camara side, while Damian Lillard maps to Jrue Holiday and Milwaukee draft capital. The pipeline's aggregate team ledger produced a false Keon Johnson → Jrue Holiday edge; this chain must never ship.
